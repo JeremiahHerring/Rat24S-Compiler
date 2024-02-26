@@ -37,14 +37,6 @@ class IdentifierFSM:
 identifier_fsm = IdentifierFSM()
 
 
-
-
-
-
-
-
-
-
 # USED FOR TESTING (REMEMBER TO DELETE BEFORE SUBMITTING)
 identifier = "PEEINMYMOUTH"
 
