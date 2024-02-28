@@ -1,22 +1,22 @@
 class RealLexer:
     def __init__(self):
         self.states = {'1', '2', '3', '4'}
-        self.alphabet = {'diget', '.'}
+        self.alphabet = {'digit', '.'}
         self.start_state = '1'
         self.accepting_state = '4'
         self.current_state = ''
         self.transitions = {
-            ('1', 'diget'): '2',
-            ('2', 'diget'): '2',
+            ('1', 'digit'): '2',
+            ('2', 'digit'): '2',
             ('2', '.'): '3',
-            ('3', 'diget'): '4',
-            ('4', 'diget'): '4',
+            ('3', 'digit'): '4',
+            ('4', 'digit'): '4',
         }
     
     # identify char
     def process_input(self, char):
         if char.isdigit():
-            return 'diget'
+            return 'digit'
         elif char == '.':
             return '.'
         else:
