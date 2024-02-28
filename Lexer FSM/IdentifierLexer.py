@@ -1,11 +1,28 @@
 class IdentifierFSM:
     def __init__(self):
-        self.states = {'start', 'accept', 'reject'} # Initialize three states
-        self.current_state = 'start' 
-        self.accepting_state = 'accept'
-        self.transitions = {
-            'start': {'letter': 'accept'}, # The identifier has to start with a letter
-            'accept': {'letter': 'accept', 'digit': 'accept', '_': 'accept'}, # Every letter, digit, or _ after the first letter is accepted
+        self.states = {'1', '2', '3', '4', '5', '6'} # Initialize three states
+        self.starting_state = '1' 
+        self.current_state = ''
+        self.accepting_states = {'2', '4', '5', '6'}
+        self.transition_table = {
+            ('1', 'letter') : '2',
+            ('1', 'digit') : '3',
+            ('1', '_') : '3',
+            ('2', 'letter') : '4',
+            ('2', 'digit') : '5',
+            ('2', '_') : '6',
+            ('3', 'letter') : '3',
+            ('3', 'digit') : '3',
+            ('3', '_') : '3',
+            ('4', 'letter') : '4',
+            ('4', 'digit') : '5',
+            ('4', '_') : '6',
+            ('5', 'letter') : '4',
+            ('5', 'digit') : '5',
+            ('5', '_') : '6',
+            ('6', 'letter') : '4',
+            ('6', 'digit') : '5',
+            ('6', '_') : '6',
         }
 
     # Function to process input
@@ -21,24 +38,23 @@ class IdentifierFSM:
 
     # Function to validate or invalidate identifier
     def validate_identifier(self, identifier):
-        self.current_state = 'start' # Have each identifier in the start position
+        self.current_state = '1' # Have each identifier in the start position
         for char in identifier:
             input_type = self.process_input(char)
             if input_type is None:
-                self.current_state = 'reject'
+                self.current_state = '3'
                 break
-            if self.current_state in self.transitions and input_type in self.transitions[self.current_state]: # Check if char is valid for the state that it is in
-                self.current_state = self.transitions[self.current_state][input_type] 
+            if (self.current_state, input_type) in self.transition_table:  # Check if char is valid for the state that it is in
+                self.current_state = self.transition_table[(self.current_state, input_type)]   # Transition to state based on the input given
             else:
-                self.current_state = 'reject'
+                self.current_state = '3'  # Not valid
 
-        return self.current_state in self.accepting_state # if current state is accept: return True else return False
+        return self.current_state in self.accepting_states # if current state is accept: return True else return False
 
 identifier_fsm = IdentifierFSM()
 
-
 # USED FOR TESTING (REMEMBER TO DELETE BEFORE SUBMITTING)
-identifier = "PEEINMYMOUTH"
+identifier = ""
 
 if identifier_fsm.validate_identifier(identifier):
     print(f"{identifier} is a valid identifier")

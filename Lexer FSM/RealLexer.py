@@ -5,7 +5,7 @@ class RealLexer:
         self.start_state = '1'
         self.accepting_state = '4'
         self.current_state = ''
-        self.transitions = {
+        self.transition_table = {
             ('1', 'digit'): '2',
             ('2', 'digit'): '2',
             ('2', '.'): '3',
@@ -30,8 +30,8 @@ class RealLexer:
             if input_type is None:
                 self.current_state = 'reject'
                 break
-            if (self.current_state, input_type) in self.transitions:
-                self.current_state = self.transitions[(self.current_state, input_type)]
+            if (self.current_state, input_type) in self.transition_table:
+                self.current_state = self.transition_table[(self.current_state, input_type)]
             else:
                 self.current_state = 'reject'
 
