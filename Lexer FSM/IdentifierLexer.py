@@ -38,7 +38,7 @@ class IdentifierFSM:
 
     # Function to validate or invalidate identifier
     def validate_identifier(self, identifier):
-        self.current_state = '1' # Have each identifier in the start position
+        self.current_state = self.starting_state # Have each identifier in the start position
         for char in identifier:
             input_type = self.process_input(char)
             if input_type is None:
@@ -54,7 +54,7 @@ class IdentifierFSM:
 identifier_fsm = IdentifierFSM()
 
 # USED FOR TESTING (REMEMBER TO DELETE BEFORE SUBMITTING)
-identifier = ""
+identifier = "helloWorld"
 
 if identifier_fsm.validate_identifier(identifier):
     print(f"{identifier} is a valid identifier")
