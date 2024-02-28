@@ -38,7 +38,7 @@ class RealLexer:
         return self.current_state in self.accepting_state # if current state is accept: return True else return False
 
 lexerInstance = RealLexer()
-tests = ["234.234","234.",".2","2.a", "a.2", "."]
+tests = ["234.234","234.",".2","2.a", "a.2", ".", "2", "a"]
 
 for test in tests:
     if lexerInstance.validate_real(test):
