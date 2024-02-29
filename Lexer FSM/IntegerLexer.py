@@ -31,9 +31,9 @@ class IntegerFSM:
     
 if __name__ == "__main__":
     integer_fsm = IntegerFSM()
-    integer = ""
+#     integer = ""
 
-    if integer_fsm.validate_integer(integer):
-        print(f"{integer} is a valid integer")
-    else:
-        print(f"{integer} is not a valid integer")
+#     if integer_fsm.validate_integer(integer):
+#         print(f"{integer} is a valid integer")
+#     else:
+#         print(f"{integer} is not a valid integer")

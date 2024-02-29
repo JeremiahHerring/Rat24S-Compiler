@@ -39,11 +39,11 @@ class RealLexer:
 
 if __name__ == "__main__":
     lexerInstance = RealLexer()
-    tests = ["234.234","234.",".2","2.a", "a.2", ".", "2", "a"]
+#     tests = ["234.234","234.",".2","2.a", "a.2", ".", "2", "a"]
 
-    for test in tests:
-        if lexerInstance.validate_real(test):
-            print(f"{test} is a valid real number")
-        else:
-            print(f"{test} is not a valid real number")
+#     for test in tests:
+#         if lexerInstance.validate_real(test):
+#             print(f"{test} is a valid real number")
+#         else:
+#             print(f"{test} is not a valid real number")
 
