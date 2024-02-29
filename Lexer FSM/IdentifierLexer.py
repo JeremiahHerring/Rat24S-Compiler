@@ -51,12 +51,11 @@ class IdentifierFSM:
 
         return self.current_state in self.accepting_states # if current state is accept: return True else return False
 
-identifier_fsm = IdentifierFSM()
+if __name__ == "__main__":
+    identifier_fsm = IdentifierFSM()
+    identifier = "helloWorld"
 
-# USED FOR TESTING (REMEMBER TO DELETE BEFORE SUBMITTING)
-identifier = "helloWorld"
-
-if identifier_fsm.validate_identifier(identifier):
-    print(f"{identifier} is a valid identifier")
-else:
-    print(f"{identifier} is not a valid identifier")
+    if identifier_fsm.validate_identifier(identifier):
+        print(f"{identifier} is a valid identifier")
+    else:
+        print(f"{identifier} is not a valid identifier")
