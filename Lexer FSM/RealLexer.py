@@ -37,12 +37,13 @@ class RealLexer:
 
         return self.current_state in self.accepting_state # if current state is accept: return True else return False
 
-lexerInstance = RealLexer()
-tests = ["234.234","234.",".2","2.a", "a.2", ".", "2", "a"]
+if __name__ == "__main__":
+    lexerInstance = RealLexer()
+#     tests = ["234.234","234.",".2","2.a", "a.2", ".", "2", "a"]
 
-for test in tests:
-    if lexerInstance.validate_real(test):
-        print(f"{test} is a valid real number")
-    else:
-        print(f"{test} is not a valid real number")
+#     for test in tests:
+#         if lexerInstance.validate_real(test):
+#             print(f"{test} is a valid real number")
+#         else:
+#             print(f"{test} is not a valid real number")
 

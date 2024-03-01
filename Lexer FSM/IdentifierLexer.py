@@ -1,3 +1,4 @@
+from Keywords import keywords
 class IdentifierFSM:
     def __init__(self):
         self.states = {'1', '2', '3', '4', '5', '6'} # Initialize three states
@@ -38,6 +39,9 @@ class IdentifierFSM:
 
     # Function to validate or invalidate identifier
     def validate_identifier(self, identifier):
+        # First check if the identifier is a keyword
+        if identifier in keywords:
+            return False
         self.current_state = self.starting_state # Have each identifier in the start position
         for char in identifier:
             input_type = self.process_input(char)
@@ -49,14 +53,14 @@ class IdentifierFSM:
             else:
                 self.current_state = '3'  # Not valid
 
-        return self.current_state in self.accepting_states # if current state is accept: return True else return False
+        return self.current_state in self.accepting_states  # if current state is accept: return True else return False
 
-identifier_fsm = IdentifierFSM()
+if __name__ == "__main__":
+    identifier_fsm = IdentifierFSM()
 
-# USED FOR TESTING (REMEMBER TO DELETE BEFORE SUBMITTING)
-identifier = "helloWorld"
+#     identifier = "helloWorld"
 
-if identifier_fsm.validate_identifier(identifier):
-    print(f"{identifier} is a valid identifier")
-else:
-    print(f"{identifier} is not a valid identifier")
+#     if identifier_fsm.validate_identifier(identifier):
+#         print(f"{identifier} is a valid identifier")
+#     else:
+#         print(f"{identifier} is not a valid identifier")
