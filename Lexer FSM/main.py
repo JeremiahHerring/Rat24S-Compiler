@@ -18,62 +18,60 @@ def main():
     integer_fsm = IntegerFSM()
     real_fsm = RealLexer()
 
-    
-    def lexer(char):
-        lexeme = ""
+    tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer"]
+    def lexer(content):
+        "ab2]"
+        indexOfFirstCharOfLexeme = 0
         inputCharTerminatesToken = False
-        for char in content:
-            
-            # if we are in one of the finite state machines and we get to a separator, then we should return a value we can identify from the validate_x functions
-            # (not just reject or false) so we can tell if inputCharTerminatesToken
-            if inputCharTerminatesToken and state == accepting:
-                token = determineToken()
-                print(f"Token : {token}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
-                lexeme = ""
+        testingState = 0
+        state = False
+        while i < len(content):
+            if inputCharTerminatesToken and state:
+                lexeme = content[indexOfFirstCharOfLexeme:i]
+                print(f"Token : {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
+
+                # reset variables for next lexeme
                 inputCharTerminatesToken = False
+                indexOfFirstCharOfLexeme = i
             else:
-                validate_operator(char)
-                validate_separator(char)
-                validate_keyword(char)
-                identifierState = identifier_fsm.validate_identifier(char, prevState)
-                realState = real_fsm.validate_real(char, prevState)
-                integerState = integer_fsm.validate_integer(char, prevState)
+                if testingState == 0 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_operator(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
-                # maybe for this we return 2 values to help us determine if token was terminated (token terminated when we are at accepting state in prevState and then we go to nonaccepting?)
-                integerState, thingToHelpDetermineTerminatedToken = integer_fsm.validate_integer(char, prevState)
+                elif testingState == 1 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_separator(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
-                # logic hear using the returned states that will let us know if the token was terminated.
-                # ^ update inputuCharTerminatesToken
-                if thingToHelpDetermineTerminatedToken:
-                    inputCharTerminatesToken = True
-        
+                elif testingState == 2 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_keyword(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
+                elif testingState == 3 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = identifier_fsm.validate_identifier(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
-        
+                elif testingState == 4 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = real_fsm.validate_real(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+
+                elif testingState == 5 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = integer_fsm.validate_integer(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+                else:
+                    print("bad")
+            i += 1
 
 if __name__ == "__main__":
     main()
-
-
-# have a lexer for each type that iterate over the file together. have them each clasify the token as its own type or not its type -- add to a list for each type.
-# then print out at the end in the order that the chars come in
-def identifierLexer(char):
-        lexeme = ""
-        inputCharTerminatesToken = False
-        for char in content:
-            
-            # if we are in one of the finite state machines and we get to a separator, then we should return a value we can identify from the validate_x functions
-            # (not just reject or false) so we can tell if inputCharTerminatesToken
-            if inputCharTerminatesToken and state == accepting: # maybe state will just be true or false so we don't have to do == accepting
-                token = determineToken()
-                print(f"Token : {token}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
-                lexeme = ""
-                inputCharTerminatesToken = False
-            else:
-                state = identifier_fsm.validate_identifier(char, prevState)
-                
-
-                # logic hear using the returned states that will let us know if the token was terminated.
-                # ^ update inputuCharTerminatesToken
-                if something:
-                    inputCharTerminatesToken = True
