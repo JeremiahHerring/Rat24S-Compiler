@@ -18,14 +18,17 @@ def lexer(content):
         state = False
         i = 0
         while i < len(content):
+            #0 2 4 6
+            #a b c d
             if inputCharTerminatesToken and state:
+                print(len(content), i)
                 lexeme = content[indexOfFirstCharOfLexeme:i - 1]
-                print(f"Token : {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
+                print(f"Token: {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
 
                 # reset variables for next lexeme
                 inputCharTerminatesToken = False
                 indexOfFirstCharOfLexeme = i
-                
+                print("content", content[i:])
             else:
                 if testingState == 0 and not inputCharTerminatesToken:
                     state, inputCharTerminatesToken = False, False
