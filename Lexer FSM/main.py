@@ -6,39 +6,72 @@ from Separator import validate_separator, separators
 from Keywords import validate_keyword, keywords
 
 def main():
+    with open('./input.txt', 'r') as file:
+        # content contains the whole input file, you can access each character of the inputstring -> content[i]
+        content = file.read()
+
+    # given a string, will print the token type and lexeme
+    lexer(content)
+
     # Make instances of each finite state machine
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
     real_fsm = RealLexer()
 
-    endOfFile = False
-    # while not endOfFile:
-    #     lexer(string)
+    tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer"]
+    def lexer(content):
+        "ab2]"
+        indexOfFirstCharOfLexeme = 0
+        inputCharTerminatesToken = False
+        testingState = 0
+        state = False
+        while i < len(content):
+            if inputCharTerminatesToken and state:
+                lexeme = content[indexOfFirstCharOfLexeme:i]
+                print(f"Token : {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
 
-    def lexer(string):
-        # Pass string to each FSM
+                # reset variables for next lexeme
+                inputCharTerminatesToken = False
+                indexOfFirstCharOfLexeme = i
+            else:
+                if testingState == 0 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_operator(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
-        if identifier_fsm.validate_identifier(string):
-            return (f"Token : Identifier, Lexeme: {string}")
-        elif integer_fsm.validate_integer(string):
-            return (f"Token : Integer, Lexeme: {string}")
-        elif real_fsm.validate_real(string):
-            return (f"Token : Real, Lexeme: {string}")
-        elif validate_keyword(string):
-            return (f"Token : Keyword, Lexeme: {string}")
-        elif validate_operator(string):
-            return (f"Token : Operator, Lexeme: {string}")
-        elif validate_separator(string):
-            return (f"Token : Separator, Lexeme: {string}")
-        else:
-            return "Invalid Token Type"
+                elif testingState == 1 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_separator(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
 
-    # Going to have to implement some logic that lets the lexer know how to separate operators and separators when there is no white space between them and other tokens
-        
-    # Test the Lexer
-    test_case = ["while", "x", "!=", "9", "123.13", "["]
-    for string in test_case:
-        print(lexer(string))
+                elif testingState == 2 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = validate_keyword(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+
+                elif testingState == 3 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = identifier_fsm.validate_identifier(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+
+                elif testingState == 4 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = real_fsm.validate_real(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+
+                elif testingState == 5 and not inputCharTerminatesToken:
+                    state, inputCharTerminatesToken = integer_fsm.validate_integer(content[i], state)
+                    if not state and not inputCharTerminatesToken:   # and or or
+                        testingState = (testingState + 1) % len(tokenTypes)
+                        i = indexOfFirstCharOfLexeme - 1
+                else:
+                    print("bad")
+            i += 1
 
 if __name__ == "__main__":
     main()

@@ -9,9 +9,9 @@ def validate_keyword(keyword):
         return True
     return False
 
-# testing
-keyword = "while"
-if validate_keyword(keyword):
-    print(f"{keyword} is a keyword")
-else:
-    print(f"{keyword} is a not keyword")
+if __name__ == "__main__":
+    keyword = "while"
+    if validate_keyword(keyword):
+        print(f"{keyword} is a keyword")
+    else:
+        print(f"{keyword} is a not keyword")
