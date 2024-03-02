@@ -5,7 +5,7 @@ from Operator import validate_operator, operators
 from Separator import validate_separator, separators
 from Keywords import validate_keyword, keywords
 
-tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer"]
+tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer", "bad"]
 
 def lexer(content):
         identifier_fsm = IdentifierFSM()
@@ -19,13 +19,13 @@ def lexer(content):
         i = 0
         while i < len(content):
             if inputCharTerminatesToken and state:
-                print("in here")
                 lexeme = content[indexOfFirstCharOfLexeme:i - 1]
                 print(f"Token : {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
 
                 # reset variables for next lexeme
                 inputCharTerminatesToken = False
                 indexOfFirstCharOfLexeme = i
+                
             else:
                 if testingState == 0 and not inputCharTerminatesToken:
                     state, inputCharTerminatesToken = False, False
@@ -47,7 +47,7 @@ def lexer(content):
 
                 elif testingState == 3 and not inputCharTerminatesToken:
                     state, inputCharTerminatesToken = identifier_fsm.validate_identifier(content[i])
-                    
+                    # print(state, inputCharTerminatesToken)
                     if not state and not inputCharTerminatesToken:   # and or or
                         testingState = (testingState + 1) % len(tokenTypes)
                         i = indexOfFirstCharOfLexeme - 1
@@ -66,7 +66,8 @@ def lexer(content):
                 else:
                     print("bad")
             i += 1
-"abc) adfa fd"
+
+
 def main():
     with open('./input.txt', 'r') as file:
         # content contains the whole input file, you can access each character of the inputstring -> content[i]
