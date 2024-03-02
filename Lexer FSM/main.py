@@ -5,13 +5,13 @@ from Operator import validate_operator, operators
 from Separator import validate_separator, separators
 from Keywords import validate_keyword, keywords
 
+identifier_fsm = IdentifierFSM()
+integer_fsm = IntegerFSM()
+real_fsm = RealLexer()
 tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer", "bad"]
+state_machines = [validate_operator, validate_separator, validate_keyword, identifier_fsm.validate_identifier, real_fsm.validate_real, integer_fsm.validate_integer]
 
 def lexer(content):
-        identifier_fsm = IdentifierFSM()
-        integer_fsm = IntegerFSM()
-        real_fsm = RealLexer()
-
         indexOfFirstCharOfLexeme = 0
         inputCharTerminatesToken = False
         testingState = 0
@@ -27,9 +27,10 @@ def lexer(content):
                 indexOfFirstCharOfLexeme = i
                 
             else:
-                if testingState == 0 and not inputCharTerminatesToken:
+                state, inputCharTerminatesToken = state_machines[testingState](content[i])
+                if not inputCharTerminatesToken:
                     state, inputCharTerminatesToken = False, False
-                    if not state and not inputCharTerminatesToken:   # and or or
+                    if not state and not inputCharTerminatesToken:    # and or or
                         testingState = (testingState + 1) % len(tokenTypes)
                         i = indexOfFirstCharOfLexeme - 1
 
