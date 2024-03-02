@@ -71,12 +71,12 @@ class IdentifierFSM:
             input_char_terminates_token and prev_accepting_state == self.starting_state
         )
 
-        return input_char_terminates_token, is_valid
+        return  is_valid, input_char_terminates_token
 
 if __name__ == "__main__":
     identifier_fsm = IdentifierFSM()
 
-    identifier = "abc#"
+    identifier = ""
     
     for char in identifier:
         input_char_terminates_token, is_valid = identifier_fsm.validate_identifier(char)

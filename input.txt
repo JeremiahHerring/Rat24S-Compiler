@@ -1,1 +1,1 @@
-while (fahr <= upper) a = 23.00;
+abc a a aa aa
