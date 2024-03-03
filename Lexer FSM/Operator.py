@@ -1,4 +1,4 @@
-operators = {"==", "!=", ">", "<", "<=", "=>", "*", "/", "+", "-"}
+operators = {"==", "!=", ">", "<", "<=", "=>", "*", "/", "+", "-", "="}
 class OperatorChecker:
     def __init__(self):
         self.operator_buffer = ""
