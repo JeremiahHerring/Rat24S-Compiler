@@ -5,10 +5,31 @@ from Operator import OperatorChecker, operators
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker, separators
 
+def determineTwoCharOperator(content, char_pointer):
+    isTwoChar = False
+    current_char = content[char_pointer]
+    if current_char == "!":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+            isTwoChar = True
+
+    elif current_char == "=":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+           isTwoChar = True
+
+        elif char_pointer + 1 != len(content) and content[char_pointer + 1] == ">":
+            isTwoChar = True
+
+    elif current_char == "<":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+            isTwoChar = True
+
+    return isTwoChar, char_pointer + 2
+
 def lexer(content):    
     char_pointer = 0
     index_of_first_char_of_lexeme = 0
     length = len(content)
+    isTwoChar = False
 
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
@@ -27,7 +48,7 @@ def lexer(content):
         keyword_check = keyword_checker.validate_keyword(current_char)
         separator_check = separator_checker.validate_separator(current_char)
         id_current_state, id_input_char_terminates_token = identifier_fsm.validate_identifier(current_char)
-        print("id stuff", "state:", id_current_state, "terminates:", id_input_char_terminates_token)
+        #print("id stuff", "state:", id_current_state, "terminates:", id_input_char_terminates_token)
         int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
         #print("integer stuff", "state:", int_current_state, "terminates:", int_input_char_terminates_token)
         real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
@@ -46,13 +67,17 @@ def lexer(content):
             lexeme = ""
 
             if operator_check:
+                isTwoChar, char_pointer = determineTwoCharOperator(content, char_pointer)
                 token = "Operator"
+                if isTwoChar:
+                    char_pointer -= 1
                 char_pointer += 1
                 current_char = content[char_pointer]
 
             elif keyword_check:
                 token = "Keyword"
-
+                char_pointer += 1
+                current_char = content[char_pointer]
             elif separator_check:
                 token = "Separator"
                 char_pointer += 1
@@ -89,6 +114,7 @@ def lexer(content):
             keyword_checker = KeywordChecker()
             separator_checker = SeparatorChecker()
 
+            isTwoChar = False
         char_pointer += 1
 
     print("Finished lexer.")
