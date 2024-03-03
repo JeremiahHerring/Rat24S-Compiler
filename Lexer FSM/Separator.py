@@ -1,13 +1,16 @@
 separators = {';', ',', '(', ')', '{', '}', '[', ']'}
+class SeparatorChecker:
+    def validate_separator(self, char):
+        if char in separators:
+            return True
+        else:
+            return False
 
-def validate_separator(separator):
-    if separator in separators:
-        return True
-    return False
     
-# # testing
-# separator = ","
-# if validate_separator(separator):
-#     print(f"{separator} is a separator")
-# else:
-#     print(f"{separator} is a not separator")
+if __name__ == "__main__":
+    separator_checker = SeparatorChecker()
+    inputStr = ","
+
+    for char in inputStr:
+        result = separator_checker.validate_separator(char)
+        print(result)

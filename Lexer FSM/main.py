@@ -1,77 +1,100 @@
 from IdentifierLexer import IdentifierFSM
 from IntegerLexer import IntegerFSM
 from RealLexer import RealLexer
-from Operator import validate_operator, operators
-from Separator import validate_separator, separators
-from Keywords import validate_keyword, keywords
+from Operator import OperatorChecker, operators
+from Keywords import KeywordChecker
+from Separator import SeparatorChecker, separators
 
-def main():
-    with open('./input.txt', 'r') as file:
-        # content contains the whole input file, you can access each character of the inputstring -> content[i]
-        content = file.read()
+def lexer(content):    
+    char_pointer = 0
+    index_of_first_char_of_lexeme = 0
+    length = len(content)
 
-    # given a string, will print the token type and lexeme
-    lexer(content)
-
-    # Make instances of each finite state machine
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
     real_fsm = RealLexer()
+    operator_checker = OperatorChecker()
+    keyword_checker = KeywordChecker()
+    separator_checker = SeparatorChecker()
 
-    tokenTypes = ["operator", "separator", "keyword", "identifier", "real", "integer"]
-    def lexer(content):
-        "ab2]"
-        indexOfFirstCharOfLexeme = 0
-        inputCharTerminatesToken = False
-        testingState = 0
-        state = False
-        while i < len(content):
-            if inputCharTerminatesToken and state:
-                lexeme = content[indexOfFirstCharOfLexeme:i]
-                print(f"Token : {tokenTypes[testingState]}, Lexeme: {lexeme}") # can print here or maybe append to list [(token, lexeme), etc.] to print after?
+    while char_pointer < length:
+        current_char = content[char_pointer]
 
-                # reset variables for next lexeme
-                inputCharTerminatesToken = False
-                indexOfFirstCharOfLexeme = i
-            else:
-                if testingState == 0 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = validate_operator(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
+        # Check each FSM
+        # Feed the current character to each FSM
+        # print(current_char)
+        operator_check = operator_checker.process_char(current_char)
+        keyword_check = keyword_checker.validate_keyword(current_char)
+        separator_check = separator_checker.validate_separator(current_char)
+        id_current_state, id_input_char_terminates_token = identifier_fsm.validate_identifier(current_char)
+        print("id stuff", "state:", id_current_state, "terminates:", id_input_char_terminates_token)
+        int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
+        #print("integer stuff", "state:", int_current_state, "terminates:", int_input_char_terminates_token)
+        real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
+        #print("real stuff", "state:", real_current_state, "terminates:", real_input_char_terminates_token)
 
-                elif testingState == 1 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = validate_separator(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
 
-                elif testingState == 2 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = validate_keyword(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
+        # Check if input char terminates token and it is an accepting state
+        if (
+            (operator_check) or (keyword_check) or (separator_check) or 
+            (id_input_char_terminates_token and id_current_state) or
+            (int_input_char_terminates_token and int_current_state) or
+            (real_input_char_terminates_token and real_current_state)
+        ):
+            # Isolate the token and lexeme
+            token = ""
+            lexeme = ""
 
-                elif testingState == 3 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = identifier_fsm.validate_identifier(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
+            if operator_check:
+                token = "Operator"
+                char_pointer += 1
+                current_char = content[char_pointer]
 
-                elif testingState == 4 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = real_fsm.validate_real(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
+            elif keyword_check:
+                token = "Keyword"
 
-                elif testingState == 5 and not inputCharTerminatesToken:
-                    state, inputCharTerminatesToken = integer_fsm.validate_integer(content[i], state)
-                    if not state and not inputCharTerminatesToken:   # and or or
-                        testingState = (testingState + 1) % len(tokenTypes)
-                        i = indexOfFirstCharOfLexeme - 1
-                else:
-                    print("bad")
-            i += 1
+            elif separator_check:
+                token = "Separator"
+                char_pointer += 1
+                current_char = content[char_pointer]
+
+
+            elif int_input_char_terminates_token and int_current_state:
+                token = "Integer"
+                            
+            elif id_input_char_terminates_token and id_current_state:
+                token = "Identifier"
+
+            elif real_input_char_terminates_token and real_current_state:
+                token = "Real"
+                
+            lexeme = content[index_of_first_char_of_lexeme : char_pointer]
+
+
+            print(f"Token: {token}, Lexeme: '{lexeme}'")
+
+            # Move the char pointer to the next character if there is white space
+            while current_char.isspace():
+                char_pointer = char_pointer + 1
+                current_char = content[char_pointer]
+            
+            index_of_first_char_of_lexeme = char_pointer
+        
+            # print("make new instance")
+            char_pointer -= 1 # Maybe have to put an if statement here later
+            identifier_fsm = IdentifierFSM()
+            integer_fsm = IntegerFSM()
+            real_fsm = RealLexer()
+            operator_checker = OperatorChecker()
+            keyword_checker = KeywordChecker()
+            separator_checker = SeparatorChecker()
+
+        char_pointer += 1
+
+    print("Finished lexer.")
 
 if __name__ == "__main__":
-    main()
+    with open('./input.txt', 'r') as file:
+        content = file.read()
+
+    lexer(content)
