@@ -1,15 +1,18 @@
-separators = {';', ',', '(', ')', '{', '}', '[', ']'}
+separators = {';', ',', '(', ')', '{', '}', '[', ']', "$"}
 class SeparatorChecker:
-    def validate_separator(self, char):
-        if char in separators:
-            return True
-        else:
-            return False
+    def __init__(self):
+        self.separator_buffer = ""
 
-    
+    def validate_separator(self, char):
+        self.separator_buffer += char
+
+        if self.separator_buffer in separators:
+            return True
+        return False
+
 if __name__ == "__main__":
     separator_checker = SeparatorChecker()
-    inputStr = ","
+    inputStr = ""
 
     for char in inputStr:
         result = separator_checker.validate_separator(char)

@@ -16,7 +16,7 @@ class OperatorChecker:
 
 if __name__ == "__main__":
     operator_checker = OperatorChecker()
-    input_str = "+"
+    input_str = "abc=="
 
     for char in input_str:
         result = operator_checker.process_char(char)
