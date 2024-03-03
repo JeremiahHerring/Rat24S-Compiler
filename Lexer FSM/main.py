@@ -41,6 +41,8 @@ def lexer(content):
     keyword_checker = KeywordChecker()
     separator_checker = SeparatorChecker()
 
+    # Store all the tokens and lexemes as tuples in a list
+    tokens_and_lexemes = []
     
     while char_pointer < length:
         current_char = content[char_pointer]
@@ -147,7 +149,7 @@ def lexer(content):
             lexeme = content[index_of_first_char_of_lexeme : char_pointer]
 
 
-            print(f"Token: {token}, Lexeme: '{lexeme}'")
+            tokens_and_lexemes.append((token, lexeme))
 
             # Move the char pointer to the next character if there is white space
             while current_char.isspace() and char_pointer != len(content) - 1:
@@ -167,11 +169,21 @@ def lexer(content):
 
             isTwoChar = False
         char_pointer += 1
+    return tokens_and_lexemes
 
-    print("Finished lexer.")
+def write_to_output(tokens_and_lexemes, output_file_path):
+    with open(output_file_path, 'w') as output_file:
+        output_file.write("Token".ljust(17) + "Lexeme\n")
+        output_file.write("-" * 30 + "\n")
+        for token, lexeme in tokens_and_lexemes:
+            output_file.write(f"{token.ljust(12)} | {lexeme}\n")
 
 if __name__ == "__main__":
     with open('./input.txt', 'r') as file:
         content = file.read()
 
-    lexer(content)
+    result = lexer(content)
+    output_file_path = './output.txt'
+    write_to_output(result, output_file_path)
+
+    print(f"Results written to {output_file_path}")

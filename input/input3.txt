@@ -1,0 +1,20 @@
+[* This program generates Fibonacci numbers up to a given limit *]
+$
+function fibonacci (limit integer)
+{
+integer a = 0;
+integer b = 1;
+integer temp;
+while (a <= limit)
+{
+print (a);
+temp = a;
+a = b;
+b = temp + b;
+}
+}
+$
+integer limit;
+scan (limit);
+fibonacci (limit);
+$

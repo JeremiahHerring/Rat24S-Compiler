@@ -1,0 +1,9 @@
+[* this is a comment for adding two numbers *]
+$
+function add (a integer, b integer)
+{
+return a + b;
+}
+$
+print (add (5, 10));
+$
