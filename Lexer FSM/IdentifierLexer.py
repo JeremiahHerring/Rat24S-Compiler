@@ -76,8 +76,8 @@ class IdentifierFSM:
 if __name__ == "__main__":
     identifier_fsm = IdentifierFSM()
 
-    identifier = "abc"
+    identifier = "abc12"
     
     for char in identifier:
         is_valid, input_char_terminates_token = identifier_fsm.validate_identifier(char)
-        print(f"Char: {char}, Terminates Token: {input_char_terminates_token}, Is Valid: {is_valid}")
+        print(f"Char: {char}, Is Valid: {is_valid}, Terminates Token: {input_char_terminates_token}")
