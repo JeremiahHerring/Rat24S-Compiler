@@ -2,6 +2,7 @@ from Separator import separators
 from Operator import operators
 
 class IdentifierFSM:
+    # Initialize IdentifierFSM with all possible states and transition table
     def __init__(self):
         self.states = {'1', '2', '3', '4', '5', '6'}
         self.starting_state = '1'
@@ -28,7 +29,7 @@ class IdentifierFSM:
             ('6', 'digit'): '5',
             ('6', '_'): '6',
         }
-
+    # Processes input type
     def process_input(self, char):
         if char.isalpha():
             return 'letter'
@@ -38,7 +39,7 @@ class IdentifierFSM:
             return '_'
         else:
             return None
-
+    # Transitions to next state, also returns True or False for inputCharTerminatesToken
     def process_char(self, char):
         self.prev_state = self.current_state
         input_type = self.process_input(char)
@@ -55,6 +56,7 @@ class IdentifierFSM:
 
         return input_char_terminates_token, self.current_state
 
+    # Validates if the final accepting state is an identifier or not
     def validate_identifier(self, identifier):
         input_char_terminates_token = False
         prev_accepting_state = self.starting_state
@@ -75,8 +77,3 @@ class IdentifierFSM:
 if __name__ == "__main__":
     identifier_fsm = IdentifierFSM()
 
-    identifier = "+abc"
-    
-    for char in identifier:
-        is_valid, input_char_terminates_token = identifier_fsm.validate_identifier(char)
-        print(f"Char: {char}, Is Valid: {is_valid}, Terminates Token: {input_char_terminates_token}")

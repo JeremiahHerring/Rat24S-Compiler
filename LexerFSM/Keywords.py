@@ -1,12 +1,15 @@
+# List of all possible keywords for RAT24
 keywords = {
         'integer', 'if', 'else', 'endif', 'while',
         'return', 'scan', 'print', 'boolean', 'real',
         'function', 'true', 'false'
         }
 class KeywordChecker:
+    # Initialize a keywordBuffer that we append chars to 
     def __init__(self):
         self.keywordBuffer = ""
 
+    # Validates if a keyword is found or not
     def validate_keyword(self, char):
         self.keywordBuffer += char
 
@@ -18,8 +21,4 @@ class KeywordChecker:
     
 if __name__ == "__main__":
     keyword_checker = KeywordChecker()
-    inputStr = "scan"
 
-    for char in inputStr:
-        result = keyword_checker.validate_keyword(char)
-        print(result)

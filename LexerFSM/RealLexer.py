@@ -2,6 +2,7 @@ from Separator import separators
 from Operator import operators
 
 class RealLexer:
+    # Initialize RealFSM with all possible states and transition table
     def __init__(self):
         self.states = {'1', '2', '3', '4'}
         self.alphabet = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'}
@@ -17,7 +18,7 @@ class RealLexer:
             ('4', 'digit'): '4',
         }
 
-    # Identify char
+    # Processes input type
     def process_input(self, char):
         if char.isdigit():
             return 'digit'
@@ -26,6 +27,7 @@ class RealLexer:
         else:
             return None
 
+    # Transitions to next state, also returns True or False for inputCharTerminatesToken
     def process_char(self, char):
         input_type = self.process_input(char)
         self.prev_state = self.current_state
@@ -63,9 +65,3 @@ class RealLexer:
 
 if __name__ == "__main__":
     lexerInstance = RealLexer()
-
-    real = "1.1"
-    
-    for char in real:
-        is_valid, input_char_terminates_token = lexerInstance.validate_real(char)
-        print(f"Char: {char}, Is Valid: {is_valid}, Terminates Token: {input_char_terminates_token}")

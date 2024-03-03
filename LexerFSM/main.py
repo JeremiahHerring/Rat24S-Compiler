@@ -4,7 +4,6 @@ from RealLexer import RealLexer
 from Operator import OperatorChecker, operators
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker, separators
-
 def determineTwoCharOperator(content, char_pointer):
     isTwoChar = False
     current_char = content[char_pointer]

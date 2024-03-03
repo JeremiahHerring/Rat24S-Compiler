@@ -1,6 +1,7 @@
 from Separator import separators
 from Operator import operators
 class IntegerFSM:
+    # Initialize IntegerFSM with all possible states and transition table
     def __init__(self):
         self.states = {'1', '2'}
         self.starting_state = '1'
@@ -11,13 +12,13 @@ class IntegerFSM:
             ('1', 'digit'): '2',
             ('2', 'digit'): '2'
         }
-
+    # Processes input type
     def process_input(self, char):
         if char.isdigit():
             return 'digit'
         else:
             return None
-
+    # Transitions to next state, also returns True or False for inputCharTerminatesToken
     def process_char(self, char):
         input_type = self.process_input(char)
         self.prev_state = self.current_state
@@ -34,7 +35,7 @@ class IntegerFSM:
         ) and self.current_state != self.accepting_state
 
         return input_char_terminates_token, self.current_state
-
+    # Validates if the final accepting state is an integer or not
     def validate_integer(self, integer):
             input_char_terminates_token = False
             prev_accepting_state = self.starting_state
@@ -53,9 +54,3 @@ class IntegerFSM:
 
 if __name__ == "__main__":
     integer_fsm = IntegerFSM()
-
-    integer = "abc "
-
-    for char in integer:
-        is_valid, input_char_terminates_token = integer_fsm.validate_integer(char)
-        print(f"Char: {char}, Is Valid: {is_valid}, Terminates Token: {input_char_terminates_token}")

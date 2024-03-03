@@ -1,8 +1,11 @@
+# Separator List
 separators = {';', ',', '(', ')', '{', '}', "$"}
 class SeparatorChecker:
+    # Initialize Separator buffer that we append chars to 
     def __init__(self):
         self.separator_buffer = ""
 
+    # Determines if char is a valid separator or not
     def validate_separator(self, char):
         self.separator_buffer += char
 
@@ -12,8 +15,4 @@ class SeparatorChecker:
 
 if __name__ == "__main__":
     separator_checker = SeparatorChecker()
-    inputStr = ""
-
-    for char in inputStr:
-        result = separator_checker.validate_separator(char)
-        print(result)
+ 
