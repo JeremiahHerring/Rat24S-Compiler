@@ -26,6 +26,7 @@ def determineTwoCharOperator(content, char_pointer):
     return isTwoChar
 
 def lexer(content):
+    starting = True
     content += " "
     char_pointer = 0
     index_of_first_char_of_lexeme = 0
@@ -40,9 +41,10 @@ def lexer(content):
     keyword_checker = KeywordChecker()
     separator_checker = SeparatorChecker()
 
+    
     while char_pointer < length:
         current_char = content[char_pointer]
-        #print(current_char, char_pointer)
+
         if current_char == "[" and char_pointer + 1 < length and content[char_pointer + 1] == "*":
             in_comment = True
             char_pointer += 2
@@ -52,7 +54,7 @@ def lexer(content):
             in_comment = False
             char_pointer += 2
             index_of_first_char_of_lexeme = char_pointer
-            current_char = content[char_pointer]
+            continue
         if in_comment:
             char_pointer += 1
             current_char = content[char_pointer]
@@ -143,9 +145,9 @@ def lexer(content):
 
             # Move the char pointer to the next character if there is white space
             while current_char.isspace() and char_pointer != len(content) - 1:
-                char_pointer = char_pointer + 1
+                char_pointer += 1
                 current_char = content[char_pointer]
-            
+
             index_of_first_char_of_lexeme = char_pointer
         
             # print("make new instance")
