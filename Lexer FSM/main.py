@@ -31,6 +31,7 @@ def lexer(content):
     index_of_first_char_of_lexeme = 0
     length = len(content)
     isTwoChar = False
+    in_comment = False
 
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
@@ -41,6 +42,19 @@ def lexer(content):
 
     while char_pointer < length:
         current_char = content[char_pointer]
+
+        if current_char == "[" and char_pointer + 1 < length and content[char_pointer + 1] == "*":
+            in_comment = True
+            char_pointer += 2
+            continue
+        elif current_char == "*" and char_pointer + 1 < length and content[char_pointer + 1] == "]":
+            in_comment = False
+            char_pointer += 2
+            index_of_first_char_of_lexeme = char_pointer
+            continue
+        if in_comment:
+            char_pointer += 1
+            continue
 
         # Check each FSM
         # Feed the current character to each FSM
@@ -57,6 +71,7 @@ def lexer(content):
 
 
         # Check if input char terminates token and it is an accepting state
+
         if (
             (operator_check) or (keyword_check) or (separator_check) or 
             (id_input_char_terminates_token and id_current_state) or
