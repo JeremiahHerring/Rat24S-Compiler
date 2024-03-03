@@ -23,9 +23,10 @@ def determineTwoCharOperator(content, char_pointer):
         if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
             isTwoChar = True
 
-    return isTwoChar, char_pointer + 2
+    return isTwoChar
 
-def lexer(content):    
+def lexer(content):
+    content += " "
     char_pointer = 0
     index_of_first_char_of_lexeme = 0
     length = len(content)
@@ -67,11 +68,12 @@ def lexer(content):
             lexeme = ""
 
             if operator_check:
-                isTwoChar, char_pointer = determineTwoCharOperator(content, char_pointer)
+                isTwoChar = determineTwoCharOperator(content, char_pointer)
                 token = "Operator"
                 if isTwoChar:
-                    char_pointer -= 1
-                char_pointer += 1
+                    char_pointer += 2
+                else:
+                    char_pointer += 1
                 current_char = content[char_pointer]
 
             elif keyword_check:
@@ -99,7 +101,7 @@ def lexer(content):
             print(f"Token: {token}, Lexeme: '{lexeme}'")
 
             # Move the char pointer to the next character if there is white space
-            while current_char.isspace():
+            while current_char.isspace() and char_pointer != len(content) - 1:
                 char_pointer = char_pointer + 1
                 current_char = content[char_pointer]
             
