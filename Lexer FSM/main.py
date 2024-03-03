@@ -5,10 +5,32 @@ from Operator import OperatorChecker, operators
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker, separators
 
+def determineTwoCharOperator(content, char_pointer):
+    isTwoChar = False
+    current_char = content[char_pointer]
+    if current_char == "!":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+            isTwoChar = True
+
+    elif current_char == "=":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+           isTwoChar = True
+
+        elif char_pointer + 1 != len(content) and content[char_pointer + 1] == ">":
+            isTwoChar = True
+
+    elif current_char == "<":
+        if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+            isTwoChar = True
+
+    return isTwoChar, char_pointer + 2
+
+
 def lexer(content):    
     char_pointer = 0
     index_of_first_char_of_lexeme = 0
-    length = len(content)
+    length = len(content)   
+    isTwoChar = False
 
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
@@ -46,7 +68,10 @@ def lexer(content):
             lexeme = ""
 
             if operator_check:
+                isTwoChar, char_pointer = determineTwoCharOperator(content, char_pointer)
                 token = "Operator"
+                if isTwoChar:
+                    char_pointer -= 1
                 char_pointer += 1
                 current_char = content[char_pointer]
 
@@ -88,6 +113,9 @@ def lexer(content):
             operator_checker = OperatorChecker()
             keyword_checker = KeywordChecker()
             separator_checker = SeparatorChecker()
+
+            # reset isTwoChar
+            isTwoChar = False
 
         char_pointer += 1
 
