@@ -42,23 +42,29 @@ def lexer(content):
 
     while char_pointer < length:
         current_char = content[char_pointer]
-
+        #print(current_char, char_pointer)
         if current_char == "[" and char_pointer + 1 < length and content[char_pointer + 1] == "*":
             in_comment = True
             char_pointer += 2
+            current_char = content[char_pointer]
             continue
         elif current_char == "*" and char_pointer + 1 < length and content[char_pointer + 1] == "]":
             in_comment = False
             char_pointer += 2
             index_of_first_char_of_lexeme = char_pointer
-            continue
+            current_char = content[char_pointer]
         if in_comment:
             char_pointer += 1
+            current_char = content[char_pointer]
             continue
-
+        # while current_char.isspace() and char_pointer != len(content) - 1 :
+        #         char_pointer = char_pointer + 1
+        #         current_char = content[char_pointer]
+        #         index_of_first_char_of_lexeme = char_pointer
         # Check each FSM
         # Feed the current character to each FSM
-        # print(current_char)
+        #print(current_char)
+        
         operator_check = operator_checker.process_char(current_char)
         keyword_check = keyword_checker.validate_keyword(current_char)
         separator_check = separator_checker.validate_separator(current_char)

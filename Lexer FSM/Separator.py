@@ -1,4 +1,4 @@
-separators = {';', ',', '(', ')', '{', '}', '[', ']', "$"}
+separators = {';', ',', '(', ')', '{', '}', "$"}
 class SeparatorChecker:
     def __init__(self):
         self.separator_buffer = ""
