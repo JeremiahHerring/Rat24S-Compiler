@@ -8,6 +8,7 @@ class RealLexer:
         self.start_state = '1'
         self.accepting_state = {'4'}
         self.current_state = self.start_state
+        self.prev_state = ''
         self.transition_table = {
             ('1', 'digit'): '2',
             ('2', 'digit'): '2',
@@ -27,7 +28,7 @@ class RealLexer:
 
     def process_char(self, char):
         input_type = self.process_input(char)
-
+        self.prev_state = self.current_state
         if input_type is None:
             self.current_state = 'reject'
         elif (self.current_state, input_type) in self.transition_table:
@@ -59,7 +60,8 @@ class RealLexer:
             input_char_terminates_token and prev_accepting_state == self.start_state
         )
 
-        return is_valid, input_char_terminates_token
+        return is_valid if not input_char_terminates_token else self.prev_state in self.accepting_state, input_char_terminates_token
+
 
 if __name__ == "__main__":
     lexerInstance = RealLexer()

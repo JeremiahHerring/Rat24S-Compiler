@@ -6,6 +6,7 @@ class IntegerFSM:
         self.starting_state = '1'
         self.current_state = self.starting_state
         self.accepting_state = '2'
+        self.prev_state = ''
         self.transition_table = {
             ('1', 'digit'): '2',
             ('2', 'digit'): '2'
@@ -19,6 +20,7 @@ class IntegerFSM:
 
     def process_char(self, char):
         input_type = self.process_input(char)
+        self.prev_state = self.current_state
 
         if input_type is None:
             self.current_state = 'reject'
@@ -50,12 +52,12 @@ class IntegerFSM:
                 input_char_terminates_token and prev_accepting_state == self.starting_state
             )
 
-            return is_valid, input_char_terminates_token
+            return is_valid if not input_char_terminates_token else self.prev_state in self.accepting_state, input_char_terminates_token
 
 if __name__ == "__main__":
     integer_fsm = IntegerFSM()
 
-    integer = "123[]"
+    integer = "abc "
 
     for char in integer:
         is_valid, input_char_terminates_token = integer_fsm.validate_integer(char)
