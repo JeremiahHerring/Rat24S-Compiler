@@ -10,24 +10,26 @@ def lexer(content):
     index_of_first_char_of_lexeme = 0
     length = len(content)
 
+    identifier_fsm = IdentifierFSM()
+    integer_fsm = IntegerFSM()
+    real_fsm = RealLexer()
+    operator_checker = OperatorChecker()
+    keyword_checker = KeywordChecker()
+    separator_checker = SeparatorChecker()
+
     while char_pointer < length:
         current_char = content[char_pointer]
 
         # Check each FSM
-        identifier_fsm = IdentifierFSM()
-        integer_fsm = IntegerFSM()
-        real_fsm = RealLexer()
-        operator_checker = OperatorChecker()
-        keyword_checker = KeywordChecker()
-        separator_checker = SeparatorChecker()
+        
 
         # Feed the current character to each FSM
         id_current_state, id_input_char_terminates_token = identifier_fsm.validate_identifier(current_char)
-        print("id stuff", id_current_state, id_input_char_terminates_token)
+        print("id stuff", "state:", id_current_state, "terminates:", id_input_char_terminates_token)
         int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
-        #print("integer stuff", int_current_state, int_input_char_terminates_token)
+        #print("integer stuff", "state:", int_current_state, "terminates:", int_input_char_terminates_token)
         real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
-        #print("real stuff", real_current_state, real_input_char_terminates_token)
+        #print("real stuff", "state:", real_current_state, "terminates:", real_input_char_terminates_token)
 
 
         # Check if input char terminates token and it is an accepting state
@@ -54,14 +56,20 @@ def lexer(content):
 
             print(f"Token: {token}, Lexeme: '{lexeme}'")
 
-            # Update the index for the next lexeme
-
+            # Move the char pointer to the next character if there is white space
             while current_char.isspace():
                 char_pointer = char_pointer + 1
                 current_char = content[char_pointer]
             
             index_of_first_char_of_lexeme = char_pointer
-        # Move the char pointer to the next character
+        
+            print("make new instance")
+            identifier_fsm = IdentifierFSM()
+            integer_fsm = IntegerFSM()
+            real_fsm = RealLexer()
+            operator_checker = OperatorChecker()
+            keyword_checker = KeywordChecker()
+            separator_checker = SeparatorChecker()
 
         char_pointer += 1
 
