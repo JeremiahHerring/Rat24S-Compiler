@@ -22,13 +22,12 @@ def lexer(content):
         separator_checker = SeparatorChecker()
 
         # Feed the current character to each FSM
-        id_input_char_terminates_token, id_current_state = identifier_fsm.validate_identifier(current_char)
-       # print("id stuff", id_input_char_terminates_token, id_current_state)
-        int_input_char_terminates_token, int_current_state = integer_fsm.validate_integer(current_char)
-       # print("integer stuff", id_input_char_terminates_token, id_current_state)
-
-        real_input_char_terminates_token, real_current_state = real_fsm.validate_real(current_char)
-        #print("real stuff", id_input_char_terminates_token, id_current_state)
+        id_current_state, id_input_char_terminates_token = identifier_fsm.validate_identifier(current_char)
+        print("id stuff", id_current_state, id_input_char_terminates_token)
+        int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
+        #print("integer stuff", int_current_state, int_input_char_terminates_token)
+        real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
+        #print("real stuff", real_current_state, real_input_char_terminates_token)
 
 
         # Check if input char terminates token and it is an accepting state
@@ -41,11 +40,11 @@ def lexer(content):
             token = ""
             lexeme = ""
 
-            if id_input_char_terminates_token and id_current_state:
-                token = "Identifier"
-
-            elif int_input_char_terminates_token and int_current_state:
+            if int_input_char_terminates_token and int_current_state:
                 token = "Integer"
+                            
+            elif id_input_char_terminates_token and id_current_state:
+                token = "Identifier"
 
             elif real_input_char_terminates_token and real_current_state:
                 token = "Real"
