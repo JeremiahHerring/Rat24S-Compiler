@@ -1,16 +1,16 @@
-class KeywordChecker:
-    def __init__(self):
-        self.keywords = {
+keywords = {
         'integer', 'if', 'else', 'endif', 'while',
         'return', 'scan', 'print', 'boolean', 'real',
         'function', 'true', 'false'
         }
+class KeywordChecker:
+    def __init__(self):
         self.keywordBuffer = ""
 
     def validate_keyword(self, char):
         self.keywordBuffer += char
 
-        if self.keywordBuffer in self.keywords:
+        if self.keywordBuffer in keywords:
             return True
         else:
             return False
