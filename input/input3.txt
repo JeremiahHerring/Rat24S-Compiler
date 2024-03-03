@@ -8,6 +8,8 @@ integer temp;
 while (a <= limit)
 {
 print (a);
+print (b)
+12Invalid
 temp = a;
 a = b;
 b = temp + b;

@@ -67,24 +67,13 @@ def lexer(content):
             char_pointer += 1
             current_char = content[char_pointer]
             continue
-        # while current_char.isspace() and char_pointer != len(content) - 1 :
-        #         char_pointer = char_pointer + 1
-        #         current_char = content[char_pointer]
-        #         index_of_first_char_of_lexeme = char_pointer
-        # Check each FSM
-        # Feed the current character to each FSM
-        #print(current_char)
         
         operator_check = operator_checker.process_char(current_char)
         keyword_check = keyword_checker.validate_keyword(current_char)
         separator_check = separator_checker.validate_separator(current_char)
         id_current_state, id_input_char_terminates_token = identifier_fsm.validate_identifier(current_char)
-        #print("id stuff", "state:", id_current_state, "terminates:", id_input_char_terminates_token)
         int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
-        #print("integer stuff", "state:", int_current_state, "terminates:", int_input_char_terminates_token)
         real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
-        #print("real stuff", "state:", real_current_state, "terminates:", real_input_char_terminates_token)
-
 
         # Check if input char terminates token and it is an accepting state
 
@@ -158,8 +147,8 @@ def lexer(content):
 
             index_of_first_char_of_lexeme = char_pointer
         
-            # print("make new instance")
-            char_pointer -= 1 # Maybe have to put an if statement here later
+       
+            char_pointer -= 1
             identifier_fsm = IdentifierFSM()
             integer_fsm = IntegerFSM()
             real_fsm = RealLexer()
@@ -179,11 +168,12 @@ def write_to_output(tokens_and_lexemes, output_file_path):
             output_file.write(f"{token.ljust(12)} | {lexeme}\n")
 
 if __name__ == "__main__":
-    with open('./input.txt', 'r') as file:
-        content = file.read()
+    for i in range(1, 4):
+        with open(f'./input/input{i}.txt', 'r') as file:
+            content = file.read()
 
-    result = lexer(content)
-    output_file_path = './output.txt'
-    write_to_output(result, output_file_path)
+        result = lexer(content)
+        output_file_path = f'./output/output{i}.txt'
+        write_to_output(result, output_file_path)
 
-    print(f"Results written to {output_file_path}")
+        print(f"Results written to {output_file_path}")
