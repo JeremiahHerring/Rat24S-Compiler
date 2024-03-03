@@ -48,10 +48,7 @@ class IntegerFSM:
                 if current_state in self.accepting_state:
                     prev_accepting_state = current_state
 
-            is_valid = prev_accepting_state in self.accepting_state or (
-                input_char_terminates_token and prev_accepting_state == self.starting_state
-            )
-
+            is_valid = is_valid = current_state in self.accepting_state
             return is_valid if not input_char_terminates_token else self.prev_state in self.accepting_state, input_char_terminates_token
 
 if __name__ == "__main__":
