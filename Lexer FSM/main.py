@@ -1,6 +1,9 @@
 from IdentifierLexer import IdentifierFSM
 from IntegerLexer import IntegerFSM
 from RealLexer import RealLexer
+from Operator import OperatorChecker
+from Keywords import KeywordChecker
+from Separator import SeparatorChecker
 
 def lexer(content):    
     char_pointer = 0
@@ -14,6 +17,9 @@ def lexer(content):
         identifier_fsm = IdentifierFSM()
         integer_fsm = IntegerFSM()
         real_fsm = RealLexer()
+        operator_checker = OperatorChecker()
+        keyword_checker = KeywordChecker()
+        separator_checker = SeparatorChecker()
 
         # Feed the current character to each FSM
         id_input_char_terminates_token, id_current_state = identifier_fsm.validate_identifier(current_char)

@@ -1,4 +1,4 @@
-class keywordChecker:
+class KeywordChecker:
     def __init__(self):
         self.keywords = {
         'integer', 'if', 'else', 'endif', 'while',
@@ -17,7 +17,7 @@ class keywordChecker:
 
     
 if __name__ == "__main__":
-    keyword_checker = keywordChecker()
+    keyword_checker = KeywordChecker()
     inputStr = "scan"
 
     for char in inputStr:
