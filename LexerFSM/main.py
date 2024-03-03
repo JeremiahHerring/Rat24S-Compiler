@@ -5,6 +5,7 @@ from Operator import OperatorChecker, operators
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker, separators
 
+# this function helps determine if the operator has two characters in it because there are some with multiple
 def determineTwoCharOperator(content, char_pointer):
     isTwoChar = False
     current_char = content[char_pointer]
@@ -25,6 +26,7 @@ def determineTwoCharOperator(content, char_pointer):
 
     return isTwoChar
 
+# this is the main lexer function that prints the token type and lexeme to the output files
 def lexer(content):
     starting = True
     content += " "
@@ -34,6 +36,7 @@ def lexer(content):
     isTwoChar = False
     in_comment = False
 
+    # creates instances of each class so we have access the the finite state machines
     identifier_fsm = IdentifierFSM()
     integer_fsm = IntegerFSM()
     real_fsm = RealLexer()
@@ -44,6 +47,7 @@ def lexer(content):
     # Store all the tokens and lexemes as tuples in a list
     tokens_and_lexemes = []
     
+    # loops over each character in the file
     while char_pointer < length:
         current_char = content[char_pointer]
         if starting:
@@ -68,6 +72,7 @@ def lexer(content):
             current_char = content[char_pointer]
             continue
         
+        # all of our validate functions are run here giving us the state of each fsm and if the input character terminates the token
         operator_check = operator_checker.process_char(current_char)
         keyword_check = keyword_checker.validate_keyword(current_char)
         separator_check = separator_checker.validate_separator(current_char)
@@ -76,7 +81,6 @@ def lexer(content):
         real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
 
         # Check if input char terminates token and it is an accepting state
-
         if (
             (operator_check) or (keyword_check) or (separator_check) or 
             (id_input_char_terminates_token and id_current_state) or
@@ -89,6 +93,7 @@ def lexer(content):
             token = ""
             lexeme = ""
 
+            # all of the following code in this if else chain checks to see what token type was selected
             if operator_check:
                 isTwoChar = determineTwoCharOperator(content, char_pointer)
                 token = "Operator"
@@ -107,7 +112,6 @@ def lexer(content):
                 char_pointer += 1
                 current_char = content[char_pointer]
 
-
             elif int_input_char_terminates_token and int_current_state:
                 token = "Integer"
                             
@@ -117,6 +121,7 @@ def lexer(content):
             elif real_input_char_terminates_token and real_current_state:
                 token = "Real"
             
+            # this is responsible for illegal character detection
             elif (not operator_check and not keyword_check and not separator_check and
                 not id_current_state and not real_current_state and not int_current_state and not current_char.isspace()):
                 token = "Invalid"
@@ -134,10 +139,9 @@ def lexer(content):
                 ):
                     char_pointer += 1
                     current_char = content[char_pointer]
-                
+            
+            # get the lexeme based off of the index of the first character and the current character pointer
             lexeme = content[index_of_first_char_of_lexeme : char_pointer]
-
-
             tokens_and_lexemes.append((token, lexeme))
 
             # Move the char pointer to the next character if there is white space
@@ -145,10 +149,13 @@ def lexer(content):
                 char_pointer += 1
                 current_char = content[char_pointer]
 
+            # reset the character of the pointer for the next token
             index_of_first_char_of_lexeme = char_pointer
         
-       
+            # decriment the pointer to analyze the next token
             char_pointer -= 1
+
+            # reset the finite state machines so they can track the correct values
             identifier_fsm = IdentifierFSM()
             integer_fsm = IntegerFSM()
             real_fsm = RealLexer()
@@ -157,9 +164,12 @@ def lexer(content):
             separator_checker = SeparatorChecker()
 
             isTwoChar = False
+        
+        # go to the next character after each loop iteration
         char_pointer += 1
     return tokens_and_lexemes
 
+# given a path to an output file, print all of the token types and lexemes in a nice format
 def write_to_output(tokens_and_lexemes, output_file_path):
     with open(output_file_path, 'w') as output_file:
         output_file.write("Token".ljust(17) + "Lexeme\n")
@@ -167,6 +177,7 @@ def write_to_output(tokens_and_lexemes, output_file_path):
         for token, lexeme in tokens_and_lexemes:
             output_file.write(f"{token.ljust(12)} | {lexeme}\n")
 
+# main function that runs the input -> output code
 if __name__ == "__main__":
     for i in range(1, 4):
         with open(f'./input/input{i}.txt', 'r') as file:
