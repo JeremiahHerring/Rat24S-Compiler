@@ -23,8 +23,13 @@ def lexer(content):
 
         # Feed the current character to each FSM
         id_input_char_terminates_token, id_current_state = identifier_fsm.validate_identifier(current_char)
+       # print("id stuff", id_input_char_terminates_token, id_current_state)
         int_input_char_terminates_token, int_current_state = integer_fsm.validate_integer(current_char)
+       # print("integer stuff", id_input_char_terminates_token, id_current_state)
+
         real_input_char_terminates_token, real_current_state = real_fsm.validate_real(current_char)
+        #print("real stuff", id_input_char_terminates_token, id_current_state)
+
 
         # Check if input char terminates token and it is an accepting state
         if (
@@ -48,11 +53,15 @@ def lexer(content):
             lexeme = content[index_of_first_char_of_lexeme : char_pointer]
 
 
-            print(f"Token: {token}, Lexeme: {lexeme}")
+            print(f"Token: {token}, Lexeme: '{lexeme}'")
 
             # Update the index for the next lexeme
-            if not current_char.isalnum() and current_char != '.':
-                index_of_first_char_of_lexeme = char_pointer + 1
+
+            while current_char.isspace():
+                char_pointer = char_pointer + 1
+                current_char = content[char_pointer]
+            
+            index_of_first_char_of_lexeme = char_pointer
         # Move the char pointer to the next character
 
         char_pointer += 1
