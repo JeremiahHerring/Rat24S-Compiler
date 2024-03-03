@@ -40,8 +40,8 @@ class IdentifierFSM:
             return None
 
     def process_char(self, char):
-        input_type = self.process_input(char)
         self.prev_state = self.current_state
+        input_type = self.process_input(char)
         if input_type is None:
             self.current_state = '3'
         elif (self.current_state, input_type) in self.transition_table:
@@ -69,13 +69,14 @@ class IdentifierFSM:
                 prev_accepting_state = current_state
 
         is_valid = current_state in self.accepting_states
+        
         #print("inside of id lexer:", self.prev_state in self.accepting_states)
         return is_valid if not input_char_terminates_token else self.prev_state in self.accepting_states, input_char_terminates_token
 
 if __name__ == "__main__":
     identifier_fsm = IdentifierFSM()
 
-    identifier = "abc "
+    identifier = "+abc"
     
     for char in identifier:
         is_valid, input_char_terminates_token = identifier_fsm.validate_identifier(char)
