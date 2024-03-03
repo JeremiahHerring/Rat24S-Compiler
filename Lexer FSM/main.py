@@ -61,7 +61,9 @@ def lexer(content):
             (operator_check) or (keyword_check) or (separator_check) or 
             (id_input_char_terminates_token and id_current_state) or
             (int_input_char_terminates_token and int_current_state) or
-            (real_input_char_terminates_token and real_current_state)
+            (real_input_char_terminates_token and real_current_state) or 
+            (not operator_check and not keyword_check and not separator_check and
+             not id_current_state and not real_current_state and not int_current_state and not current_char.isspace())
         ):
             # Isolate the token and lexeme
             token = ""
@@ -94,6 +96,24 @@ def lexer(content):
 
             elif real_input_char_terminates_token and real_current_state:
                 token = "Real"
+            
+            elif (not operator_check and not keyword_check and not separator_check and
+                not id_current_state and not real_current_state and not int_current_state and not current_char.isspace()):
+                token = "Invalid"
+                lexeme = ""
+
+                while (
+                    char_pointer < length and
+                    (not operator_checker.process_char(current_char) and
+                    not keyword_checker.validate_keyword(current_char) and
+                    not separator_checker.validate_separator(current_char) and
+                    not identifier_fsm.validate_identifier(current_char)[0] and
+                    not integer_fsm.validate_integer(current_char)[0] and
+                    not real_fsm.validate_real(current_char)[0] and
+                    not current_char.isspace())
+                ):
+                    char_pointer += 1
+                    current_char = content[char_pointer]
                 
             lexeme = content[index_of_first_char_of_lexeme : char_pointer]
 
