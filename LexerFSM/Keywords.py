@@ -2,7 +2,7 @@
 keywords = {
         'integer', 'if', 'else', 'endif', 'while',
         'return', 'scan', 'print', 'boolean', 'real',
-        'function', 'true', 'false'
+        'function', 'true', 'false', 'endwhile'
         }
 class KeywordChecker:
     # Initialize a keywordBuffer that we append chars to 

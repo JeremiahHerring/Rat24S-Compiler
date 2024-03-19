@@ -80,6 +80,22 @@ def lexer(content):
         int_current_state, int_input_char_terminates_token = integer_fsm.validate_integer(current_char)
         real_current_state, real_input_char_terminates_token = real_fsm.validate_real(current_char)
 
+        if current_char == ".":
+            test_pointer = char_pointer + 1
+            while not real_input_char_terminates_token and test_pointer != len(content) - 1:
+                state, term = real_fsm.validate_real(content[test_pointer])
+                if state and term:
+                    char_pointer = test_pointer + 1
+                    real_current_state = state
+                    real_input_char_terminates_token = term
+                test_pointer += 1
+
+        if current_char == "!":
+            isTwoChar = False
+            current_char = content[char_pointer]
+            if char_pointer + 1 != len(content) and content[char_pointer + 1] == "=":
+                isTwoChar = True
+                operator_check = True
         # Check if input char terminates token and it is an accepting state
         if (
             (operator_check) or (keyword_check) or (separator_check) or 
@@ -120,7 +136,6 @@ def lexer(content):
 
             elif real_input_char_terminates_token and real_current_state:
                 token = "Real"
-            
             # this is responsible for illegal character detection
             elif (not operator_check and not keyword_check and not separator_check and
                 not id_current_state and not real_current_state and not int_current_state and not current_char.isspace()):
