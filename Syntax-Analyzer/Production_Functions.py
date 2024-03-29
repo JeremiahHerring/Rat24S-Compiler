@@ -1,17 +1,27 @@
+from LexerFSM.main import lexer, tokens_and_lexemes
+
 def rat24s():
-    pass
+    optFunctionDefinitions()
+    optDeclarationList()
+    statementList()
 
 def optFunctionDefinitions():
-    pass
+    functionDefinitions()
 
 def functionDefinitions():
-    pass
+    function()
+    functionDefinitions2()
 
 def functionDefinitions2():
-    pass
+    functionDefinitions()
 
 def function():
-    pass
+    if lexeme == "function":
+        lexer()
+        if lexerList[i][0] == "Identifier":
+            optParameterList()
+            optDeclarationList()
+
 
 def optParameterList():
     pass
