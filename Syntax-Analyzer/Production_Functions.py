@@ -44,8 +44,10 @@ def functionDefinitions():
     functionDefinitions2()
 
 def functionDefinitions2():
-    print("<Function Definitions'> ::= <Function Definitions> | ε")
-    functionDefinitions()
+    print("<Function Definitions'> ::= <Function> <Function Definitions'> | ε")
+    if lexerList[i][1] == "function":
+        function()
+        functionDefinitions2()
 
 def function():
     print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
