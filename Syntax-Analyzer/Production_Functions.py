@@ -140,31 +140,80 @@ def assign():
 
 def if1():
     # <If> ::= if ( <Condition> ) <Statement> <If'>
-    pass
+    if lexerList[i][1] == "if":
+        lexer()
+        if lexerList[i][1] == "(":
+            lexer()
+            condition()
+            if lexerList[i][1] == ")":
+                lexer()
+                statement()
+                if2()
 
 def if2():
     # <If'> ::= endif | else <Statement> endif
-    pass
+    if lexerList[i][1] == "endif":
+        lexer()
+    else:
+        if lexerList[i][1] == "else":
+            lexer()
+            statement()
+            if lexerList[i][1] == "endif":
+                lexer()
 
 def return1():
     # <Return> ::= return <Return'>
-    pass
+    if lexerList[i][1] == "return":
+        lexer()
+        return1()
 
 def return2():
     # <Return'> ::= ; | <Expression>;
-    pass
+    if lexerList[i][1] == ";":
+        lexer()
+    else:
+        expression()
 
 def print1():
     # <Print> ::= print ( <Expression> );
-    pass
+    if lexerList[i][1] == "print":
+        lexer()
+        if lexerList[i][1] == "(":
+            lexer()
+            expression()
+            if lexerList[i][1] == ")":
+                lexer()
 
 def scan():
     # <Scan> ::= scan ( <IDs> );
-    pass
+    if lexerList[i][1] == "scan":
+        lexer()
+        if lexerList[i][1] == "(":
+            lexer()
+            ids()
+            if lexerList[i][1] == ")":
+                lexer()
 
 def while1():
     # <While> ::= while ( <Condition> ) <Statement> endwhile
-    pass
+    if lexerList[i][1] == "while":
+        lexer()
+        if lexerList[i][1] == "(":
+            lexer()
+            condition()
+            if lexerList[i][1] == ")":
+                lexer()
+                statement()
+                if lexerList[i][1] == "endwhile":
+                    lexer()
+                else:
+                    print("Error: expected endwhile")
+            else:
+                print("Error: expected )")
+        else:
+            print("Error: expected (")
+    else:
+        print("Error: expected while")
 
 def condition():
     ## <Condition> ::= <Expression> <Relop> <Expression>
