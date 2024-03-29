@@ -82,61 +82,101 @@ def parameterList2():
 
 def parameter():
     # <Parameter> ::= <IDs> <Qualifier>
-    id()
+    ids()
     qualifier()
 
 def qualifier():
     # <Qualifier> ::= integer | boolean | real
-    pass
+    if (lexerList[i][0] == "Integer" or 
+        lexerList[i][1] == "boolean" or 
+        lexerList[i][0] == "Real"):
+        lexer()
+    else:
+        print("Error: Wrong token type")
 
 def body():
     # <Body> ::= { <Statement List> }
-    pass
+    if lexerList[i][1] == "{":
+        lexer()
+        statementList()
+        if lexerList[i][1] == "}":
+            lexer()
+        else:
+            print("Error: } expected")
+    else:
+        print("Error: { expected")
 
 def optDeclarationList():
     # <Opt Declaration List> ::= <Declaration List> | <Empty>
-    pass
+    declarationList()
+    empty()
 
 def declarationList():
     # <Declaration List> ::= <Declaration> <Declaration List'>
-    pass
+    declaration()
+    declarationList2()
 
 def declarationList2():
     # <Declaration List'> ::= ; <Declaration List> | ε
-    pass
+    if lexerList[i][1] == ";":
+        lexer()
+        declarationList()
+    else:
+        print("Error: ; expected")
 
 def declaration():
     # <Declaration> ::= <Qualifier> <IDs>
-    pass
+    qualifier()
+    ids()
 
 def ids():
     # <IDs> ::= <Identifier> <IDs'>
-    pass
+    if lexerList[i][0] == "Identifier":
+        lexer()
+        ids2()
 
 def ids2():
     #  <IDs'> ::= , <IDs> | ε
-    pass
+    if lexerList == ",":
+        ids()
 
 def statementList():
     # <Statement List> ::= <Statement> <Statement List'>
-    pass
+    statement()
+    statementList2()
 
 def statementList2():
     # <Statement List'> ::= <Statement List> | ε
-    pass
+    statementList()
 
 def statement():
     # <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+    # TODO we need to find a way to do nonterminal | nonterminal
     pass
 
 def compound():
     # <Compound> ::= { <Statement List> }
-
-    pass
+    if lexerList[i][1] == "{":
+        lexer()
+        statementList()
+        if lexerList[i][1] == "}":
+            lexer()
+        else:
+            print("Error: } expected")
+    else:
+        print("Error: { expected")
 
 def assign():
-    # <Compound> ::= { <Statement List> }
-    pass
+    # <Assign> ::= <Identifier> = <Expression> ;
+    if lexerList[i][1] == "=":
+        lexer()
+        if lexerList[i][0] == "Identifier":
+            lexer()
+            if lexerList[i][1] == "=":
+                lexer()
+                expression()
+                if lexerList[i][1] == ";":
+                    lexer()
 
 def if1():
     # <If> ::= if ( <Condition> ) <Statement> <If'>
