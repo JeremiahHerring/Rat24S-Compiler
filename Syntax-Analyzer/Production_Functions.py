@@ -76,7 +76,7 @@ def return1():
 def return2():
     pass
 
-def print2():
+def print1():
     pass
 
 def scan2():
