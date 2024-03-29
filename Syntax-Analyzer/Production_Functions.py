@@ -8,12 +8,23 @@ def lexer():
         print("end of list")
 
 def rat24s():
-    optFunctionDefinitions()
-    optDeclarationList()
-    statementList()
+    if lexerList[i][1] == "$":
+        lexer()
+        optFunctionDefinitions()
+        if lexerList[i][1] == "$":
+            lexer()
+            if lexerList[i][1] == "$":
+                lexer()
+                optDeclarationList()
+                if lexerList[i][1] == "$":  
+                    lexer()
+                    statementList()
+                    if lexerList[i][1] == "$":
+                        lexer()
 
 def optFunctionDefinitions():
     functionDefinitions()
+    empty()
 
 def functionDefinitions():
     function()
@@ -26,9 +37,14 @@ def function():
     if lexerList[i][1] == "function":
         lexer()
         if lexerList[i][0] == "Identifier":
-            optParameterList()
-            optDeclarationList()
-
+            lexer()
+            if lexerList[i][1] == "(":
+                lexer()
+                optParameterList()
+                if lexerList[i][1] == ")":
+                    lexer()
+                    optDeclarationList()
+                    body()
 
 def optParameterList():
     pass
