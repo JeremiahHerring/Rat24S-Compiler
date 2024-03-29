@@ -119,28 +119,53 @@ def while1():
     pass
 
 def condition():
-    pass
+    ## <Condition> ::= <Expression> <Relop> <Expression>
+    expression()
+    relop()
+    expression()
 
 def relop():
-    pass
+    ##  <Relop> ::= == | != | > | < | <= | =>
+    if lexerList[i][1] in ("==", "!=", ">", "<", "<=", "=>"):
+        lexer()
+    else:
+        print("Error: expected valid operator")
 
 def expression():
-    pass
+    ##  <Expression> ::= <Term> <Expression'>
+    term()
+    expression2()
 
 def expression2():
-    pass
+    ## <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | ε
+    if lexerList[i][1] in ("+", "-"):
+        lexer()
+        term()
 
 def term():
-    pass
+    ## <Term> ::= <Factor> <Term'>
+    factor()
+    term2()
+
 
 def term2():
-    pass
+    ## <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | ε
+    if lexerList[i][1] in ("*", "/"):
+        lexer()
+        factor()
+        term2()
 
 def factor():
-    pass
+    ## <Factor> ::= - <Primary> | <Primary>
+    if lexerList[i][1] == "-":
+        lexer()
+        primary()
+    else:
+        primary()
 
 def primary():
     pass
 
 def empty():
-    pass
+    ## <Empty> ::= ε
+    lexer()
