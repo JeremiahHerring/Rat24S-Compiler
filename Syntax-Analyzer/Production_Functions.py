@@ -1,4 +1,3 @@
-from LexerFSM.main import lexer, tokens_and_lexemes
 i = 0
 lexerList = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'add'), ('Separator', '('), ('Identifier', 'a'), ('Keyword', 'integer'), ('Separator', ','), ('Identifier', 'b'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Identifier', 'a'), ('Operator', '+'), ('Identifier', 'b'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'add'), ('Separator', '('), ('Integer', '5'), ('Separator', ','), ('Integer', '10'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 
@@ -24,7 +23,7 @@ def functionDefinitions2():
     functionDefinitions()
 
 def function():
-    if lexeme == "function":
+    if lexerList[i][1] == "function":
         lexer()
         if lexerList[i][0] == "Identifier":
             optParameterList()
