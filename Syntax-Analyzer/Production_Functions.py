@@ -87,12 +87,15 @@ def parameterList2():
 
 def parameter():
     print("<Parameter> ::= <IDs> <Qualifier>")
-    ids()
-    qualifier()
+    if lexerList[i][0] == "Identifier":
+        ids()
+        qualifier()
+    else:
+        print("Error: Identifier expected")
 
 def qualifier():
     print("<Qualifier> ::= integer | boolean | real")
-    if (lexerList[i][0] == "Integer" or 
+    if (lexerList[i][1] == "integer" or 
         lexerList[i][1] == "boolean" or 
         lexerList[i][0] == "Real"):
         lexer(True)
@@ -142,8 +145,12 @@ def ids():
 
 def ids2():
     print("<IDs'> ::= , <IDs> | ε")
-    if lexerList == ",":
+    if lexerList[i][1] == ",":
+        lexer(True)
         ids()
+    else:
+        pass
+   
 
 def statementList():
     print("<Statement List> ::= <Statement> <Statement List'>")
