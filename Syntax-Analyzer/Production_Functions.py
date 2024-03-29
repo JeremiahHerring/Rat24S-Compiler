@@ -64,16 +64,16 @@ def compound():
 def assign():
     pass
 
+def if1():
+    pass
+
 def if2():
     pass
 
-def if2prime():
+def return1():
     pass
 
 def return2():
-    pass
-
-def return2prime():
     pass
 
 def print2():
