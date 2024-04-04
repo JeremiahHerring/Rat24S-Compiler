@@ -75,7 +75,7 @@ def optParameterList():
     print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
     if lexerList[i][0] == "Identifier":
         parameter()
-    else:
+    elif next first of:
         empty()
 
 def parameterList():
@@ -154,7 +154,6 @@ def ids2():
         ids()
     else:
         pass
-   
 
 def statementList():
     print("<Statement List> ::= <Statement> <Statement List'>")
@@ -167,8 +166,21 @@ def statementList2():
 
 def statement():
     print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
-    # TODO we need to find a way to do nonterminal | nonterminal
-    pass
+    if lexerList[i][1] == "{":
+        compound()
+    elif lexerList[i][0] == "Identifier":
+        assign()
+    elif lexerList[i][1] == "if":
+        if1()
+    elif lexerList[i][1] == "return":
+        return1()
+    elif lexerList[i][1] == "print":
+        print1()
+    elif lexerList[i][1] == "scan":
+        scan()
+    elif lexerList[i][1] == "while":
+        while1()
+    
 
 def compound():
     print("<Compound> ::= { <Statement List> }")
@@ -184,15 +196,13 @@ def compound():
 
 def assign():
     print("<Assign> ::= <Identifier> = <Expression> ;")
-    if lexerList[i][1] == "=":
+    if lexerList[i][0] == "Identifier":
         lexer(True)
-        if lexerList[i][0] == "Identifier":
+        if lexerList[i][1] == "=":
             lexer(True)
-            if lexerList[i][1] == "=":
+            expression()
+            if lexerList[i][1] == ";":
                 lexer(True)
-                expression()
-                if lexerList[i][1] == ";":
-                    lexer(True)
 
 def if1():
     print("<If> ::= if ( <Condition> ) <Statement> <If'>")
