@@ -332,6 +332,19 @@ def factor():
         primary()
 
 def primary():
+    print("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
+    if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
+        lexer(True)
+        primary2()
+    elif lexerList[i][1] == "(":
+        lexer(True)
+        expression()
+        if lexerList[i][1] == ")":
+            lexer(True)
+            primary2()
+
+
+def primary2():
     pass
 
 def empty():
