@@ -24,13 +24,13 @@ def rat24s():
                 if lexerList[i][1] == "$":
                     lexer(True)
                 else:
-                    print("$ expected")
+                    print("fourth $ expected")
             else:
-                print("$ expected")
+                print("third $ expected")
         else:
-            print("$ expected")
+            print("second $ expected")
     else:
-        print("$ expected")
+        print("first $ expected")
 
 def optFunctionDefinitions():
     print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -136,7 +136,7 @@ def declarationList2():
         lexer(True)
         declarationList()
     else:
-        print("Error: ; expected")
+        pass
 
 def declaration():
     print("<Declaration> ::= <Qualifier> <IDs>")
@@ -244,6 +244,8 @@ def return2():
         lexer(True)
     else:
         expression()
+        if lexerList[i][1] == ";":
+            lexer(True)
 
 def print1():
     print("<Print> ::= print ( <Expression> );")
