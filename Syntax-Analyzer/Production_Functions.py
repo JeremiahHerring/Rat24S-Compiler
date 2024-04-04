@@ -162,7 +162,10 @@ def statementList():
 
 def statementList2():
     print("<Statement List'> ::= <Statement List> | ε")
-    statementList()
+    if lexerList[i][1] in ("{", "if", "return", "print", "scan", "while") or lexerList[i][0] == "Identifier":
+        statementList()
+    else:
+        pass
 
 def statement():
     print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
@@ -332,7 +335,6 @@ def primary():
 def empty():
     print("<Empty> ::= ε")
     print("--------", lexerList[i][1])
-    lexer()
 
 # CALL PROGRAM
 rat24s()
