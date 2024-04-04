@@ -118,7 +118,9 @@ def body():
 
 def optDeclarationList():
     print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
-    if lexerList[i][0] in ("Keyword", "Identifier"): 
+    if (lexerList[i][1] == "integer" or 
+        lexerList[i][1] == "boolean" or 
+        lexerList[i][0] == "Real"):        
         declarationList()
     else:
         empty()
