@@ -75,7 +75,7 @@ def optParameterList():
     print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
     if lexerList[i][0] == "Identifier":
         parameter()
-    elif next first of:
+    else:
         empty()
 
 def parameterList():
