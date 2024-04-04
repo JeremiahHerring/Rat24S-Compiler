@@ -73,7 +73,7 @@ def function():
         
 def optParameterList():
     print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
-    if lexerList[i][1] == "FIRST OF PARAM LIST":
+    if lexerList[i][0] == "Identifier":
         parameter()
     else:
         empty()
@@ -118,8 +118,10 @@ def body():
 
 def optDeclarationList():
     print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
-    declarationList()
-    empty()
+    if lexerList[i][0] in ("Keyword", "Identifier"): 
+        declarationList()
+    else:
+        empty()
 
 def declarationList():
     print("<Declaration List> ::= <Declaration> <Declaration List'>")
