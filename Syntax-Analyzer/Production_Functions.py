@@ -236,7 +236,7 @@ def return1():
     print("<Return> ::= return <Return'>")
     if lexerList[i][1] == "return":
         lexer(True)
-        return1()
+        return2()
 
 def return2():
     print("<Return'> ::= ; | <Expression>;")
