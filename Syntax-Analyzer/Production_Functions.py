@@ -256,6 +256,8 @@ def print1():
             expression()
             if lexerList[i][1] == ")":
                 lexer(True)
+                if lexerList[i][1] == ";":
+                    lexer(True)
 
 def scan():
     print("<Scan> ::= scan ( <IDs> );")
@@ -266,6 +268,8 @@ def scan():
             ids()
             if lexerList[i][1] == ")":
                 lexer(True)
+                if lexerList[i][1] == ";":
+                    lexer(True)
 
 def while1():
     print("<While> ::= while ( <Condition> ) <Statement> endwhile")
@@ -347,11 +351,19 @@ def primary():
 
 
 def primary2():
-    pass
+    print("<Primary’> ::= ( <IDs> ) <Primary’> | ε")
+    if lexerList[i][1] == "(":
+        lexer(True)
+        ids()
+        if lexerList[i][1] == ")":
+            lexer(True)
+            primary2()
+    else:
+        pass
 
 def empty():
     print("<Empty> ::= ε")
-    print("--------", lexerList[i][1])
+    ##print("--------", lexerList[i][1])
 
 # CALL PROGRAM
 rat24s()
