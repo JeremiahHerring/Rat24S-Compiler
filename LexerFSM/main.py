@@ -1,9 +1,9 @@
 from IdentifierLexer import IdentifierFSM
 from IntegerLexer import IntegerFSM
 from RealLexer import RealLexer
-from Operator import OperatorChecker, operators
+from Operator import OperatorChecker
 from Keywords import KeywordChecker
-from Separator import SeparatorChecker, separators
+from Separator import SeparatorChecker
 
 # this function helps determine if the operator has two characters in it because there are some with multiple
 def determineTwoCharOperator(content, char_pointer):
@@ -183,7 +183,7 @@ def lexer(content):
         # go to the next character after each loop iteration
         char_pointer += 1
     return tokens_and_lexemes
-
+    
 # given a path to an output file, print all of the token types and lexemes in a nice format
 def write_to_output(tokens_and_lexemes, output_file_path):
     with open(output_file_path, 'w') as output_file:
@@ -199,6 +199,7 @@ if __name__ == "__main__":
             content = file.read()
 
         result = lexer(content)
+        print(result)
         output_file_path = f'./output/output{i}.txt'
         write_to_output(result, output_file_path)
 
