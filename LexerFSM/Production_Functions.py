@@ -248,6 +248,8 @@ def syntax_analyzer(lexerList):
         if lexerList[i][1] == "return":
             lexer(True)
             return2()
+        else:
+            error("keyword return expected")
 
     def return2():
         print("<Return'> ::= ; | <Expression>;")
@@ -257,6 +259,8 @@ def syntax_analyzer(lexerList):
             expression()
             if lexerList[i][1] == ";":
                 lexer(True)
+            else:
+                error("; expected")
 
     def print1():
         print("<Print> ::= print ( <Expression> );")
@@ -269,6 +273,14 @@ def syntax_analyzer(lexerList):
                     lexer(True)
                     if lexerList[i][1] == ";":
                         lexer(True)
+                    else:
+                        error("; expected")
+                else:
+                    error(") expected")
+            else:
+                error("( expected")
+        else:
+            error("keyword print expected")
 
     def scan():
         print("<Scan> ::= scan ( <IDs> );")
@@ -281,6 +293,14 @@ def syntax_analyzer(lexerList):
                     lexer(True)
                     if lexerList[i][1] == ";":
                         lexer(True)
+                    else:
+                        error("; expected")
+                else:
+                    error(") expected")
+            else:
+                error("( expected")
+        else:
+            error("keyword scan expected")
 
     def while1():
         print("<While> ::= while ( <Condition> ) <Statement> endwhile")
@@ -295,13 +315,13 @@ def syntax_analyzer(lexerList):
                     if lexerList[i][1] == "endwhile":
                         lexer(True)
                     else:
-                        print("Error: expected endwhile")
+                        error("endwhile expected")
                 else:
-                    print("Error: expected )")
+                    error(") expected")
             else:
-                print("Error: expected (")
+                error("( expected")
         else:
-            print("Error: expected while")
+            error("keyword while expected")
 
     def condition():
         print("<Condition> ::= <Expression> <Relop> <Expression>")
@@ -314,7 +334,7 @@ def syntax_analyzer(lexerList):
         if lexerList[i][1] in ("==", "!=", ">", "<", "<=", "=>"):
             lexer(True)
         else:
-            print("Error: expected valid operator")
+            error("expected valid operator")
 
     def expression():
         print("<Expression> ::= <Term> <Expression'>")
@@ -326,6 +346,8 @@ def syntax_analyzer(lexerList):
         if lexerList[i][1] in ("+", "-"):
             lexer(True)
             term()
+        else:
+            pass
 
     def term():
         print("<Term> ::= <Factor> <Term'>")
@@ -339,6 +361,8 @@ def syntax_analyzer(lexerList):
             lexer(True)
             factor()
             term2()
+        else:
+            pass
 
     def factor():
         print("<Factor> ::= - <Primary> | <Primary>")
@@ -359,7 +383,10 @@ def syntax_analyzer(lexerList):
             if lexerList[i][1] == ")":
                 lexer(True)
                 primary2()
-
+            else:
+                error(") expected")
+        else:
+            error("incorrect primary syntax")
 
     def primary2():
         print("<Primary’> ::= ( <IDs> ) <Primary’> | ε")
@@ -369,12 +396,13 @@ def syntax_analyzer(lexerList):
             if lexerList[i][1] == ")":
                 lexer(True)
                 primary2()
+            else:
+                error(") expected")
         else:
             pass
 
     def empty():
         print("<Empty> ::= ε")
-        ##print("--------", lexerList[i][1])
     
     rat24s()
 
