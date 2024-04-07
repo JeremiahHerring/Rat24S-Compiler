@@ -31,11 +31,11 @@ def syntax_analyzer(lexerList):
                     else:
                         error("fourth $ expected")
                 else:
-                    print("third $ expected")
+                    error("third $ expected")
             else:
-                print("second $ expected")
+                error("second $ expected")
         else:
-            print("first $ expected")
+            error("first $ expected")
 
     def optFunctionDefinitions():
         print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -68,13 +68,13 @@ def syntax_analyzer(lexerList):
                         optDeclarationList()
                         body()
                     else:
-                        print(") expected")
+                        error(") expected")
                 else:
-                    print("( expected")
+                    error("( expected")
             else:
-                print("Error: Identifier expected")
+                error("identifier expected")
         else:
-            print("Error: function expected")
+            error("function expected")
             
     def optParameterList():
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
@@ -102,7 +102,7 @@ def syntax_analyzer(lexerList):
             ids()
             qualifier()
         else:
-            print("Error: Identifier expected")
+            error("identifier expected")
 
     def qualifier():
         print("<Qualifier> ::= integer | boolean | real")
@@ -111,9 +111,8 @@ def syntax_analyzer(lexerList):
             lexerList[i][1] == "real"):
             lexer(True)
         else:
-            print("Error: Wrong token type")
-            print(lexerList[i])
-
+            error("wrong token type")
+            
     def body():
         print("<Body> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
@@ -122,9 +121,9 @@ def syntax_analyzer(lexerList):
             if lexerList[i][1] == "}":
                 lexer(True)
             else:
-                print("Error: } expected")
+                error("} expected")
         else:
-            print("Error: { expected")
+            error("{ expected")
 
     def optDeclarationList():
         print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
@@ -197,7 +196,6 @@ def syntax_analyzer(lexerList):
         elif lexerList[i][1] == "while":
             while1()
         
-
     def compound():
         print("<Compound> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
@@ -206,9 +204,9 @@ def syntax_analyzer(lexerList):
             if lexerList[i][1] == "}":
                 lexer(True)
             else:
-                print("Error: } expected")
+                error("} expected")
         else:
-            print("Error: { expected")
+            error("{ expected")
 
     def assign():
         print("<Assign> ::= <Identifier> = <Expression> ;")
@@ -219,6 +217,12 @@ def syntax_analyzer(lexerList):
                 expression()
                 if lexerList[i][1] == ";":
                     lexer(True)
+                else:
+                    error("; expected")
+            else:
+                error("= expected")
+        else:
+            error("identifier expected")
 
     def if1():
         print("<If> ::= if ( <Condition> ) <Statement> <If'>")
@@ -231,6 +235,12 @@ def syntax_analyzer(lexerList):
                     lexer(True)
                     statement()
                     if2()
+                else:
+                    error(") expected")
+            else:
+                error("( expected")
+        else:
+            error("keyword if expected")
 
     def if2():
         print("<If'> ::= endif | else <Statement> endif")
@@ -242,7 +252,11 @@ def syntax_analyzer(lexerList):
                 statement()
                 if lexerList[i][1] == "endif":
                     lexer(True)
-
+                else:
+                    error("keyword endif expected")
+            else:
+                error("keyword else expected")
+            
     def return1():
         print("<Return> ::= return <Return'>")
         if lexerList[i][1] == "return":
