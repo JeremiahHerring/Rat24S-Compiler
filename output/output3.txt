@@ -2,70 +2,185 @@ Token            Lexeme
 ------------------------------
 Separator    | $
 Keyword      | function
-Identifier   | fibonacci
+Identifier   | calculateArea
 Separator    | (
-Identifier   | limit
-Keyword      | integer
+Identifier   | length
+Keyword      | real
+Separator    | ,
+Identifier   | width
+Keyword      | real
 Separator    | )
 Separator    | {
-Keyword      | integer
-Identifier   | a
-Operator     | =
-Integer      | 0
+Keyword      | return
+Identifier   | length
+Operator     | *
+Identifier   | width
 Separator    | ;
+Separator    | }
+Separator    | $
 Keyword      | integer
-Identifier   | b
-Operator     | =
-Integer      | 1
+Identifier   | low
+Separator    | ,
+Identifier   | high
+Separator    | ,
+Identifier   | step
 Separator    | ;
-Keyword      | integer
-Identifier   | temp
+Separator    | $
+Keyword      | scan
+Separator    | (
+Identifier   | low
+Separator    | ,
+Identifier   | high
+Separator    | ,
+Identifier   | step
+Separator    | )
 Separator    | ;
 Keyword      | while
 Separator    | (
-Identifier   | a
+Identifier   | low
 Operator     | <=
-Identifier   | limit
+Identifier   | high
 Separator    | )
 Separator    | {
 Keyword      | print
 Separator    | (
-Identifier   | a
+Identifier   | low
 Separator    | )
 Separator    | ;
 Keyword      | print
 Separator    | (
-Identifier   | b
+Identifier   | calculateArea
+Separator    | (
+Identifier   | low
+Separator    | ,
+Identifier   | width
 Separator    | )
-Invalid      | 12Invalid
-Identifier   | temp
-Operator     | =
-Identifier   | a
+Separator    | )
 Separator    | ;
-Identifier   | a
+Invalid      | #
+Identifier   | Calculate
+Identifier   | area
+Identifier   | with
+Identifier   | given
+Identifier   | length
+Identifier   | and
+Identifier   | width
+Identifier   | low
 Operator     | =
-Identifier   | b
-Separator    | ;
-Identifier   | b
-Operator     | =
-Identifier   | temp
+Identifier   | low
 Operator     | +
-Identifier   | b
+Identifier   | step
 Separator    | ;
 Separator    | }
-Separator    | }
+Keyword      | endwhile
 Separator    | $
+Invalid      | #
+Identifier   | Additional
+Identifier   | lines
 Keyword      | integer
-Identifier   | limit
+Identifier   | i
+Separator    | ,
+Identifier   | j
 Separator    | ;
+Keyword      | real
+Identifier   | pi
+Separator    | ;
+Keyword      | boolean
+Identifier   | flag
+Separator    | ;
+Identifier   | string
+Identifier   | message
+Separator    | ;
+Separator    | $
 Keyword      | scan
 Separator    | (
-Identifier   | limit
+Identifier   | i
+Separator    | ,
+Identifier   | j
+Separator    | ,
+Identifier   | pi
+Separator    | ,
+Identifier   | flag
+Separator    | ,
+Identifier   | message
 Separator    | )
 Separator    | ;
-Identifier   | fibonacci
+Keyword      | if
 Separator    | (
-Identifier   | limit
+Identifier   | flag
+Separator    | )
+Separator    | {
+Keyword      | print
+Separator    | (
+Invalid      | "Flag
+Identifier   | is
+Keyword      | true
+Invalid      | .");
+Separator    | }
+Keyword      | else
+Separator    | {
+Keyword      | print
+Separator    | (
+Invalid      | "Flag
+Identifier   | is
+Keyword      | false
+Invalid      | .");
+Separator    | }
+Identifier   | pi
+Operator     | =
+Real         | 3.14159;
+Invalid      | 
+print("The
+Identifier   | value
+Identifier   | of
+Identifier   | pi
+Invalid      | is:
+Invalid      | ",
+Identifier   | pi
 Separator    | )
 Separator    | ;
+Keyword      | while
+Separator    | (
+Identifier   | i
+Operator     | <
+Identifier   | j
+Separator    | )
+Separator    | {
+Keyword      | print
+Separator    | (
+Identifier   | i
+Separator    | )
+Separator    | ;
+Identifier   | i
+Operator     | =
+Identifier   | i
+Operator     | +
+Integer      | 1
+Separator    | ;
+Separator    | }
+Keyword      | print
+Separator    | (
+Invalid      | "End
+Identifier   | of
+Invalid      | program.");
 Separator    | $
+
+Syntax Analysis:
+------------------------------
+<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
+Token: Separator Lexeme: $
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+<Function Definitions> ::= <Function> <Function Definitions'>
+<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+Token: Keyword Lexeme: function
+Token: Identifier Lexeme: calculateArea
+Token: Separator Lexeme: (
+<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Parameter> ::= <IDs> <Qualifier>
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: length
+<IDs'> ::= , <IDs> | epsilom
+<Qualifier> ::= integer | boolean | real
+Token: Keyword Lexeme: real
+Unexpected token 'Separator' with lexeme ','. Error type: ) expected
+Unexpected token 'Separator' with lexeme ','. Error type: second $ expected
