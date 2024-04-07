@@ -1,12 +1,19 @@
 i = 0
+flag = True
 result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
+    flag = True
     def error(error_type):
+        nonlocal flag
         print(f"Unexpected token '{lexerList[i][0]}' with lexeme '{lexerList[i][1]}'. Error type: {error_type}")
-    
-    def lexer(flag=False):
+        flag = False
+
+    def print3(text):
+        if flag:
+            print(text)
+
+    def lexer():
         nonlocal i
-        print(i)
         if i < len(lexerList):
             i += 1
             if flag:
@@ -16,19 +23,19 @@ def syntax_analyzer(lexerList, i):
             i = 0
 
     def rat24s():
-        print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
+        print3("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if lexerList[i][1] == "$":
-            lexer(True)
+            lexer()
             optFunctionDefinitions()
             if lexerList[i][1] == "$":
-                lexer(True)
+                lexer()
                 optDeclarationList()
                 if lexerList[i][1] == "$":  
-                    lexer(True)
+                    lexer()
                     statementList()
                     if lexerList[i][1] == "$":
-                        lexer(True)
-                        lexer(True)
+                        lexer()
+                        lexer()
                     else:
                         error("fourth $ expected")
                 else:
@@ -39,33 +46,33 @@ def syntax_analyzer(lexerList, i):
             error("first $ expected")
 
     def optFunctionDefinitions():
-        print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
+        print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         if lexerList[i][1] == "function":
             functionDefinitions()
         else:
             empty()
 
     def functionDefinitions():
-        print("<Function Definitions> ::= <Function> <Function Definitions'>")
+        print3("<Function Definitions> ::= <Function> <Function Definitions'>")
         function()
         functionDefinitions2()
 
     def functionDefinitions2():
-        print("<Function Definitions'> ::= <Function> | ε")
+        print3("<Function Definitions'> ::= <Function> | ε")
         if lexerList[i][1] == "function":
             function()
 
     def function():
-        print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
+        print3("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
         if lexerList[i][1] == "function":
-            lexer(True)
+            lexer()
             if lexerList[i][0] == "Identifier":
-                lexer(True)
+                lexer()
                 if lexerList[i][1] == "(":
-                    lexer(True)
+                    lexer()
                     optParameterList()
                     if lexerList[i][1] == ")":
-                        lexer(True)
+                        lexer()
                         optDeclarationList()
                         body()
                     else:
@@ -78,53 +85,53 @@ def syntax_analyzer(lexerList, i):
             error("keyword function expected")
             
     def optParameterList():
-        print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
+        print3("<Opt Parameter List> ::= <Parameter List> | <Empty>")
         if lexerList[i][0] == "Identifier":
             parameter()
         else:
             empty()
 
     def parameterList():
-        print("<Parameter List> ::= <Parameter> <Parameter List'>")
+        print3("<Parameter List> ::= <Parameter> <Parameter List'>")
         parameter()
         parameterList2()
 
     def parameterList2():
-        print("<Parameter List'> ::= , <Parameter List> | ε")
+        print3("<Parameter List'> ::= , <Parameter List> | ε")
         if lexerList[i][1] == ",":
-            lexer(True)
+            lexer()
             parameterList()
         else:
             pass
 
     def parameter():
-        print("<Parameter> ::= <IDs> <Qualifier>")
+        print3("<Parameter> ::= <IDs> <Qualifier>")
         ids()
         qualifier()
 
     def qualifier():
-        print("<Qualifier> ::= integer | boolean | real")
+        print3("<Qualifier> ::= integer | boolean | real")
         if (lexerList[i][1] == "integer" or 
             lexerList[i][1] == "boolean" or 
             lexerList[i][1] == "real"):
-            lexer(True)
+            lexer()
         else:
             error("wrong token type")
             
     def body():
-        print("<Body> ::= { <Statement List> }")
+        print3("<Body> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
-            lexer(True)
+            lexer()
             statementList()
             if lexerList[i][1] == "}":
-                lexer(True)
+                lexer()
             else:
                 error("} expected")
         else:
             error("{ expected")
 
     def optDeclarationList():
-        print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
+        print3("<Opt Declaration List> ::= <Declaration List> | <Empty>")
         if (lexerList[i][1] == "integer" or 
             lexerList[i][1] == "boolean" or 
             lexerList[i][1] == "real"):        
@@ -133,56 +140,56 @@ def syntax_analyzer(lexerList, i):
             empty()
 
     def declarationList():
-        print("<Declaration List> ::= <Declaration> ; <Declaration List'>")
+        print3("<Declaration List> ::= <Declaration> ; <Declaration List'>")
         declaration()
         if lexerList[i][1] == ";":
-            lexer(True)
+            lexer()
             declarationList2()
         else:
             error("; expected")
 
     def declarationList2():
-        print("<Declaration List'> ::= <Declaration List> | ε")
+        print3("<Declaration List'> ::= <Declaration List> | ε")
         if lexerList[i][0] == "Identifier":
             declarationList()
         else:
             pass
 
     def declaration():
-        print("<Declaration> ::= <Qualifier> <IDs>")
+        print3("<Declaration> ::= <Qualifier> <IDs>")
         qualifier()
         ids()
 
     def ids():
-        print("<IDs> ::= <Identifier> <IDs'>")
+        print3("<IDs> ::= <Identifier> <IDs'>")
         if lexerList[i][0] == "Identifier":
-            lexer(True)
+            lexer()
             ids2()
         else:
             error("identifier expected")
 
     def ids2():
-        print("<IDs'> ::= , <IDs> | ε")
+        print3("<IDs'> ::= , <IDs> | ε")
         if lexerList[i][1] == ",":
-            lexer(True)
+            lexer()
             ids()
         else:
             pass
 
     def statementList():
-        print("<Statement List> ::= <Statement> <Statement List'>")
+        print3("<Statement List> ::= <Statement> <Statement List'>")
         statement()
         statementList2()
 
     def statementList2():
-        print("<Statement List'> ::= <Statement List> | ε")
+        print3("<Statement List'> ::= <Statement List> | ε")
         if lexerList[i][1] in ("{", "if", "return", "print", "scan", "while") or lexerList[i][0] == "Identifier":
             statementList()
         else:
             pass
 
     def statement():
-        print("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
+        print3("<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>")
         if lexerList[i][1] == "{":
             compound()
         elif lexerList[i][0] == "Identifier":
@@ -201,26 +208,26 @@ def syntax_analyzer(lexerList, i):
             error("incorrect statement syntax")
         
     def compound():
-        print("<Compound> ::= { <Statement List> }")
+        print3("<Compound> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
-            lexer(True)
+            lexer()
             statementList()
             if lexerList[i][1] == "}":
-                lexer(True)
+                lexer()
             else:
                 error("} expected")
         else:
             error("{ expected")
 
     def assign():
-        print("<Assign> ::= <Identifier> = <Expression> ;")
+        print3("<Assign> ::= <Identifier> = <Expression> ;")
         if lexerList[i][0] == "Identifier":
-            lexer(True)
+            lexer()
             if lexerList[i][1] == "=":
-                lexer(True)
+                lexer()
                 expression()
                 if lexerList[i][1] == ";":
-                    lexer(True)
+                    lexer()
                 else:
                     error("; expected")
             else:
@@ -229,14 +236,14 @@ def syntax_analyzer(lexerList, i):
             error("identifier expected")
 
     def if1():
-        print("<If> ::= if ( <Condition> ) <Statement> <If'>")
+        print3("<If> ::= if ( <Condition> ) <Statement> <If'>")
         if lexerList[i][1] == "if":
-            lexer(True)
+            lexer()
             if lexerList[i][1] == "(":
-                lexer(True)
+                lexer()
                 condition()
                 if lexerList[i][1] == ")":
-                    lexer(True)
+                    lexer()
                     statement()
                     if2()
                 else:
@@ -247,50 +254,50 @@ def syntax_analyzer(lexerList, i):
             error("keyword if expected")
 
     def if2():
-        print("<If'> ::= endif | else <Statement> endif")
+        print3("<If'> ::= endif | else <Statement> endif")
         if lexerList[i][1] == "endif":
-            lexer(True)
+            lexer()
         else:
             if lexerList[i][1] == "else":
-                lexer(True)
+                lexer()
                 statement()
                 if lexerList[i][1] == "endif":
-                    lexer(True)
+                    lexer()
                 else:
                     error("keyword endif expected")
             else:
                 error("keyword 'else' or 'endif' expected")
             
     def return1():
-        print("<Return> ::= return <Return'>")
+        print3("<Return> ::= return <Return'>")
         if lexerList[i][1] == "return":
-            lexer(True)
+            lexer()
             return2()
         else:
             error("keyword return expected")
 
     def return2():
-        print("<Return'> ::= ; | <Expression>;")
+        print3("<Return'> ::= ; | <Expression>;")
         if lexerList[i][1] == ";":
-            lexer(True)
+            lexer()
         else:
             expression()
             if lexerList[i][1] == ";":
-                lexer(True)
+                lexer()
             else:
                 error("; expected")
 
     def print1():
-        print("<Print> ::= print ( <Expression> );")
+        print3("<Print> ::= print ( <Expression> );")
         if lexerList[i][1] == "print":
-            lexer(True)
+            lexer()
             if lexerList[i][1] == "(":
-                lexer(True)
+                lexer()
                 expression()
                 if lexerList[i][1] == ")":
-                    lexer(True)
+                    lexer()
                     if lexerList[i][1] == ";":
-                        lexer(True)
+                        lexer()
                     else:
                         error("; expected")
                 else:
@@ -301,16 +308,16 @@ def syntax_analyzer(lexerList, i):
             error("keyword print expected")
 
     def scan():
-        print("<Scan> ::= scan ( <IDs> );")
+        print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
-            lexer(True)
+            lexer()
             if lexerList[i][1] == "(":
-                lexer(True)
+                lexer()
                 ids()
                 if lexerList[i][1] == ")":
-                    lexer(True)
+                    lexer()
                     if lexerList[i][1] == ";":
-                        lexer(True)
+                        lexer()
                     else:
                         error("; expected")
                 else:
@@ -321,17 +328,17 @@ def syntax_analyzer(lexerList, i):
             error("keyword scan expected")
 
     def while1():
-        print("<While> ::= while ( <Condition> ) <Statement> endwhile")
+        print3("<While> ::= while ( <Condition> ) <Statement> endwhile")
         if lexerList[i][1] == "while":
-            lexer(True)
+            lexer()
             if lexerList[i][1] == "(":
-                lexer(True)
+                lexer()
                 condition()
                 if lexerList[i][1] == ")":
-                    lexer(True)
+                    lexer()
                     statement()
                     if lexerList[i][1] == "endwhile":
-                        lexer(True)
+                        lexer()
                     else:
                         error("endwhile expected")
                 else:
@@ -342,64 +349,64 @@ def syntax_analyzer(lexerList, i):
             error("keyword while expected")
 
     def condition():
-        print("<Condition> ::= <Expression> <Relop> <Expression>")
+        print3("<Condition> ::= <Expression> <Relop> <Expression>")
         expression()
         relop()
         expression()
 
     def relop():
-        print("<Relop> ::= == | != | > | < | <= | =>")
+        print3("<Relop> ::= == | != | > | < | <= | =>")
         if lexerList[i][1] in ("==", "!=", ">", "<", "<=", "=>"):
-            lexer(True)
+            lexer()
         else:
             error("expected valid operator")
 
     def expression():
-        print("<Expression> ::= <Term> <Expression'>")
+        print3("<Expression> ::= <Term> <Expression'>")
         term()
         expression2()
 
     def expression2():
-        print("<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | ε")
+        print3("<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | ε")
         if lexerList[i][1] in ("+", "-"):
-            lexer(True)
+            lexer()
             term()
         else:
             pass
 
     def term():
-        print("<Term> ::= <Factor> <Term'>")
+        print3("<Term> ::= <Factor> <Term'>")
         factor()
         term2()
 
 
     def term2():
-        print("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | ε")
+        print3("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | ε")
         if lexerList[i][1] in ("*", "/"):
-            lexer(True)
+            lexer()
             factor()
             term2()
         else:
             pass
 
     def factor():
-        print("<Factor> ::= - <Primary> | <Primary>")
+        print3("<Factor> ::= - <Primary> | <Primary>")
         if lexerList[i][1] == "-":
-            lexer(True)
+            lexer()
             primary()
         else:
             primary()
 
     def primary():
-        print("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
+        print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
-            lexer(True)
+            lexer()
             primary2()
         elif lexerList[i][1] == "(":
-            lexer(True)
+            lexer()
             expression()
             if lexerList[i][1] == ")":
-                lexer(True)
+                lexer()
                 primary2()
             else:
                 error(") expected")
@@ -407,12 +414,12 @@ def syntax_analyzer(lexerList, i):
             error("incorrect primary syntax")
 
     def primary2():
-        print("<Primary’> ::= ( <IDs> ) <Primary’> | ε")
+        print3("<Primary’> ::= ( <IDs> ) <Primary’> | ε")
         if lexerList[i][1] == "(":
-            lexer(True)
+            lexer()
             ids()
             if lexerList[i][1] == ")":
-                lexer(True)
+                lexer()
                 primary2()
             else:
                 error(") expected")
@@ -420,7 +427,7 @@ def syntax_analyzer(lexerList, i):
             pass
 
     def empty():
-        print("<Empty> ::= ε")
+        print3("<Empty> ::= ε")
     
     rat24s()
 
