@@ -10,7 +10,7 @@ def lexer(flag=False):
     else:
         print("end of list")
 
-def rat24s():
+def rat24s(lexerList):
     print("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
     if lexerList[i][1] == "$":
         lexer(True)
@@ -22,6 +22,7 @@ def rat24s():
                 lexer(True)
                 statementList()
                 if lexerList[i][1] == "$":
+                    lexer(True)
                     lexer(True)
                 else:
                     print("fourth $ expected")
@@ -45,10 +46,9 @@ def functionDefinitions():
     functionDefinitions2()
 
 def functionDefinitions2():
-    print("<Function Definitions'> ::= <Function> <Function Definitions'> | ε")
+    print("<Function Definitions'> ::= <Function> | ε")
     if lexerList[i][1] == "function":
         function()
-        functionDefinitions2()
 
 def function():
     print("<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
@@ -86,7 +86,11 @@ def parameterList():
 
 def parameterList2():
     print("<Parameter List'> ::= , <Parameter List> | ε")
-    parameterList()
+    if lexerList[i][1] == ",":
+        lexer(True)
+        parameterList()
+    else:
+        pass
 
 def parameter():
     print("<Parameter> ::= <IDs> <Qualifier>")
@@ -100,7 +104,7 @@ def qualifier():
     print("<Qualifier> ::= integer | boolean | real")
     if (lexerList[i][1] == "integer" or 
         lexerList[i][1] == "boolean" or 
-        lexerList[i][0] == "Real"):
+        lexerList[i][1] == "real"):
         lexer(True)
     else:
         print("Error: Wrong token type")
@@ -121,7 +125,7 @@ def optDeclarationList():
     print("<Opt Declaration List> ::= <Declaration List> | <Empty>")
     if (lexerList[i][1] == "integer" or 
         lexerList[i][1] == "boolean" or 
-        lexerList[i][0] == "Real"):        
+        lexerList[i][1] == "real"):        
         declarationList()
     else:
         empty()
@@ -367,4 +371,4 @@ def empty():
     ##print("--------", lexerList[i][1])
 
 # CALL PROGRAM
-rat24s()
+rat24s(lexerList)
