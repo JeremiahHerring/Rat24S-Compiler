@@ -3,21 +3,27 @@ flag = True
 result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
+    bigStr = ""
     def error(error_type):
         nonlocal flag
-        print(f"Unexpected token '{lexerList[i][0]}' with lexeme '{lexerList[i][1]}'. Error type: {error_type}")
+        print4(f"Unexpected token '{lexerList[i][0]}' with lexeme '{lexerList[i][1]}'. Error type: {error_type}")
         flag = False
 
     def print3(text):
+        nonlocal bigStr
         if flag:
-            print(text)
+            bigStr += text + "\n"
+
+    def print4(text):
+        nonlocal bigStr
+        bigStr += text + "\n"
 
     def lexer():
         nonlocal i
         if i < len(lexerList):
             i += 1
             if flag:
-                print(f"Token: {lexerList[i-1][0]} Lexeme: {lexerList[i-1][1]}")
+                print4(f"Token: {lexerList[i-1][0]} Lexeme: {lexerList[i-1][1]}")
         else:
             print("end of list")
             i = 0
@@ -430,7 +436,8 @@ def syntax_analyzer(lexerList, i):
         print3("<Empty> ::= ε")
     
     rat24s()
+    return bigStr
 
 if __name__ == "__main__":
     i = 0
-    syntax_analyzer(result, i)
+    print(syntax_analyzer(result, i))
