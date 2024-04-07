@@ -1,6 +1,9 @@
 i = 0
 result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
 def syntax_analyzer(lexerList):
+    def error(token, lexeme, error_type):
+        print(f"Unexpected token '{token}' with lexeme '{lexeme}'. Error type: {error_type}")
+    
     def lexer(flag=False):
         global i 
         if i != len(lexerList):
@@ -26,7 +29,7 @@ def syntax_analyzer(lexerList):
                         lexer(True)
                         lexer(True)
                     else:
-                        print("fourth $ expected")
+                        error(lexerList[i][0], lexerList[i][1], "fourth $ expected")
                 else:
                     print("third $ expected")
             else:
