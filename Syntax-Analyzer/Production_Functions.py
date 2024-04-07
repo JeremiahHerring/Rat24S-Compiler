@@ -34,9 +34,10 @@ def rat24s():
 
 def optFunctionDefinitions():
     print("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
-    functionDefinitions()
-    # TODO: Find some way to fix nonterminal | nonterminal case
-    empty()
+    if lexerList[i][1] == "function":
+        functionDefinitions()
+    else:
+        empty()
 
 def functionDefinitions():
     print("<Function Definitions> ::= <Function> <Function Definitions'>")
