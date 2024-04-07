@@ -48,3 +48,76 @@ Separator    | )
 Separator    | )
 Separator    | ;
 Separator    | $
+
+Syntax Analysis:
+------------------------------
+<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
+Token: Separator Lexeme: $
+<Opt Function Definitions> ::= <Function Definitions> | <Empty>
+<Function Definitions> ::= <Function> <Function Definitions'>
+<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+Token: Keyword Lexeme: function
+Token: Identifier Lexeme: factorial
+Token: Separator Lexeme: (
+<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Parameter> ::= <IDs> <Qualifier>
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: n
+<IDs'> ::= , <IDs> | epsilon
+<Qualifier> ::= integer | boolean | real
+Token: Keyword Lexeme: integer
+Token: Separator Lexeme: )
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty> ::= epsilon
+<Body> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<If> ::= if ( <Condition> ) <Statement> <If'>
+Token: Keyword Lexeme: if
+Token: Separator Lexeme: (
+<Condition> ::= <Expression> <Relop> <Expression>
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: n
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+<Relop> ::= == | != | > | < | <= | =>
+Token: Operator Lexeme: <=
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 1
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Compound> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Return> ::= return <Return'>
+Token: Keyword Lexeme: return
+<Return'> ::= ; | <Expression>;
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 1
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
+<If'> ::= endif | else <Statement> endif
+Unexpected token 'Keyword' with lexeme 'return'. Error type: keyword 'else' or 'endif' expected
+Unexpected token 'Operator' with lexeme '-'. Error type: ) expected
+Unexpected token 'Separator' with lexeme ')'. Error type: ; expected
+Unexpected token 'Separator' with lexeme ')'. Error type: } expected
+Unexpected token 'Separator' with lexeme ')'. Error type: second $ expected

@@ -4,6 +4,7 @@ from RealLexer import RealLexer
 from Operator import OperatorChecker
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker
+from Production_Functions import syntax_analyzer
 
 # this function helps determine if the operator has two characters in it because there are some with multiple
 def determineTwoCharOperator(content, char_pointer):
@@ -185,12 +186,16 @@ def lexer(content):
     return tokens_and_lexemes
     
 # given a path to an output file, print all of the token types and lexemes in a nice format
-def write_to_output(tokens_and_lexemes, output_file_path):
+def write_to_output(tokens_and_lexemes, syntax_result, output_file_path):
     with open(output_file_path, 'w') as output_file:
         output_file.write("Token".ljust(17) + "Lexeme\n")
         output_file.write("-" * 30 + "\n")
         for token, lexeme in tokens_and_lexemes:
             output_file.write(f"{token.ljust(12)} | {lexeme}\n")
+
+        output_file.write("\nSyntax Analysis:\n")
+        output_file.write("-" * 30 + "\n")
+        output_file.write(syntax_result)
 
 # main function that runs the input -> output code
 if __name__ == "__main__":
@@ -199,8 +204,12 @@ if __name__ == "__main__":
             content = file.read()
 
         result = lexer(content)
-        print(result)
         output_file_path = f'./output/output{i}.txt'
-        write_to_output(result, output_file_path)
+        
+        with open(output_file_path, 'w') as output_file:
+            syntax_result = syntax_analyzer(result, 0)
+            print(syntax_result)
+            write_to_output(result, syntax_result, output_file_path)
 
         print(f"Results written to {output_file_path}")
+

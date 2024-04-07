@@ -1,22 +1,41 @@
-[* This program generates Fibonacci numbers up to a given limit *]
 $
-function fibonacci (limit integer)
+function calculateArea(length real, width real)
 {
-integer a = 0;
-integer b = 1;
-integer temp;
-while (a <= limit)
-{
-print (a);
-print (b)
-12Invalid
-temp = a;
-a = b;
-b = temp + b;
-}
+    return length * width;
 }
 $
-integer limit;
-scan (limit);
-fibonacci (limit);
+integer low, high, step; [* declarations *]
+$
+scan (low, high, step);
+while (low <= high )
+{ 
+    print (low);
+    print (calculateArea(low, width));  # Calculate area with given length and width
+    low = low + step;
+}
+endwhile
+$
+# Additional lines
+integer i, j;
+real pi;
+boolean flag;
+string message;
+$
+scan(i, j, pi, flag, message);
+if (flag)
+{
+    print("Flag is true.");
+}
+else
+{
+    print("Flag is false.");
+}
+pi = 3.14159;
+print("The value of pi is: ", pi);
+while (i < j)
+{
+    print(i);
+    i = i + 1;
+}
+print("End of program.");
 $
