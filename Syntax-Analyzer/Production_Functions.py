@@ -367,13 +367,3 @@ def empty():
 
 # CALL PROGRAM
 rat24s()
-
-def primary2():
-    print("<Primary'> ::= ( <IDs> ) | ε")
-    if lexerList[i][1] == "(":
-        lexer(True)
-        ids()
-        if lexerList[i][1] == ")":
-            lexer(True)
-    else:
-        pass 
