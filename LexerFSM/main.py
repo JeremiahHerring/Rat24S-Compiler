@@ -4,7 +4,7 @@ from RealLexer import RealLexer
 from Operator import OperatorChecker
 from Keywords import KeywordChecker
 from Separator import SeparatorChecker
-from Production_Functions import rat24s
+from Production_Functions import syntax_analyzer
 
 # this function helps determine if the operator has two characters in it because there are some with multiple
 def determineTwoCharOperator(content, char_pointer):
@@ -205,5 +205,5 @@ if __name__ == "__main__":
 
         print(f"Results written to {output_file_path}")
         print("--------------------------------------------------------------------------------------------------------")
-        rat24s(result)
+        syntax_analyzer(result)
 
