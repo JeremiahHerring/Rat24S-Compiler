@@ -205,5 +205,5 @@ if __name__ == "__main__":
 
         print(f"Results written to {output_file_path}")
         print("--------------------------------------------------------------------------------------------------------")
-        syntax_analyzer(result)
+        syntax_analyzer(result, 0)
 
