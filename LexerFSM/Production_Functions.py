@@ -64,7 +64,7 @@ def syntax_analyzer(lexerList, i):
         functionDefinitions2()
 
     def functionDefinitions2():
-        print3("<Function Definitions'> ::= <Function> | ε")
+        print3("<Function Definitions'> ::= <Function> | epsilom")
         if lexerList[i][1] == "function":
             function()
 
@@ -103,7 +103,7 @@ def syntax_analyzer(lexerList, i):
         parameterList2()
 
     def parameterList2():
-        print3("<Parameter List'> ::= , <Parameter List> | ε")
+        print3("<Parameter List'> ::= , <Parameter List> | epsilom")
         if lexerList[i][1] == ",":
             lexer()
             parameterList()
@@ -155,7 +155,7 @@ def syntax_analyzer(lexerList, i):
             error("; expected")
 
     def declarationList2():
-        print3("<Declaration List'> ::= <Declaration List> | ε")
+        print3("<Declaration List'> ::= <Declaration List> | epsilom")
         if lexerList[i][0] == "Identifier":
             declarationList()
         else:
@@ -175,7 +175,7 @@ def syntax_analyzer(lexerList, i):
             error("identifier expected")
 
     def ids2():
-        print3("<IDs'> ::= , <IDs> | ε")
+        print3("<IDs'> ::= , <IDs> | epsilom")
         if lexerList[i][1] == ",":
             lexer()
             ids()
@@ -188,7 +188,7 @@ def syntax_analyzer(lexerList, i):
         statementList2()
 
     def statementList2():
-        print3("<Statement List'> ::= <Statement List> | ε")
+        print3("<Statement List'> ::= <Statement List> | epsilom")
         if lexerList[i][1] in ("{", "if", "return", "print", "scan", "while") or lexerList[i][0] == "Identifier":
             statementList()
         else:
@@ -373,7 +373,7 @@ def syntax_analyzer(lexerList, i):
         expression2()
 
     def expression2():
-        print3("<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | ε")
+        print3("<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilom")
         if lexerList[i][1] in ("+", "-"):
             lexer()
             term()
@@ -387,7 +387,7 @@ def syntax_analyzer(lexerList, i):
 
 
     def term2():
-        print3("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | ε")
+        print3("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilom")
         if lexerList[i][1] in ("*", "/"):
             lexer()
             factor()
@@ -420,7 +420,7 @@ def syntax_analyzer(lexerList, i):
             error("incorrect primary syntax")
 
     def primary2():
-        print3("<Primary’> ::= ( <IDs> ) <Primary’> | ε")
+        print3("<Primary’> ::= ( <IDs> ) <Primary’> | epsilom")
         if lexerList[i][1] == "(":
             lexer()
             ids()
@@ -433,7 +433,7 @@ def syntax_analyzer(lexerList, i):
             pass
 
     def empty():
-        print3("<Empty> ::= ε")
+        print3("<Empty> ::= epsilom")
     
     rat24s()
     return bigStr

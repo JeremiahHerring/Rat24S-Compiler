@@ -186,12 +186,16 @@ def lexer(content):
     return tokens_and_lexemes
     
 # given a path to an output file, print all of the token types and lexemes in a nice format
-def write_to_output(tokens_and_lexemes, output_file_path):
+def write_to_output(tokens_and_lexemes, syntax_result, output_file_path):
     with open(output_file_path, 'w') as output_file:
         output_file.write("Token".ljust(17) + "Lexeme\n")
         output_file.write("-" * 30 + "\n")
         for token, lexeme in tokens_and_lexemes:
             output_file.write(f"{token.ljust(12)} | {lexeme}\n")
+
+        output_file.write("\nSyntax Analysis:\n")
+        output_file.write("-" * 30 + "\n")
+        output_file.write(syntax_result)
 
 # main function that runs the input -> output code
 if __name__ == "__main__":
@@ -201,9 +205,11 @@ if __name__ == "__main__":
 
         result = lexer(content)
         output_file_path = f'./output/output{i}.txt'
-        write_to_output(result, output_file_path)
+        
+        with open(output_file_path, 'w') as output_file:
+            syntax_result = syntax_analyzer(result, 0)
+            print(syntax_result)
+            write_to_output(result, syntax_result, output_file_path)
 
         print(f"Results written to {output_file_path}")
-        print("--------------------------------------------------------------------------------------------------------")
-        print(syntax_analyzer(result, 0))
 
