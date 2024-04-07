@@ -74,7 +74,7 @@ def syntax_analyzer(lexerList):
             else:
                 error("identifier expected")
         else:
-            error("function expected")
+            error("keyword function expected")
             
     def optParameterList():
         print("<Opt Parameter List> ::= <Parameter List> | <Empty>")
@@ -98,11 +98,8 @@ def syntax_analyzer(lexerList):
 
     def parameter():
         print("<Parameter> ::= <IDs> <Qualifier>")
-        if lexerList[i][0] == "Identifier":
-            ids()
-            qualifier()
-        else:
-            error("identifier expected")
+        ids()
+        qualifier()
 
     def qualifier():
         print("<Qualifier> ::= integer | boolean | real")
@@ -140,6 +137,8 @@ def syntax_analyzer(lexerList):
         if lexerList[i][1] == ";":
             lexer(True)
             declarationList2()
+        else:
+            error("; expected")
 
     def declarationList2():
         print("<Declaration List'> ::= <Declaration List> | ε")
@@ -158,6 +157,8 @@ def syntax_analyzer(lexerList):
         if lexerList[i][0] == "Identifier":
             lexer(True)
             ids2()
+        else:
+            error("identifier expected")
 
     def ids2():
         print("<IDs'> ::= , <IDs> | ε")
@@ -195,6 +196,8 @@ def syntax_analyzer(lexerList):
             scan()
         elif lexerList[i][1] == "while":
             while1()
+        else:
+            error("incorrect statement syntax")
         
     def compound():
         print("<Compound> ::= { <Statement List> }")
@@ -255,7 +258,7 @@ def syntax_analyzer(lexerList):
                 else:
                     error("keyword endif expected")
             else:
-                error("keyword else expected")
+                error("keyword 'else' or 'endif' expected")
             
     def return1():
         print("<Return> ::= return <Return'>")
