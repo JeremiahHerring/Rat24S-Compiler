@@ -179,7 +179,7 @@ Token: Separator Lexeme: (
 <Parameter> ::= <IDs> <Qualifier>
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: length
-<IDs'> ::= , <IDs> | epsilom
+<IDs'> ::= , <IDs> | epsilon
 <Qualifier> ::= integer | boolean | real
 Token: Keyword Lexeme: real
 Unexpected token 'Separator' with lexeme ','. Error type: ) expected

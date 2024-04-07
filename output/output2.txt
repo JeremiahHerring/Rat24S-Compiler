@@ -63,12 +63,12 @@ Token: Separator Lexeme: (
 <Parameter> ::= <IDs> <Qualifier>
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: n
-<IDs'> ::= , <IDs> | epsilom
+<IDs'> ::= , <IDs> | epsilon
 <Qualifier> ::= integer | boolean | real
 Token: Keyword Lexeme: integer
 Token: Separator Lexeme: )
 <Opt Declaration List> ::= <Declaration List> | <Empty>
-<Empty> ::= epsilom
+<Empty> ::= epsilon
 <Body> ::= { <Statement List> }
 Token: Separator Lexeme: {
 <Statement List> ::= <Statement> <Statement List'>
@@ -82,9 +82,9 @@ Token: Separator Lexeme: (
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
 Token: Identifier Lexeme: n
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilom
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilom
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilom
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 <Relop> ::= == | != | > | < | <= | =>
 Token: Operator Lexeme: <=
 <Expression> ::= <Term> <Expression'>
@@ -92,9 +92,9 @@ Token: Operator Lexeme: <=
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
 Token: Integer Lexeme: 1
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilom
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilom
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilom
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 Token: Separator Lexeme: )
 <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 <Compound> ::= { <Statement List> }
@@ -109,11 +109,11 @@ Token: Keyword Lexeme: return
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
 Token: Integer Lexeme: 1
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilom
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilom
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilom
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilom
+<Statement List'> ::= <Statement List> | epsilon
 Token: Separator Lexeme: }
 <If'> ::= endif | else <Statement> endif
 Unexpected token 'Keyword' with lexeme 'return'. Error type: keyword 'else' or 'endif' expected
