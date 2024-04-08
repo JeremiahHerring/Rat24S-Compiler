@@ -1,16 +1,8 @@
 $
 function convertx (fahr integer)
-{
-return 5 * (fahr -32) / 9;
-}
+{ return 5 * (fahr -32) / 9; }
 $
 integer low, high, step; [* declarations *]
 $
-scan (low, high, step);
-while (low <= high )
-{ print (low);
-print (convertx (low));
-low = low + step;
-}
-endwhile
+scan (low, high, step) ;
 $

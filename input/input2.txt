@@ -1,15 +1,17 @@
-[* This program calculates the factorial of a number *]
+[* This is a test program *]
 $
-function factorial (n integer)
+function convertx (fahr integer)
 {
-if (n <= 1)
-{
-return 1;
-}
-return n * factorial (n - 1);
+return 5 * (fahr -32) / 9;
 }
 $
-integer num;
-scan (num);
-print (factorial (num));
+integer low, high, step; [* declarations *]
+$
+scan (low, high, step);
+while (low <= high )
+{ print (low);
+print (convertx (low));
+low = low + step;
+}
+endwhile
 $
