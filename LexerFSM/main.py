@@ -208,7 +208,6 @@ if __name__ == "__main__":
         
         with open(output_file_path, 'w') as output_file:
             syntax_result = syntax_analyzer(result, 0)
-            print(syntax_result)
             write_to_output(result, syntax_result, output_file_path)
 
         print(f"Results written to {output_file_path}")
