@@ -5,7 +5,6 @@ Keyword      | function
 Identifier   | calculateArea
 Separator    | (
 Identifier   | length
-Keyword      | real
 Separator    | ,
 Identifier   | width
 Keyword      | real
@@ -57,14 +56,6 @@ Identifier   | width
 Separator    | )
 Separator    | )
 Separator    | ;
-Invalid      | #
-Identifier   | Calculate
-Identifier   | area
-Identifier   | with
-Identifier   | given
-Identifier   | length
-Identifier   | and
-Identifier   | width
 Identifier   | low
 Operator     | =
 Identifier   | low
@@ -73,96 +64,36 @@ Identifier   | step
 Separator    | ;
 Separator    | }
 Keyword      | endwhile
-Separator    | $
-Invalid      | #
-Identifier   | Additional
-Identifier   | lines
-Keyword      | integer
-Identifier   | i
-Separator    | ,
-Identifier   | j
-Separator    | ;
-Keyword      | real
-Identifier   | pi
-Separator    | ;
-Keyword      | boolean
-Identifier   | flag
-Separator    | ;
-Identifier   | string
-Identifier   | message
-Separator    | ;
-Separator    | $
-Keyword      | scan
-Separator    | (
-Identifier   | i
-Separator    | ,
-Identifier   | j
-Separator    | ,
-Identifier   | pi
-Separator    | ,
-Identifier   | flag
-Separator    | ,
-Identifier   | message
-Separator    | )
-Separator    | ;
-Keyword      | if
-Separator    | (
-Identifier   | flag
-Separator    | )
-Separator    | {
-Keyword      | print
-Separator    | (
-Invalid      | "Flag
-Identifier   | is
-Keyword      | true
-Invalid      | .");
-Separator    | }
-Keyword      | else
-Separator    | {
-Keyword      | print
-Separator    | (
-Invalid      | "Flag
-Identifier   | is
-Keyword      | false
-Invalid      | .");
-Separator    | }
-Identifier   | pi
-Operator     | =
-Real         | 3.14159;
-Invalid      | 
-print("The
-Identifier   | value
-Identifier   | of
-Identifier   | pi
-Invalid      | is:
-Invalid      | ",
-Identifier   | pi
-Separator    | )
-Separator    | ;
 Keyword      | while
 Separator    | (
-Identifier   | i
-Operator     | <
-Identifier   | j
+Identifier   | low
+Operator     | <=
+Identifier   | high
 Separator    | )
 Separator    | {
 Keyword      | print
 Separator    | (
-Identifier   | i
+Identifier   | low
 Separator    | )
 Separator    | ;
-Identifier   | i
-Operator     | =
-Identifier   | i
-Operator     | +
-Integer      | 1
-Separator    | ;
-Separator    | }
 Keyword      | print
 Separator    | (
-Invalid      | "End
-Identifier   | of
-Invalid      | program.");
+Identifier   | calculateArea
+Separator    | (
+Identifier   | low
+Separator    | ,
+Identifier   | width
+Separator    | )
+Separator    | )
+Separator    | ;
+Identifier   | low
+Operator     | =
+Identifier   | low
+Operator     | +
+Identifier   | step
+Separator    | ;
+Separator    | }
+Keyword      | endwhile
 Separator    | $
 
 Syntax Analysis:
@@ -180,7 +111,268 @@ Token: Separator Lexeme: (
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: length
 <IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: width
+<IDs'> ::= , <IDs> | epsilon
 <Qualifier> ::= integer | boolean | real
 Token: Keyword Lexeme: real
-Unexpected token 'Separator' with lexeme ','. Error type: ) expected
-Unexpected token 'Separator' with lexeme ','. Error type: second $ expected
+Token: Separator Lexeme: )
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty> ::= epsilon
+<Body> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Return> ::= return <Return'>
+Token: Keyword Lexeme: return
+<Return'> ::= ; | <Expression>;
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: length
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+Token: Operator Lexeme: *
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: width
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
+<Function Definitions'> ::= <Function> | epsilon
+Token: Separator Lexeme: $
+<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Declaration List> ::= <Declaration> ; <Declaration List'>
+<Declaration> ::= <Qualifier> <IDs>
+<Qualifier> ::= integer | boolean | real
+Token: Keyword Lexeme: integer
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: low
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: high
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: step
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ;
+<Declaration List'> ::= <Declaration List> | epsilon
+Token: Separator Lexeme: $
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Scan> ::= scan ( <IDs> );
+Token: Keyword Lexeme: scan
+Token: Separator Lexeme: (
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: low
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: high
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: step
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: )
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<While> ::= while ( <Condition> ) <Statement> endwhile
+Token: Keyword Lexeme: while
+Token: Separator Lexeme: (
+<Condition> ::= <Expression> <Relop> <Expression>
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+<Relop> ::= == | != | > | < | <= | =>
+Token: Operator Lexeme: <=
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: high
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Compound> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Print> ::= print ( <Expression> );
+Token: Keyword Lexeme: print
+Token: Separator Lexeme: (
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Print> ::= print ( <Expression> );
+Token: Keyword Lexeme: print
+Token: Separator Lexeme: (
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: calculateArea
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+Token: Separator Lexeme: (
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: low
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: width
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: )
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: low
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Operator Lexeme: +
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: step
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
+Token: Keyword Lexeme: endwhile
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<While> ::= while ( <Condition> ) <Statement> endwhile
+Token: Keyword Lexeme: while
+Token: Separator Lexeme: (
+<Condition> ::= <Expression> <Relop> <Expression>
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+<Relop> ::= == | != | > | < | <= | =>
+Token: Operator Lexeme: <=
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: high
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Compound> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Print> ::= print ( <Expression> );
+Token: Keyword Lexeme: print
+Token: Separator Lexeme: (
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Print> ::= print ( <Expression> );
+Token: Keyword Lexeme: print
+Token: Separator Lexeme: (
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: calculateArea
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+Token: Separator Lexeme: (
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: low
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: width
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: )
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: )
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: low
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: low
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Operator Lexeme: +
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: step
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
+Token: Keyword Lexeme: endwhile
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: $
+end of list

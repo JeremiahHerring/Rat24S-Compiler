@@ -1,5 +1,5 @@
 $
-function calculateArea(length real, width real)
+function calculateArea(length, width real)
 {
     return length * width;
 }
@@ -10,32 +10,15 @@ scan (low, high, step);
 while (low <= high )
 { 
     print (low);
-    print (calculateArea(low, width));  # Calculate area with given length and width
+    print (calculateArea(low, width));   [* Calculate area with given length and width *]
     low = low + step;
 }
 endwhile
-$
-# Additional lines
-integer i, j;
-real pi;
-boolean flag;
-string message;
-$
-scan(i, j, pi, flag, message);
-if (flag)
-{
-    print("Flag is true.");
+while (low <= high )
+{ 
+    print (low);
+    print (calculateArea(low, width));   [* Calculate area with given length and width *]
+    low = low + step;
 }
-else
-{
-    print("Flag is false.");
-}
-pi = 3.14159;
-print("The value of pi is: ", pi);
-while (i < j)
-{
-    print(i);
-    i = i + 1;
-}
-print("End of program.");
+endwhile
 $

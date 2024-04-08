@@ -25,7 +25,7 @@ def syntax_analyzer(lexerList, i):
             if flag:
                 print4(f"Token: {lexerList[i-1][0]} Lexeme: {lexerList[i-1][1]}")
         else:
-            print("end of list")
+            print4("end of list")
             i = 0
 
     def rat24s():
