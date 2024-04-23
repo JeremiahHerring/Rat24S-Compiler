@@ -93,7 +93,7 @@ def syntax_analyzer(lexerList, i):
     def optParameterList():
         print3("<Opt Parameter List> ::= <Parameter List> | <Empty>")
         if lexerList[i][0] == "Identifier":
-            parameter()
+            parameterList()
         else:
             empty()
 
@@ -156,7 +156,9 @@ def syntax_analyzer(lexerList, i):
 
     def declarationList2():
         print3("<Declaration List'> ::= <Declaration List> | epsilon")
-        if lexerList[i][0] == "Identifier":
+        if (lexerList[i][1] == "integer" or 
+            lexerList[i][1] == "boolean" or 
+            lexerList[i][1] == "real"):
             declarationList()
         else:
             pass
