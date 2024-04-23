@@ -137,6 +137,7 @@ def lexer(content):
 
             elif real_input_char_terminates_token and real_current_state:
                 token = "Real"
+                char_pointer -= 1
             # this is responsible for illegal character detection
             elif (not operator_check and not keyword_check and not separator_check and
                 not id_current_state and not real_current_state and not int_current_state and not current_char.isspace()):
