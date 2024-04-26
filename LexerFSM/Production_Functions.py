@@ -1,9 +1,30 @@
 i = 0
 flag = True
+current_type = None
+
 result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
     bigStr = ""
+    symbol_table = {}
+    Memory_Address = 5000
+    in_declaration = True
+
+    def insert(identifier, type):
+        nonlocal Memory_Address
+        nonlocal symbol_table
+        if identifier in symbol_table:
+            print("Identifier '{}' already declared".format(identifier))
+        else:
+            print("Inserting '{}' with type '{}'".format(identifier, type))
+            symbol_table[identifier] = {'memory_address' : Memory_Address, 'type' : type}
+            Memory_Address += 1
+
+    def check(identifier):
+        nonlocal symbol_table
+        if identifier not in symbol_table:
+            print("Identifier '{}' not declared".format(identifier))
+
     def error(error_type):
         nonlocal flag
         print4(f"Unexpected token '{lexerList[i][0]}' with lexeme '{lexerList[i][1]}'. Error type: {error_type}")
@@ -29,6 +50,7 @@ def syntax_analyzer(lexerList, i):
             i = 0
 
     def rat24s():
+        nonlocal in_declaration
         print3("<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $")
         if lexerList[i][1] == "$":
             lexer()
@@ -37,6 +59,7 @@ def syntax_analyzer(lexerList, i):
                 lexer()
                 optDeclarationList()
                 if lexerList[i][1] == "$":  
+                    in_declaration = False
                     lexer()
                     statementList()
                     if lexerList[i][1] == "$":
@@ -147,7 +170,10 @@ def syntax_analyzer(lexerList, i):
 
     def declarationList():
         print3("<Declaration List> ::= <Declaration> ; <Declaration List'>")
-        declaration()
+        global current_type
+        if lexerList[i][1] in ("integer", "boolean"):
+            current_type = lexerList[i][1]
+            declaration()
         if lexerList[i][1] == ";":
             lexer()
             declarationList2()
@@ -171,6 +197,8 @@ def syntax_analyzer(lexerList, i):
     def ids():
         print3("<IDs> ::= <Identifier> <IDs'>")
         if lexerList[i][0] == "Identifier":
+            if in_declaration and current_type is not None:
+                insert(lexerList[i][1], current_type)
             lexer()
             ids2()
         else:
@@ -438,7 +466,14 @@ def syntax_analyzer(lexerList, i):
         print3("<Empty> ::= epsilon")
     
     rat24s()
-    return bigStr
+    print_symbol_table(symbol_table)
+    #return bigStr
+
+def print_symbol_table(symbol_table):
+    print("\nSymbol Table:")
+    print("Identifier\tMemory Address\tType")
+    for identifier, data in symbol_table.items():
+        print(f"{identifier}\t\t{data['memory_address']}\t\t{data['type']}")
 
 if __name__ == "__main__":
     i = 0
