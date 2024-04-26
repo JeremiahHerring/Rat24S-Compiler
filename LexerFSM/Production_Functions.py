@@ -18,7 +18,6 @@ def syntax_analyzer(lexerList, i):
         if identifier in symbol_table:
             print("Identifier '{}' already declared".format(identifier))
         else:
-            print("Inserting '{}' with type '{}'".format(identifier, type))
             symbol_table[identifier] = {'memory_address' : Memory_Address, 'type' : type}
             Memory_Address += 1
 
@@ -522,7 +521,19 @@ def syntax_analyzer(lexerList, i):
 
     rat24s()
     print_symbol_table(symbol_table)
-    return bigStr
+    print_instr_table(instr_table)
+    #return bigStr
+
+def print_instr_table(instr_table):
+    print("\nInstr Table:")
+    print("Address\tOperation\tOperand")
+    for instr in instr_table:
+        if instr == {}:
+            continue
+        address = instr['address']
+        operation = instr['operation']
+        operand = instr['operand']
+        print(f"{address}\t\t{operation}\t\t{operand}")
 
 def print_symbol_table(symbol_table):
     print("\nSymbol Table:")
