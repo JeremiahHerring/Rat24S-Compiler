@@ -2,6 +2,8 @@ i = 0
 flag = True
 result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
+    instr_table = [{} for x in range(1000)]
+    instruction_address = 0
     flag = True
     bigStr = ""
     def error(error_type):
@@ -230,11 +232,13 @@ def syntax_analyzer(lexerList, i):
     def assign():
         print3("<Assign> ::= <Identifier> = <Expression> ;")
         if lexerList[i][0] == "Identifier":
+            save = lexerList[i][1]
             lexer()
             if lexerList[i][1] == "=":
                 lexer()
                 expression()
                 if lexerList[i][1] == ";":
+                    generate_instruction("POPM", get_address(save))
                     lexer()
                 else:
                     error("; expected")
@@ -379,6 +383,11 @@ def syntax_analyzer(lexerList, i):
         if lexerList[i][1] in ("+", "-"):
             lexer()
             term()
+            if lexerList[i][1] == "+":
+                generate_instruction("A", "nil")
+            else:
+                generate_instruction("S", "nil")
+
         else:
             pass
 
@@ -393,6 +402,10 @@ def syntax_analyzer(lexerList, i):
         if lexerList[i][1] in ("*", "/"):
             lexer()
             factor()
+            if lexerList[i][1] == "*":
+                generate_instruction("M", "nil")
+            else:
+                generate_instruction("D", "nil")
             term2()
         else:
             pass
@@ -408,6 +421,7 @@ def syntax_analyzer(lexerList, i):
     def primary():
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
+            generate_instruction("PUSHM", get_address(lexerList[i][0]))
             lexer()
             primary2()
         elif lexerList[i][1] == "(":
@@ -437,6 +451,17 @@ def syntax_analyzer(lexerList, i):
     def empty():
         print3("<Empty> ::= epsilon")
     
+    def generate_instruction(operation, operand):
+        nonlocal instruction_address
+        instr_table[instruction_address]["address"] = instruction_address
+        instr_table[instruction_address]["operation"] = operation
+        instr_table[instruction_address]["operand"] = operand
+        instruction_address += 1
+
+    def get_address(token):
+        # access symbol table at key token and return the address stored in the symbol table
+        return
+
     rat24s()
     return bigStr
 

@@ -107,6 +107,7 @@ Token: Keyword Lexeme: function
 Token: Identifier Lexeme: calculateArea
 Token: Separator Lexeme: (
 <Opt Parameter List> ::= <Parameter List> | <Empty>
+<Parameter List> ::= <Parameter> <Parameter List'>
 <Parameter> ::= <IDs> <Qualifier>
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: length
@@ -117,6 +118,7 @@ Token: Identifier Lexeme: width
 <IDs'> ::= , <IDs> | epsilon
 <Qualifier> ::= integer | boolean | real
 Token: Keyword Lexeme: real
+<Parameter List'> ::= , <Parameter List> | epsilon
 Token: Separator Lexeme: )
 <Opt Declaration List> ::= <Declaration List> | <Empty>
 <Empty> ::= epsilon
