@@ -2,7 +2,7 @@ i = 0
 flag = True
 current_type = None
 
-result = [('Separator', '$'), ('Keyword', 'function'), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'fahr'), ('Keyword', 'integer'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'return'), ('Integer', '5'), ('Operator', '*'), ('Separator', '('), ('Identifier', 'fahr'), ('Operator', '-'), ('Integer', '32'), ('Separator', ')'), ('Operator', '/'), ('Integer', '9'), ('Separator', ';'), ('Separator', '}'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ','), ('Identifier', 'high'), ('Separator', ','), ('Identifier', 'step'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'low'), ('Operator', '<='), ('Identifier', 'high'), ('Separator', ')'), ('Separator', '{'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'convertx'), ('Separator', '('), ('Identifier', 'low'), ('Separator', ')'), ('Separator', ')'), ('Separator', ';'), ('Identifier', 'low'), ('Operator', '='), ('Identifier', 'low'), ('Operator', '+'), ('Identifier', 'step'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '$')]
+result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
     bigStr = ""
@@ -522,7 +522,7 @@ def syntax_analyzer(lexerList, i):
     rat24s()
     print_symbol_table(symbol_table)
     print_instr_table(instr_table)
-    #return bigStr
+    return bigStr
 
 def print_instr_table(instr_table):
     print("\nInstr Table:")

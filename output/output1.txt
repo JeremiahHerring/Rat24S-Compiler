@@ -1,150 +1,58 @@
 Token            Lexeme
 ------------------------------
 Separator    | $
-Keyword      | function
-Identifier   | convertx
-Separator    | (
-Identifier   | fahr
-Keyword      | integer
-Separator    | )
-Separator    | {
-Keyword      | return
-Integer      | 5
-Operator     | *
-Separator    | (
-Identifier   | fahr
-Operator     | -
-Integer      | 32
-Separator    | )
-Operator     | /
-Integer      | 9
-Separator    | ;
-Separator    | }
 Separator    | $
 Keyword      | integer
-Identifier   | low
+Identifier   | i
 Separator    | ,
-Identifier   | high
+Identifier   | max
 Separator    | ,
-Identifier   | step
+Identifier   | sum
 Separator    | ;
 Separator    | $
+Identifier   | sum
+Operator     | =
+Integer      | 0
+Separator    | ;
+Identifier   | i
+Operator     | =
+Integer      | 1
+Separator    | ;
 Keyword      | scan
 Separator    | (
-Identifier   | low
-Separator    | ,
-Identifier   | high
-Separator    | ,
-Identifier   | step
+Identifier   | max
+Separator    | )
+Separator    | ;
+Keyword      | while
+Separator    | (
+Identifier   | i
+Operator     | <
+Identifier   | max
+Separator    | )
+Separator    | {
+Identifier   | sum
+Operator     | =
+Identifier   | sum
+Operator     | +
+Identifier   | i
+Separator    | ;
+Identifier   | i
+Operator     | =
+Identifier   | i
+Operator     | +
+Integer      | 1
+Separator    | ;
+Separator    | }
+Keyword      | endwhile
+Integer      | 3
+Keyword      | print
+Separator    | (
+Identifier   | sum
+Operator     | +
+Identifier   | max
 Separator    | )
 Separator    | ;
 Separator    | $
 
 Syntax Analysis:
 ------------------------------
-<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
-Token: Separator Lexeme: $
-<Opt Function Definitions> ::= <Function Definitions> | <Empty>
-<Function Definitions> ::= <Function> <Function Definitions'>
-<Function> ::= function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
-Token: Keyword Lexeme: function
-Token: Identifier Lexeme: convertx
-Token: Separator Lexeme: (
-<Opt Parameter List> ::= <Parameter List> | <Empty>
-<Parameter> ::= <IDs> <Qualifier>
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: fahr
-<IDs'> ::= , <IDs> | epsilon
-<Qualifier> ::= integer | boolean | real
-Token: Keyword Lexeme: integer
-Token: Separator Lexeme: )
-<Opt Declaration List> ::= <Declaration List> | <Empty>
-<Empty> ::= epsilon
-<Body> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Return> ::= return <Return'>
-Token: Keyword Lexeme: return
-<Return'> ::= ; | <Expression>;
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 5
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Operator Lexeme: *
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Separator Lexeme: (
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: fahr
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Operator Lexeme: -
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 32
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Separator Lexeme: )
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Operator Lexeme: /
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 9
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-<Function Definitions'> ::= <Function> | epsilon
-Token: Separator Lexeme: $
-<Opt Declaration List> ::= <Declaration List> | <Empty>
-<Declaration List> ::= <Declaration> ; <Declaration List'>
-<Declaration> ::= <Qualifier> <IDs>
-<Qualifier> ::= integer | boolean | real
-Token: Keyword Lexeme: integer
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: low
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: high
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: step
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ;
-<Declaration List'> ::= <Declaration List> | epsilon
-Token: Separator Lexeme: $
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Scan> ::= scan ( <IDs> );
-Token: Keyword Lexeme: scan
-Token: Separator Lexeme: (
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: low
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: high
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: step
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: )
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: $
-end of list

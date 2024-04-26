@@ -1,8 +1,16 @@
+[* this is comment for this sample code for assignment 3 *]
 $
-function convertx (fahr integer)
-{ return 5 * (fahr -32) / 9; }
+[* NO function definitions *]
 $
-integer low, high, step; [* declarations *]
+integer i, max, sum; [* declarations *]
 $
-scan (low, high, step) ;
+sum = 0;
+i = 1;
+scan (max);
+while (i < max) {
+sum = sum + i;
+i = i + 1;
+}
+endwhile
+print (sum + max);
 $
