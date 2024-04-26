@@ -368,8 +368,11 @@ def syntax_analyzer(lexerList, i):
             error("keyword scan expected")
 
     def while1():
+        nonlocal instruction_address
         print3("<While> ::= while ( <Condition> ) <Statement> endwhile")
         if lexerList[i][1] == "while":
+            Ar = instruction_address
+            generate_instruction("LABEL", "nil")
             lexer()
             if lexerList[i][1] == "(":
                 lexer()
@@ -377,6 +380,7 @@ def syntax_analyzer(lexerList, i):
                 if lexerList[i][1] == ")":
                     lexer()
                     statement()
+                    generate_instruction("JUMP", Ar)
                     if lexerList[i][1] == "endwhile":
                         lexer()
                     else:
@@ -389,15 +393,33 @@ def syntax_analyzer(lexerList, i):
             error("keyword while expected")
 
     def condition():
+        nonlocal instruction_address
+        # look at this one -------------------------------------------------------------------------
         print3("<Condition> ::= <Expression> <Relop> <Expression>")
         expression()
-        relop()
+        op = relop()
         expression()
+        if op == "<":
+            generate_instruction("LES", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
+        elif op == "":
+            pass
+        elif op == "==":
+            pass
+        elif op == "!=":
+            pass
+        elif op == "<=":
+            pass
+        elif op == "=>":
+            pass
 
     def relop():
         print3("<Relop> ::= == | != | > | < | <= | =>")
         if lexerList[i][1] in ("==", "!=", ">", "<", "<=", "=>"):
+            op = lexerList[i][1]
             lexer()
+            return op
         else:
             error("expected valid operator")
 
@@ -488,7 +510,16 @@ def syntax_analyzer(lexerList, i):
     def get_address(token):
         # access symbol table at key token and return the address stored in the symbol table
         return
+
+    def push_jumpstack(instr_addr):
+        # do something idk
+        return
     
+    def back_patch (jump_address):
+        # ---------------------------------------------- need to create jumpstack
+        addr = pop_jumpstack()
+        instr_table[addr]["operand"] = jump_address
+
     rat24s()
     print_symbol_table(symbol_table)
     return bigStr
