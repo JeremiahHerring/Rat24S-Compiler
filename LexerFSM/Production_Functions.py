@@ -349,6 +349,7 @@ def syntax_analyzer(lexerList, i):
     def scan():
         print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
+            generate_instruction("SIN", "nil")
             lexer()
             if lexerList[i][1] == "(":
                 lexer()
