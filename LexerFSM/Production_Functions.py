@@ -469,7 +469,7 @@ def syntax_analyzer(lexerList, i):
     def primary():
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
-            generate_instruction("PUSHM", get_address(lexerList[i][0]))
+            generate_instruction("PUSHM", get_address(lexerList[i][1]))
             lexer()
             primary2()
         elif lexerList[i][1] == "(":
@@ -508,7 +508,13 @@ def syntax_analyzer(lexerList, i):
 
     def get_address(token):
         # access symbol table at key token and return the address stored in the symbol table
-        return
+        nonlocal symbol_table
+        if token in symbol_table:
+            return symbol_table[token]['memory_address']
+        else:
+            print(f"Error: Identifier '{token}' not found in symbol table.")
+            return None
+
 
     def push_jumpstack(instr_addr):
         # do something idk
@@ -522,7 +528,7 @@ def syntax_analyzer(lexerList, i):
     rat24s()
     print_symbol_table(symbol_table)
     print_instr_table(instr_table)
-    return bigStr
+    # return bigStr
 
 def print_instr_table(instr_table):
     print("\nInstr Table:")
