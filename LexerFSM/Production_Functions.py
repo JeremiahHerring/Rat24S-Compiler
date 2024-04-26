@@ -259,9 +259,9 @@ def syntax_analyzer(lexerList, i):
     def assign():
         print3("<Assign> ::= <Identifier> = <Expression> ;")
         if lexerList[i][0] == "Identifier":
+            save = lexerList[i][1]
             lexer()
             if lexerList[i][1] == "=":
-                save = lexerList[i][1]
                 lexer()
                 expression()
                 if lexerList[i][1] == ";":
@@ -469,7 +469,7 @@ def syntax_analyzer(lexerList, i):
     def primary():
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
-            generate_instruction("PUSHM", get_address(lexerList[i][1]))
+            generate_instruction("PUSHM", lexerList[i][1])
             lexer()
             primary2()
         elif lexerList[i][1] == "(":
