@@ -9,6 +9,8 @@ def syntax_analyzer(lexerList, i):
     symbol_table = {}
     Memory_Address = 5000
     in_declaration = True
+    instr_table = [{} for x in range(1000)]
+    instruction_address = 0
 
     def insert(identifier, type):
         nonlocal Memory_Address
@@ -260,9 +262,11 @@ def syntax_analyzer(lexerList, i):
         if lexerList[i][0] == "Identifier":
             lexer()
             if lexerList[i][1] == "=":
+                save = lexerList[i][1]
                 lexer()
                 expression()
                 if lexerList[i][1] == ";":
+                    generate_instruction("POPM", get_address(save))
                     lexer()
                 else:
                     error("; expected")
@@ -407,6 +411,10 @@ def syntax_analyzer(lexerList, i):
         if lexerList[i][1] in ("+", "-"):
             lexer()
             term()
+            if lexerList[i][1] == "+":
+                generate_instruction("A", "nil")
+            else:
+                generate_instruction("S", "nil")
         else:
             pass
 
@@ -421,6 +429,10 @@ def syntax_analyzer(lexerList, i):
         if lexerList[i][1] in ("*", "/"):
             lexer()
             factor()
+            if lexerList[i][1] == "*":
+                generate_instruction("M", "nil")
+            else:
+                generate_instruction("D", "nil")
             term2()
         else:
             pass
@@ -436,6 +448,7 @@ def syntax_analyzer(lexerList, i):
     def primary():
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
+            generate_instruction("PUSHM", get_address(lexerList[i][0]))
             lexer()
             primary2()
         elif lexerList[i][1] == "(":
@@ -465,9 +478,20 @@ def syntax_analyzer(lexerList, i):
     def empty():
         print3("<Empty> ::= epsilon")
     
+    def generate_instruction(operation, operand):
+        nonlocal instruction_address
+        instr_table[instruction_address]["address"] = instruction_address
+        instr_table[instruction_address]["operation"] = operation
+        instr_table[instruction_address]["operand"] = operand
+        instruction_address += 1
+
+    def get_address(token):
+        # access symbol table at key token and return the address stored in the symbol table
+        return
+    
     rat24s()
     print_symbol_table(symbol_table)
-    #return bigStr
+    return bigStr
 
 def print_symbol_table(symbol_table):
     print("\nSymbol Table:")
