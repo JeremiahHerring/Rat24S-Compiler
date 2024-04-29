@@ -11,6 +11,7 @@ def syntax_analyzer(lexerList, i):
     in_declaration = True
     instr_table = [{} for x in range(1000)]
     instruction_address = 1
+    jumpstack = []
 
     def insert(identifier, type):
         nonlocal Memory_Address
@@ -260,7 +261,6 @@ def syntax_analyzer(lexerList, i):
         print3("<Assign> ::= <Identifier> = <Expression> ;")
         if lexerList[i][0] == "Identifier":
             save = lexerList[i][1]
-            print('save',save)
             lexer()
             if lexerList[i][1] == "=":
                 lexer()
@@ -384,6 +384,7 @@ def syntax_analyzer(lexerList, i):
                     lexer()
                     statement()
                     generate_instruction("JUMP", Ar)
+                    back_patch(instruction_address)
                     if lexerList[i][1] == "endwhile":
                         lexer()
                     else:
@@ -406,7 +407,7 @@ def syntax_analyzer(lexerList, i):
             generate_instruction("LES", "nil")
             push_jumpstack(instruction_address)
             generate_instruction("JUMP0", "nil")
-        elif op == "":
+        elif op == ">":
             pass
         elif op == "==":
             pass
@@ -453,9 +454,10 @@ def syntax_analyzer(lexerList, i):
     def term2():
         print3("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon")
         if lexerList[i][1] in ("*", "/"):
+            save = lexerList[i][1]
             lexer()
             factor()
-            if lexerList[i][1] == "*":
+            if save == "*":
                 generate_instruction("M", "nil")
             else:
                 generate_instruction("D", "nil")
@@ -475,7 +477,11 @@ def syntax_analyzer(lexerList, i):
         nonlocal symbol_table
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
-            generate_instruction("PUSHM", get_address(lexerList[i][1]))
+            address = get_address(lexerList[i][1])
+            if isinstance(address, int):
+                generate_instruction("PUSHI", address)
+            else:
+                generate_instruction("PUSHM", address)
             lexer()
             primary2()
         elif lexerList[i][1] == "(":
@@ -516,21 +522,29 @@ def syntax_analyzer(lexerList, i):
         # access symbol table at key token and return the address stored in the symbol table
         nonlocal symbol_table
         if token in symbol_table:
-            return symbol_table[token]['memory_address']
+            return str(symbol_table[token]['memory_address'])
         else:
-            return token
+            return int(token)
 
     def push_jumpstack(instr_addr):
-        # do something idk
-        return
+        nonlocal jumpstack
+        jumpstack.append(instr_addr)
+
+    def pop_jumpstack():
+        if jumpstack:
+            return jumpstack.pop()
+        else:
+            print("Error: Jump stack is empty")
+            return None
     
-    def back_patch (jump_address):
+    def back_patch(jump_address):
         # ---------------------------------------------- need to create jumpstack
         addr = pop_jumpstack()
         instr_table[addr]["operand"] = jump_address
 
     rat24s()
     print_symbol_table(symbol_table)
+    generate_instruction("SOUT", "nil")
     print_instr_table(instr_table)
     # return bigStr
 
@@ -543,7 +557,10 @@ def print_instr_table(instr_table):
         address = instr['address']
         operation = instr['operation']
         operand = instr['operand']
-        print(f"{address}\t\t{operation}\t\t{operand}")
+        if operand != "nil":
+            print(f"{address}\t\t{operation}\t\t{operand}")
+        else:
+            print(f"{address}\t\t{operation}")
 
 def print_symbol_table(symbol_table):
     print("\nSymbol Table:")
