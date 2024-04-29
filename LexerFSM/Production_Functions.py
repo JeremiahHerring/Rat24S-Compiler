@@ -1,3 +1,8 @@
+#TODO Add changes to compound function (idk what's supposed to go here),
+# Add error message to symbol table where an identifier is used without declaring it
+# Add type match functionality to symbol table (variables cannot change types throughout the program)
+# Test everything make sure it works
+
 i = 0
 flag = True
 current_type = None
@@ -247,7 +252,6 @@ def syntax_analyzer(lexerList, i):
             error("incorrect statement syntax")
         
     def compound():
-        #TODO There needs to be something done in this function
         print3("<Compound> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
             lexer()
