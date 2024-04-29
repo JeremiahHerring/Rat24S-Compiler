@@ -247,6 +247,7 @@ def syntax_analyzer(lexerList, i):
             error("incorrect statement syntax")
         
     def compound():
+        #TODO There needs to be something done in this function
         print3("<Compound> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
             lexer()
@@ -340,6 +341,7 @@ def syntax_analyzer(lexerList, i):
                 if lexerList[i][1] == ")":
                     lexer()
                     if lexerList[i][1] == ";":
+                        generate_instruction("SOUT", "nil")
                         lexer()
                     else:
                         error("; expected")
@@ -353,7 +355,6 @@ def syntax_analyzer(lexerList, i):
     def scan():
         print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
-
             generate_instruction("SIN", "nil")
             lexer()
             if lexerList[i][1] == "(":
@@ -547,7 +548,6 @@ def syntax_analyzer(lexerList, i):
 
     rat24s()
     print_symbol_table(symbol_table)
-    generate_instruction("SOUT", "nil")
     print_instr_table(instr_table)
     # return bigStr
 
@@ -574,4 +574,4 @@ def print_symbol_table(symbol_table):
 
 if __name__ == "__main__":
     i = 0
-    print(syntax_analyzer(result1, i))
+    print(syntax_analyzer(result, i))
