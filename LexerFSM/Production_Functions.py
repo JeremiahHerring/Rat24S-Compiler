@@ -2,6 +2,7 @@
 # Add error message to symbol table where an identifier is used without declaring it
 # Add type match functionality to symbol table (variables cannot change types throughout the program)
 # Test everything make sure it works
+# Double check and make sure all the functions are filled out 
 
 i = 0
 flag = True
