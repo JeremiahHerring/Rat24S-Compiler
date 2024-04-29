@@ -10,7 +10,7 @@ def syntax_analyzer(lexerList, i):
     Memory_Address = 5000
     in_declaration = True
     instr_table = [{} for x in range(1000)]
-    instruction_address = 0
+    instruction_address = 1
 
     def insert(identifier, type):
         nonlocal Memory_Address
@@ -265,8 +265,8 @@ def syntax_analyzer(lexerList, i):
             if lexerList[i][1] == "=":
                 lexer()
                 expression()
+                generate_instruction("POPM", get_address(save))
                 if lexerList[i][1] == ";":
-                    generate_instruction("POPM", get_address(save))
                     lexer()
                 else:
                     error("; expected")
@@ -350,10 +350,12 @@ def syntax_analyzer(lexerList, i):
     def scan():
         print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
+
             generate_instruction("SIN", "nil")
             lexer()
             if lexerList[i][1] == "(":
                 lexer()
+                generate_instruction("POPM", get_address(lexerList[i][1]))
                 ids()
                 if lexerList[i][1] == ")":
                     lexer()
@@ -432,9 +434,10 @@ def syntax_analyzer(lexerList, i):
     def expression2():
         print3("<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon")
         if lexerList[i][1] in ("+", "-"):
+            save = lexerList[i][1]
             lexer()
             term()
-            if lexerList[i][1] == "+":
+            if save == "+":
                 generate_instruction("A", "nil")
             else:
                 generate_instruction("S", "nil")
@@ -515,9 +518,7 @@ def syntax_analyzer(lexerList, i):
         if token in symbol_table:
             return symbol_table[token]['memory_address']
         else:
-            print(f"Error: Identifier '{token}' not found in symbol table.")
-            return None
-
+            return token
 
     def push_jumpstack(instr_addr):
         # do something idk
@@ -549,6 +550,7 @@ def print_symbol_table(symbol_table):
     print("Identifier\tMemory Address\tType")
     for identifier, data in symbol_table.items():
         print(f"{identifier}\t\t{data['memory_address']}\t\t{data['type']}")
+
 
 if __name__ == "__main__":
     i = 0
