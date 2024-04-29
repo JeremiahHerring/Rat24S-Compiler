@@ -1,17 +1,8 @@
-[* This is a test program *]
+[* Test the if statement here *]
 $
-function convertx (fahr integer)
-{
-return 5 * (fahr -32) / 9;
-}
+[* NO function definitions *]
 $
-integer low, high, step; [* declarations *]
+integer a, b, c; [* declarations *]
 $
-scan (low, high, step);
-while (low <= high )
-{ print (low);
-print (convertx (low));
-low = low + step;
-}
-endwhile
+if (a < b) a = c; endif
 $

@@ -184,6 +184,7 @@ def lexer(content):
         
         # go to the next character after each loop iteration
         char_pointer += 1
+    print(tokens_and_lexemes)
     return tokens_and_lexemes
     
 # given a path to an output file, print all of the token types and lexemes in a nice format

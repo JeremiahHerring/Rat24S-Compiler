@@ -3,6 +3,7 @@ flag = True
 current_type = None
 
 result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
+result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'a'), ('Separator', ','), ('Identifier', 'b'), ('Separator', ','), ('Identifier', 'c'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'a'), ('Operator', '<'), ('Identifier', 'b'), ('Separator', ')'), ('Identifier', 'a'), ('Operator', '='), ('Identifier', 'c'), ('Separator', ';'), ('Keyword', 'endif'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
     bigStr = ""
@@ -246,6 +247,7 @@ def syntax_analyzer(lexerList, i):
             error("incorrect statement syntax")
         
     def compound():
+        #TODO There needs to be something done in this function
         print3("<Compound> ::= { <Statement List> }")
         if lexerList[i][1] == "{":
             lexer()
@@ -276,6 +278,7 @@ def syntax_analyzer(lexerList, i):
             error("identifier expected")
 
     def if1():
+        nonlocal instruction_address
         print3("<If> ::= if ( <Condition> ) <Statement> <If'>")
         if lexerList[i][1] == "if":
             lexer()
@@ -286,6 +289,7 @@ def syntax_analyzer(lexerList, i):
                     lexer()
                     statement()
                     if2()
+                    back_patch(instruction_address)
                 else:
                     error(") expected")
             else:
@@ -337,6 +341,7 @@ def syntax_analyzer(lexerList, i):
                 if lexerList[i][1] == ")":
                     lexer()
                     if lexerList[i][1] == ";":
+                        generate_instruction("SOUT", "nil")
                         lexer()
                     else:
                         error("; expected")
@@ -350,7 +355,6 @@ def syntax_analyzer(lexerList, i):
     def scan():
         print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
-
             generate_instruction("SIN", "nil")
             lexer()
             if lexerList[i][1] == "(":
@@ -544,7 +548,6 @@ def syntax_analyzer(lexerList, i):
 
     rat24s()
     print_symbol_table(symbol_table)
-    generate_instruction("SOUT", "nil")
     print_instr_table(instr_table)
     # return bigStr
 
