@@ -276,6 +276,7 @@ def syntax_analyzer(lexerList, i):
             error("identifier expected")
 
     def if1():
+        nonlocal instruction_address
         print3("<If> ::= if ( <Condition> ) <Statement> <If'>")
         if lexerList[i][1] == "if":
             lexer()
@@ -286,6 +287,7 @@ def syntax_analyzer(lexerList, i):
                     lexer()
                     statement()
                     if2()
+                    back_patch(instruction_address)
                 else:
                     error(") expected")
             else:
