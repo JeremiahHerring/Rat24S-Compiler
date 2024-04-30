@@ -438,7 +438,6 @@ def syntax_analyzer(lexerList, i):
 
     def condition():
         nonlocal instruction_address
-        # look at this one -------------------------------------------------------------------------
         print3("<Condition> ::= <Expression> <Relop> <Expression>")
         expression()
         op = relop()
@@ -448,15 +447,25 @@ def syntax_analyzer(lexerList, i):
             push_jumpstack(instruction_address)
             generate_instruction("JUMP0", "nil")
         elif op == ">":
-            pass
+            generate_instruction("GRT", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "==":
-            pass
+            generate_instruction("EQU", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "!=":
-            pass
+            generate_instruction("NEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "<=":
-            pass
+            generate_instruction("LEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "=>":
-            pass
+            generate_instruction("GEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
 
     def relop():
         print3("<Relop> ::= == | != | > | < | <= | =>")
