@@ -97,7 +97,7 @@ def syntax_analyzer(lexerList, i):
         nonlocal i
         for index in range(i+1, len(lexerList)):
             token, lexeme = lexerList[index]
-            if lexeme == "=":
+            if token == "Operator":
                 if index + 1 < len(lexerList):
                     prev_lexeme = lexerList[index - 1][1]
                     next_lexeme = lexerList[index + 1][1]
@@ -624,4 +624,4 @@ def print_symbol_table(symbol_table):
 
 if __name__ == "__main__":
     i = 0
-    print(syntax_analyzer(result1, i))
+    print(syntax_analyzer(result, i))
