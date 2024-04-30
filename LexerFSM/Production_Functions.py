@@ -7,7 +7,7 @@ i = 0
 flag = True
 current_type = None
 
-result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', 'true'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
+result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'a'), ('Separator', ','), ('Identifier', 'b'), ('Separator', ','), ('Identifier', 'c'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'a'), ('Operator', '<'), ('Identifier', 'b'), ('Separator', ')'), ('Identifier', 'a'), ('Operator', '='), ('Identifier', 'c'), ('Separator', ';'), ('Keyword', 'endif'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
@@ -69,12 +69,12 @@ def syntax_analyzer(lexerList, i):
                 if lexerList[i][1] == "$":  
                     in_declaration = False
                     check_identifiers_after_declaration()
+                    check_type_match_after_declaration()
                     lexer()
                     statementList()
                     if lexerList[i][1] == "$":
                         lexer()
                         lexer()
-
 
                     else:
                         error("fourth $ expected")
@@ -93,6 +93,27 @@ def syntax_analyzer(lexerList, i):
             elif lexeme == "$":
                 break
 
+    def check_type_match_after_declaration():
+        nonlocal i
+        for index in range(i+1, len(lexerList)):
+            token, lexeme = lexerList[index]
+            if lexeme == "=":
+                if index + 1 < len(lexerList):
+                    prev_lexeme = lexerList[index - 1][1]
+                    next_lexeme = lexerList[index + 1][1]
+                    if next_lexeme in symbol_table:
+                        prev_type = symbol_table[prev_lexeme]['type']
+                        declared_type = symbol_table[next_lexeme]['type']
+                        if declared_type != prev_type:
+                            print(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
+                            break
+                        if declared_type == symbol_table[prev_lexeme]['type']:
+                            break
+                    if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
+                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                    if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
+                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                  
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         if lexerList[i][1] == "function":
@@ -497,7 +518,7 @@ def syntax_analyzer(lexerList, i):
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
             address = get_address(lexerList[i][1])
-            if isinstance(address, int):
+            if isinstance(address, str):
                 generate_instruction("PUSHI", address)
             else:
                 generate_instruction("PUSHM", address)
@@ -540,11 +561,12 @@ def syntax_analyzer(lexerList, i):
     def get_address(token):
         # access symbol table at key token and return the address stored in the symbol table
         nonlocal symbol_table
+        # Check if the token given to address matches the type in the symbol table
         if token in symbol_table:
-            return str(symbol_table[token]['memory_address'])
+            return symbol_table[token]['memory_address']
         else:
             if token.isdigit():
-                return token
+                return str(token)
             else:
                 return f"Error:{token} Not Found in Symbol Table"
 
