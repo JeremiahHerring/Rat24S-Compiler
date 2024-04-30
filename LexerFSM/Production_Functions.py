@@ -1,5 +1,4 @@
 #TODO Add changes to compound function (idk what's supposed to go here),
-# Add error message to symbol table where an identifier is used without declaring it
 # Add type match functionality to symbol table (variables cannot change types throughout the program)
 # Test everything make sure it works
 # Double check and make sure all the functions are filled out 
@@ -8,7 +7,7 @@ i = 0
 flag = True
 current_type = None
 
-result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
+result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', 'true'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'a'), ('Separator', ','), ('Identifier', 'b'), ('Separator', ','), ('Identifier', 'c'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'a'), ('Operator', '<'), ('Identifier', 'b'), ('Separator', ')'), ('Identifier', 'a'), ('Operator', '='), ('Identifier', 'c'), ('Separator', ';'), ('Keyword', 'endif'), ('Separator', '$')]
 def syntax_analyzer(lexerList, i):
     flag = True
@@ -69,11 +68,14 @@ def syntax_analyzer(lexerList, i):
                 optDeclarationList()
                 if lexerList[i][1] == "$":  
                     in_declaration = False
+                    check_identifiers_after_declaration()
                     lexer()
                     statementList()
                     if lexerList[i][1] == "$":
                         lexer()
                         lexer()
+
+
                     else:
                         error("fourth $ expected")
                 else:
@@ -82,6 +84,14 @@ def syntax_analyzer(lexerList, i):
                 error("second $ expected")
         else:
             error("first $ expected")
+    
+    def check_identifiers_after_declaration():
+    # Check each identifier after the declaration section
+        for token_type, lexeme in lexerList[i+1:]:
+            if token_type == "Identifier":
+                check(lexeme)
+            elif lexeme == "$":
+                break
 
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -533,7 +543,10 @@ def syntax_analyzer(lexerList, i):
         if token in symbol_table:
             return str(symbol_table[token]['memory_address'])
         else:
-            return int(token)
+            if token.isdigit():
+                return token
+            else:
+                return f"Error:{token} Not Found in Symbol Table"
 
     def push_jumpstack(instr_addr):
         nonlocal jumpstack
