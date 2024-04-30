@@ -336,6 +336,7 @@ def syntax_analyzer(lexerList, i):
     def if2():
         print3("<If'> ::= endif | else <Statement> endif")
         if lexerList[i][1] == "endif":
+            generate_instruction("LABEL", "nil")
             lexer()
         else:
             if lexerList[i][1] == "else":
@@ -623,4 +624,4 @@ def print_symbol_table(symbol_table):
 
 if __name__ == "__main__":
     i = 0
-    print(syntax_analyzer(result, i))
+    print(syntax_analyzer(result1, i))
