@@ -1,7 +1,5 @@
 #TODO Add changes to compound function (idk what's supposed to go here),
-# Add type match functionality to symbol table (variables cannot change types throughout the program)
 # Test everything make sure it works
-# Double check and make sure all the functions are filled out 
 
 i = 0
 flag = True
