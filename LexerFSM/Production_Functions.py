@@ -584,8 +584,12 @@ def syntax_analyzer(lexerList, i):
         else:
             if token.isdigit():
                 return str(token)
+            elif token == "true":
+                return str(1)
+            elif token == "false":
+                return str(0)
             else:
-                return f"Error:{token} Not Found in Symbol Table"
+                return f"Error:{token} not valid"
 
     def push_jumpstack(instr_addr):
         nonlocal jumpstack
