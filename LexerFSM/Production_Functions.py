@@ -323,8 +323,8 @@ def syntax_analyzer(lexerList, i):
                 if lexerList[i][1] == ")":
                     lexer()
                     statement()
-                    if2()
                     back_patch(instruction_address)
+                    if2()
                 else:
                     error(") expected")
             else:
@@ -505,7 +505,6 @@ def syntax_analyzer(lexerList, i):
         factor()
         term2()
 
-
     def term2():
         print3("<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon")
         if lexerList[i][1] in ("*", "/"):
@@ -633,4 +632,4 @@ def print_symbol_table(symbol_table):
 
 if __name__ == "__main__":
     i = 0
-    print(syntax_analyzer(result, i))
+    print(syntax_analyzer(result1, i))
