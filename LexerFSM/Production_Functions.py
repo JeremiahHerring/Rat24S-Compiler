@@ -1,5 +1,4 @@
 #TODO Add changes to compound function (idk what's supposed to go here),
-# Add error message to symbol table where an identifier is used without declaring it
 # Add type match functionality to symbol table (variables cannot change types throughout the program)
 # Test everything make sure it works
 # Double check and make sure all the functions are filled out 
@@ -8,8 +7,9 @@ i = 0
 flag = True
 current_type = None
 
-result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
+result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'a'), ('Separator', ','), ('Identifier', 'b'), ('Separator', ','), ('Identifier', 'c'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'a'), ('Operator', '<'), ('Identifier', 'b'), ('Separator', ')'), ('Identifier', 'a'), ('Operator', '='), ('Identifier', 'c'), ('Separator', ';'), ('Keyword', 'endif'), ('Separator', '$')]
+
 def syntax_analyzer(lexerList, i):
     flag = True
     bigStr = ""
@@ -69,11 +69,14 @@ def syntax_analyzer(lexerList, i):
                 optDeclarationList()
                 if lexerList[i][1] == "$":  
                     in_declaration = False
+                    check_identifiers_after_declaration()
+                    check_type_match_after_declaration()
                     lexer()
                     statementList()
                     if lexerList[i][1] == "$":
                         lexer()
                         lexer()
+
                     else:
                         error("fourth $ expected")
                 else:
@@ -82,7 +85,36 @@ def syntax_analyzer(lexerList, i):
                 error("second $ expected")
         else:
             error("first $ expected")
+    
+    def check_identifiers_after_declaration():
+    # Check each identifier after the declaration section
+        for token_type, lexeme in lexerList[i+1:]:
+            if token_type == "Identifier":
+                check(lexeme)
+            elif lexeme == "$":
+                break
 
+    def check_type_match_after_declaration():
+        nonlocal i
+        for index in range(i+1, len(lexerList)):
+            token, lexeme = lexerList[index]
+            if token == "Operator":
+                if index + 1 < len(lexerList):
+                    prev_lexeme = lexerList[index - 1][1]
+                    next_lexeme = lexerList[index + 1][1]
+                    if next_lexeme in symbol_table:
+                        prev_type = symbol_table[prev_lexeme]['type']
+                        declared_type = symbol_table[next_lexeme]['type']
+                        if declared_type != prev_type:
+                            print(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
+                            break
+                        if declared_type == symbol_table[prev_lexeme]['type']:
+                            break
+                    if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
+                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                    if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
+                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                  
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
         if lexerList[i][1] == "function":
@@ -305,6 +337,7 @@ def syntax_analyzer(lexerList, i):
     def if2():
         print3("<If'> ::= endif | else <Statement> endif")
         if lexerList[i][1] == "endif":
+            generate_instruction("LABEL", "nil")
             lexer()
         else:
             if lexerList[i][1] == "else":
@@ -358,13 +391,19 @@ def syntax_analyzer(lexerList, i):
             error("keyword print expected")
 
     def scan():
+        nonlocal i
         print3("<Scan> ::= scan ( <IDs> );")
         if lexerList[i][1] == "scan":
             generate_instruction("SIN", "nil")
             lexer()
             if lexerList[i][1] == "(":
                 lexer()
-                generate_instruction("POPM", get_address(lexerList[i][1]))
+                for index in range(i, len(lexerList)):
+                    if lexerList[index][1] == ")":
+                        break
+                    if lexerList[index][1] == ",":
+                        continue
+                    generate_instruction("POPM", get_address(lexerList[index][1]))
                 ids()
                 if lexerList[i][1] == ")":
                     lexer()
@@ -407,7 +446,6 @@ def syntax_analyzer(lexerList, i):
 
     def condition():
         nonlocal instruction_address
-        # look at this one -------------------------------------------------------------------------
         print3("<Condition> ::= <Expression> <Relop> <Expression>")
         expression()
         op = relop()
@@ -417,15 +455,25 @@ def syntax_analyzer(lexerList, i):
             push_jumpstack(instruction_address)
             generate_instruction("JUMP0", "nil")
         elif op == ">":
-            pass
+            generate_instruction("GRT", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "==":
-            pass
+            generate_instruction("EQU", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "!=":
-            pass
+            generate_instruction("NEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "<=":
-            pass
+            generate_instruction("LEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
         elif op == "=>":
-            pass
+            generate_instruction("GEQ", "nil")
+            push_jumpstack(instruction_address)
+            generate_instruction("JUMP0", "nil")
 
     def relop():
         print3("<Relop> ::= == | != | > | < | <= | =>")
@@ -487,7 +535,7 @@ def syntax_analyzer(lexerList, i):
         print3("<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>")
         if lexerList[i][0] in ("Identifier", "Integer", "Real") or lexerList[i][1] in ("true", "false"):
             address = get_address(lexerList[i][1])
-            if isinstance(address, int):
+            if isinstance(address, str):
                 generate_instruction("PUSHI", address)
             else:
                 generate_instruction("PUSHM", address)
@@ -530,10 +578,18 @@ def syntax_analyzer(lexerList, i):
     def get_address(token):
         # access symbol table at key token and return the address stored in the symbol table
         nonlocal symbol_table
+        # Check if the token given to address matches the type in the symbol table
         if token in symbol_table:
-            return str(symbol_table[token]['memory_address'])
+            return symbol_table[token]['memory_address']
         else:
-            return int(token)
+            if token.isdigit():
+                return str(token)
+            elif token == "true":
+                return str(1)
+            elif token == "false":
+                return str(0)
+            else:
+                return f"Error:{token} not valid"
 
     def push_jumpstack(instr_addr):
         nonlocal jumpstack
