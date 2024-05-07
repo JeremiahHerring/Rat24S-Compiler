@@ -11,6 +11,9 @@ result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Ide
 def syntax_analyzer(lexerList, i):
     flag = True
     bigStr = ""
+    symbol_table_str = ""
+    instr_table_str = ""
+    result_str = ""
     symbol_table = {}
     Memory_Address = 5000
     in_declaration = True
@@ -22,7 +25,7 @@ def syntax_analyzer(lexerList, i):
         nonlocal Memory_Address
         nonlocal symbol_table
         if identifier in symbol_table:
-            print("Identifier '{}' already declared".format(identifier))
+            print5("Identifier '{}' already declared".format(identifier))
         else:
             symbol_table[identifier] = {'memory_address' : Memory_Address, 'type' : type}
             Memory_Address += 1
@@ -30,7 +33,7 @@ def syntax_analyzer(lexerList, i):
     def check(identifier):
         nonlocal symbol_table
         if identifier not in symbol_table:
-            print("Identifier '{}' not declared".format(identifier))
+            print5("Identifier '{}' not declared".format(identifier))
 
     def error(error_type):
         nonlocal flag
@@ -45,6 +48,10 @@ def syntax_analyzer(lexerList, i):
     def print4(text):
         nonlocal bigStr
         bigStr += text + "\n"
+
+    def print5(text):
+        nonlocal result_str
+        result_str += text + "\n"
 
     def lexer():
         nonlocal i
@@ -104,14 +111,14 @@ def syntax_analyzer(lexerList, i):
                         prev_type = symbol_table[prev_lexeme]['type']
                         declared_type = symbol_table[next_lexeme]['type']
                         if declared_type != prev_type:
-                            print(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
+                            print5(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
                             break
                         if declared_type == symbol_table[prev_lexeme]['type']:
                             break
                     if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
-                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
                     if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
-                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
                   
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -604,32 +611,36 @@ def syntax_analyzer(lexerList, i):
         addr = pop_jumpstack()
         instr_table[addr]["operand"] = jump_address
 
+    def print_symbol_table(symbol_table):
+        nonlocal symbol_table_str
+        symbol_table_str = "\nSymbol Table:\n"
+        symbol_table_str += "Identifier\tMemory Address\tType\n"
+        for identifier, data in symbol_table.items():
+            symbol_table_str += f"{identifier}\t\t{data['memory_address']}\t\t{data['type']}\n"
+        return symbol_table_str
+
+    def print_instr_table(instr_table):
+        nonlocal instr_table_str
+        instr_table_str = "\nInstr Table:\n"
+        instr_table_str += "Address\tOperation\tOperand\n"
+        for instr in instr_table:
+            if instr:
+                address = instr['address']
+                operation = instr['operation']
+                operand = instr['operand']
+                if operand != "nil":
+                    instr_table_str += f"{address}\t\t{operation}\t\t{operand}\n"
+                else:
+                    instr_table_str += f"{address}\t\t{operation}\n"
+        return instr_table_str
+    
     rat24s()
     print_symbol_table(symbol_table)
     print_instr_table(instr_table)
-    # return bigStr
 
-def print_instr_table(instr_table):
-    print("\nInstr Table:")
-    print("Address\tOperation\tOperand")
-    for instr in instr_table:
-        if instr == {}:
-            continue
-        address = instr['address']
-        operation = instr['operation']
-        operand = instr['operand']
-        if operand != "nil":
-            print(f"{address}\t\t{operation}\t\t{operand}")
-        else:
-            print(f"{address}\t\t{operation}")
-
-def print_symbol_table(symbol_table):
-    print("\nSymbol Table:")
-    print("Identifier\tMemory Address\tType")
-    for identifier, data in symbol_table.items():
-        print(f"{identifier}\t\t{data['memory_address']}\t\t{data['type']}")
-
+    result_str += symbol_table_str + "\n" + instr_table_str
+    return bigStr, result_str
 
 if __name__ == "__main__":
     i = 0
-    print(syntax_analyzer(result1, i))
+    #print(syntax_analyzer(result, i))
