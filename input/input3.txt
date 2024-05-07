@@ -1,8 +1,4 @@
 $
-function calculateArea(length, width real)
-{
-    return length * width;
-}
 $
 integer low, high, step; [* declarations *]
 $
@@ -10,14 +6,14 @@ scan (low, high, step);
 while (low <= high )
 { 
     print (low);
-    print (calculateArea(low, width));   [* Calculate area with given length and width *]
+    print ((low, width));   [* Calculate area with given length and width *]
     low = low + step;
 }
 endwhile
 while (low <= high )
 { 
     print (low);
-    print (calculateArea(low, width));   [* Calculate area with given length and width *]
+    print ((low, width));   [* Calculate area with given length and width *]
     low = low + step;
 }
 endwhile
