@@ -107,6 +107,7 @@ Token: Keyword Lexeme: function
 Token: Identifier Lexeme: calculateArea
 Token: Separator Lexeme: (
 <Opt Parameter List> ::= <Parameter List> | <Empty>
+<Parameter List> ::= <Parameter> <Parameter List'>
 <Parameter> ::= <IDs> <Qualifier>
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: length
@@ -117,6 +118,7 @@ Token: Identifier Lexeme: width
 <IDs'> ::= , <IDs> | epsilon
 <Qualifier> ::= integer | boolean | real
 Token: Keyword Lexeme: real
+<Parameter List'> ::= , <Parameter List> | epsilon
 Token: Separator Lexeme: )
 <Opt Declaration List> ::= <Declaration List> | <Empty>
 <Empty> ::= epsilon
@@ -376,3 +378,51 @@ Token: Keyword Lexeme: endwhile
 <Statement List'> ::= <Statement List> | epsilon
 Token: Separator Lexeme: $
 end of list
+------------------------------
+
+Symbol Table:
+Identifier	Memory Address	Type
+length		5000		integer
+width		5001		integer
+low		5002		integer
+high		5003		integer
+step		5004		integer
+
+
+Instr Table:
+Address	Operation	Operand
+1		PUSHM		5000
+2		PUSHM		5001
+3		M
+4		SIN
+5		POPM		5002
+6		POPM		5003
+7		POPM		5004
+8		LABEL
+9		PUSHM		5002
+10		PUSHM		5003
+11		LEQ
+12		JUMP0		22
+13		PUSHM		5002
+14		SOUT
+15		PUSHI		Error:calculateArea not valid
+16		SOUT
+17		PUSHM		5002
+18		PUSHM		5004
+19		A
+20		POPM		5002
+21		JUMP		8
+22		LABEL
+23		PUSHM		5002
+24		PUSHM		5003
+25		LEQ
+26		JUMP0		36
+27		PUSHM		5002
+28		SOUT
+29		PUSHI		Error:calculateArea not valid
+30		SOUT
+31		PUSHM		5002
+32		PUSHM		5004
+33		A
+34		POPM		5002
+35		JUMP		22
