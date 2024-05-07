@@ -13,6 +13,7 @@ def syntax_analyzer(lexerList, i):
     bigStr = ""
     symbol_table_str = ""
     instr_table_str = ""
+    result_str = ""
     symbol_table = {}
     Memory_Address = 5000
     in_declaration = True
@@ -24,7 +25,7 @@ def syntax_analyzer(lexerList, i):
         nonlocal Memory_Address
         nonlocal symbol_table
         if identifier in symbol_table:
-            print("Identifier '{}' already declared".format(identifier))
+            print5("Identifier '{}' already declared".format(identifier))
         else:
             symbol_table[identifier] = {'memory_address' : Memory_Address, 'type' : type}
             Memory_Address += 1
@@ -32,7 +33,7 @@ def syntax_analyzer(lexerList, i):
     def check(identifier):
         nonlocal symbol_table
         if identifier not in symbol_table:
-            print("Identifier '{}' not declared".format(identifier))
+            print5("Identifier '{}' not declared".format(identifier))
 
     def error(error_type):
         nonlocal flag
@@ -47,6 +48,10 @@ def syntax_analyzer(lexerList, i):
     def print4(text):
         nonlocal bigStr
         bigStr += text + "\n"
+
+    def print5(text):
+        nonlocal result_str
+        result_str += text + "\n"
 
     def lexer():
         nonlocal i
@@ -106,14 +111,14 @@ def syntax_analyzer(lexerList, i):
                         prev_type = symbol_table[prev_lexeme]['type']
                         declared_type = symbol_table[next_lexeme]['type']
                         if declared_type != prev_type:
-                            print(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
+                            print5(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
                             break
                         if declared_type == symbol_table[prev_lexeme]['type']:
                             break
                     if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
-                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
                     if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
-                        print(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
                   
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -633,7 +638,7 @@ def syntax_analyzer(lexerList, i):
     print_symbol_table(symbol_table)
     print_instr_table(instr_table)
 
-    result_str = symbol_table_str + "\n" + instr_table_str
+    result_str += symbol_table_str + "\n" + instr_table_str
     return bigStr, result_str
 
 if __name__ == "__main__":

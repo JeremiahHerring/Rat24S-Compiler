@@ -379,6 +379,8 @@ Token: Keyword Lexeme: endwhile
 Token: Separator Lexeme: $
 end of list
 ------------------------------
+Identifier 'calculateArea' not declared
+Identifier 'calculateArea' not declared
 
 Symbol Table:
 Identifier	Memory Address	Type
