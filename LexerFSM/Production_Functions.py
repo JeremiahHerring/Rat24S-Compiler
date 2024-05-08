@@ -99,6 +99,7 @@ def syntax_analyzer(lexerList, i):
             elif lexeme == "$":
                 break
 
+    # TODO: Type matching doesn't seem to be working properly for test case #3
     def check_type_match_after_declaration():
         nonlocal i
         for index in range(i+1, len(lexerList)):
