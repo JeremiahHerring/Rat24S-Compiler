@@ -20,9 +20,10 @@ $
     scan(yes);
     if (yes == no) {
        max = yes + no;
-       no = true; 
+       no = 10; 
+       yes = yes + 20
     } endif
 }
 print(no);
-print (sum + max);
+print (yes  * true);
 $

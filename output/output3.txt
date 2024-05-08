@@ -78,8 +78,13 @@ Identifier   | no
 Separator    | ;
 Identifier   | no
 Operator     | =
-Keyword      | true
+Integer      | 10
 Separator    | ;
+Identifier   | yes
+Operator     | =
+Identifier   | yes
+Operator     | +
+Integer      | 20
 Separator    | }
 Keyword      | endif
 Separator    | }
@@ -90,9 +95,9 @@ Separator    | )
 Separator    | ;
 Keyword      | print
 Separator    | (
-Identifier   | sum
-Operator     | +
-Identifier   | max
+Identifier   | yes
+Operator     | *
+Keyword      | true
 Separator    | )
 Separator    | ;
 Separator    | $
@@ -353,44 +358,22 @@ Token: Operator Lexeme: =
 <Term> ::= <Factor> <Term'>
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Keyword Lexeme: true
+Token: Integer Lexeme: 10
 <Primary’> ::= ( <IDs> ) <Primary’> | epsilon
 <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
 <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 Token: Separator Lexeme: ;
 <Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-<If'> ::= endif | else <Statement> endif
-Token: Keyword Lexeme: endif
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-<Statement List'> ::= <Statement List> | epsilon
 <Statement List> ::= <Statement> <Statement List'>
 <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Print> ::= print ( <Expression> );
-Token: Keyword Lexeme: print
-Token: Separator Lexeme: (
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: yes
+Token: Operator Lexeme: =
 <Expression> ::= <Term> <Expression'>
 <Term> ::= <Factor> <Term'>
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: no
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: )
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Print> ::= print ( <Expression> );
-Token: Keyword Lexeme: print
-Token: Separator Lexeme: (
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: sum
+Token: Identifier Lexeme: yes
 <Primary’> ::= ( <IDs> ) <Primary’> | epsilon
 <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
 <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
@@ -398,15 +381,18 @@ Token: Operator Lexeme: +
 <Term> ::= <Factor> <Term'>
 <Factor> ::= - <Primary> | <Primary>
 <Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: max
+Token: Integer Lexeme: 20
 <Primary’> ::= ( <IDs> ) <Primary’> | epsilon
 <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Separator Lexeme: )
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: $
+Unexpected token 'Separator' with lexeme '}'. Error type: ; expected
 end of list
 ------------------------------
+Error matching 'max' with type 'integer' and 'yes' with type 'boolean'
+Error: Cannot use arithmetic operations with boolean types; Cannot use 'no' with '+'
+Error: type matching with 'no' and '10'
+Error: type matching with 'yes' and '20'
+Error: Cannot use arithmetic operations with boolean types; Cannot use 'yes' with '+'
+Error: Cannot use arithmetic operations with boolean types; Cannot use 'yes' with '*'
 
 Symbol Table:
 Identifier	Memory Address	Type
@@ -446,17 +432,21 @@ Address	Operation	Operand
 25		PUSHM		5003
 26		PUSHM		5004
 27		EQU
-28		JUMP0		35
+28		JUMP0		39
 29		PUSHM		5003
 30		PUSHM		5004
 31		A
 32		POPM		5001
-33		PUSHI		1
+33		PUSHI		10
 34		POPM		5004
-35		LABEL
-36		PUSHM		5004
-37		SOUT
-38		PUSHM		5002
-39		PUSHM		5001
-40		A
+35		PUSHM		5003
+36		PUSHI		20
+37		A
+38		POPM		5003
+39		LABEL
+40		PUSHM		5004
 41		SOUT
+42		PUSHM		5003
+43		PUSHI		1
+44		M
+45		SOUT
