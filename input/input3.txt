@@ -1,20 +1,28 @@
+[* this is sample test for <compound> *]
 $
+[* NO function definitions *]
 $
-integer low, high, step; [* declarations *]
+integer i, max, sum; boolean yes, no; [* declarations *]
 $
-scan (low, high, step);
-while (low <= high )
-{ 
-    print (low);
-    print ((low, width));   [* Calculate area with given length and width *]
-    low = low + step;
+{
+    sum = 0;
+    i = 1;
+    scan (max);
+    {
+        while (i < max) {
+            sum = sum + i;
+            i = i + 1;
+        } endwhile
+    }
 }
-endwhile
-while (low <= high )
-{ 
-    print (low);
-    print ((low, width));   [* Calculate area with given length and width *]
-    low = low + step;
+{
+    no = false;
+    scan(yes);
+    if (yes == no) {
+       max = yes + no;
+       no = true; 
+    } endif
 }
-endwhile
+print(no);
+print (sum + max);
 $
