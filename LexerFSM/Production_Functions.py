@@ -121,12 +121,13 @@ def syntax_analyzer(lexerList, i):
                         continue
                     else:
                         continue
-                if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
-                    print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
-                if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
-                    print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
-                if symbol_table[prev_lexeme]['type'] == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
-                    print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{prev_lexeme}' with '{lexerList[index][1]}'")
+                if prev_lexeme in symbol_table:
+                    if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
+                        print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
+                    if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
+                        print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
+                    if symbol_table[prev_lexeme]['type'] == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
+                        print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{prev_lexeme}' with '{lexerList[index][1]}'")
                   
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
