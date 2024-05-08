@@ -8,6 +8,8 @@ Separator    | ,
 Identifier   | max
 Separator    | ,
 Identifier   | sum
+Separator    | ,
+Identifier   | i
 Separator    | ;
 Keyword      | boolean
 Identifier   | yes
@@ -16,6 +18,9 @@ Identifier   | no
 Separator    | ;
 Separator    | $
 Separator    | {
+Identifier   | not_declared
+Operator     | =
+Integer      | 10
 Identifier   | sum
 Operator     | =
 Integer      | 0
@@ -125,6 +130,10 @@ Token: Separator Lexeme: ,
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: sum
 <IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: i
+<IDs'> ::= , <IDs> | epsilon
 Token: Separator Lexeme: ;
 <Declaration List'> ::= <Declaration List> | epsilon
 <Declaration List> ::= <Declaration> ; <Declaration List'>
@@ -148,211 +157,7 @@ Token: Separator Lexeme: {
 <Statement List> ::= <Statement> <Statement List'>
 <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 <Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: sum
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 0
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: i
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 1
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Scan> ::= scan ( <IDs> );
-Token: Keyword Lexeme: scan
-Token: Separator Lexeme: (
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: max
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: )
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Compound> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<While> ::= while ( <Condition> ) <Statement> endwhile
-Token: Keyword Lexeme: while
-Token: Separator Lexeme: (
-<Condition> ::= <Expression> <Relop> <Expression>
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: i
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-<Relop> ::= == | != | > | < | <= | =>
-Token: Operator Lexeme: <
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: max
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: )
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Compound> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: sum
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: sum
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Operator Lexeme: +
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: i
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: i
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: i
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Operator Lexeme: +
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 1
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-Token: Keyword Lexeme: endwhile
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-<Statement List'> ::= <Statement List> | epsilon
-Token: Separator Lexeme: }
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Compound> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: no
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Keyword Lexeme: false
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Scan> ::= scan ( <IDs> );
-Token: Keyword Lexeme: scan
-Token: Separator Lexeme: (
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: yes
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: )
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<If> ::= if ( <Condition> ) <Statement> <If'>
-Token: Keyword Lexeme: if
-Token: Separator Lexeme: (
-<Condition> ::= <Expression> <Relop> <Expression>
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: yes
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-<Relop> ::= == | != | > | < | <= | =>
-Token: Operator Lexeme: ==
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: no
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: )
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Compound> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: max
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: yes
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Operator Lexeme: +
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: no
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: no
+Token: Identifier Lexeme: not_declared
 Token: Operator Lexeme: =
 <Expression> ::= <Term> <Expression'>
 <Term> ::= <Factor> <Term'>
@@ -362,31 +167,12 @@ Token: Integer Lexeme: 10
 <Primary’> ::= ( <IDs> ) <Primary’> | epsilon
 <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
 <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Separator Lexeme: ;
-<Statement List'> ::= <Statement List> | epsilon
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: yes
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Identifier Lexeme: yes
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Token: Operator Lexeme: +
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 20
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+Unexpected token 'Identifier' with lexeme 'sum'. Error type: ; expected
 Unexpected token 'Separator' with lexeme '}'. Error type: ; expected
 end of list
 ------------------------------
+Identifier 'i' already declared
+Identifier 'not_declared' not declared
 Error matching 'max' with type 'integer' and 'yes' with type 'boolean'
 Error: Cannot use arithmetic operations with boolean types; Cannot use 'no' with '+'
 Error: type matching with 'no' and '10'
@@ -405,48 +191,50 @@ no		5004		boolean
 
 Instr Table:
 Address	Operation	Operand
-1		PUSHI		0
-2		POPM		5002
-3		PUSHI		1
-4		POPM		5000
-5		SIN
-6		POPM		5001
-7		LABEL
-8		PUSHM		5000
-9		PUSHM		5001
-10		LES
-11		JUMP0		21
-12		PUSHM		5002
-13		PUSHM		5000
-14		A
-15		POPM		5002
-16		PUSHM		5000
-17		PUSHI		1
-18		A
-19		POPM		5000
-20		JUMP		7
-21		PUSHI		0
-22		POPM		5004
-23		SIN
-24		POPM		5003
-25		PUSHM		5003
-26		PUSHM		5004
-27		EQU
-28		JUMP0		39
-29		PUSHM		5003
-30		PUSHM		5004
-31		A
-32		POPM		5001
-33		PUSHI		10
-34		POPM		5004
-35		PUSHM		5003
-36		PUSHI		20
-37		A
-38		POPM		5003
-39		LABEL
-40		PUSHM		5004
-41		SOUT
-42		PUSHM		5003
-43		PUSHI		1
-44		M
-45		SOUT
+1		PUSHI		10
+2		POPM		Error:not_declared not valid
+3		PUSHI		0
+4		POPM		5002
+5		PUSHI		1
+6		POPM		5000
+7		SIN
+8		POPM		5001
+9		LABEL
+10		PUSHM		5000
+11		PUSHM		5001
+12		LES
+13		JUMP0		23
+14		PUSHM		5002
+15		PUSHM		5000
+16		A
+17		POPM		5002
+18		PUSHM		5000
+19		PUSHI		1
+20		A
+21		POPM		5000
+22		JUMP		9
+23		PUSHI		0
+24		POPM		5004
+25		SIN
+26		POPM		5003
+27		PUSHM		5003
+28		PUSHM		5004
+29		EQU
+30		JUMP0		41
+31		PUSHM		5003
+32		PUSHM		5004
+33		A
+34		POPM		5001
+35		PUSHI		10
+36		POPM		5004
+37		PUSHM		5003
+38		PUSHI		20
+39		A
+40		POPM		5003
+41		LABEL
+42		PUSHM		5004
+43		SOUT
+44		PUSHM		5003
+45		PUSHI		1
+46		M
+47		SOUT

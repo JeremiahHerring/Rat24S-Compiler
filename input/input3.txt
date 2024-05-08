@@ -2,9 +2,10 @@
 $
 [* NO function definitions *]
 $
-integer i, max, sum; boolean yes, no; [* declarations *]
+integer i, max, sum, i; boolean yes, no; [* declarations *]
 $
 {
+    not_declared = 10
     sum = 0;
     i = 1;
     scan (max);
