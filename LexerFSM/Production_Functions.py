@@ -127,9 +127,6 @@ def syntax_analyzer(lexerList, i):
                     print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
                 if symbol_table[prev_lexeme]['type'] == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
                     print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{prev_lexeme}' with '{lexerList[index][1]}'")
-
-
-
                   
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -650,7 +647,7 @@ def syntax_analyzer(lexerList, i):
     print_instr_table(instr_table)
 
     result_str += symbol_table_str + "\n" + instr_table_str
-    return result_str
+    return bigStr, result_str
 
 if __name__ == "__main__":
     i = 0
