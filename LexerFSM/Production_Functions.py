@@ -7,6 +7,8 @@ current_type = None
 
 result = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ';'), ('Separator', '$'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 result1 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'a'), ('Separator', ','), ('Identifier', 'b'), ('Separator', ','), ('Identifier', 'c'), ('Separator', ';'), ('Separator', '$'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'a'), ('Operator', '<'), ('Identifier', 'b'), ('Separator', ')'), ('Identifier', 'a'), ('Operator', '='), ('Identifier', 'c'), ('Separator', ';'), ('Keyword', 'endif'), ('Separator', '$')]
+result3 = [('Separator', '$'), ('Separator', '$'), ('Keyword', 'integer'), ('Identifier', 'i'), ('Separator', ','), ('Identifier', 'max'), ('Separator', ','), ('Identifier', 'sum'), 
+('Separator', ';'), ('Keyword', 'boolean'), ('Identifier', 'yes'), ('Separator', ','), ('Identifier', 'no'), ('Separator', ';'), ('Separator', '$'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Integer', '0'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Integer', '1'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'max'), ('Separator', ')'), ('Separator', ';'), ('Separator', '{'), ('Keyword', 'while'), ('Separator', '('), ('Identifier', 'i'), ('Operator', '<'), ('Identifier', 'max'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'sum'), ('Operator', '='), ('Identifier', 'sum'), ('Operator', '+'), ('Identifier', 'i'), ('Separator', ';'), ('Identifier', 'i'), ('Operator', '='), ('Identifier', 'i'), ('Operator', '+'), ('Integer', '1'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endwhile'), ('Separator', '}'), ('Separator', '}'), ('Separator', '{'), ('Identifier', 'no'), ('Operator', '='), ('Keyword', 'false'), ('Separator', ';'), ('Keyword', 'scan'), ('Separator', '('), ('Identifier', 'yes'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'if'), ('Separator', '('), ('Identifier', 'yes'), ('Operator', '=='), ('Identifier', 'no'), ('Separator', ')'), ('Separator', '{'), ('Identifier', 'max'), ('Operator', '='), ('Identifier', 'yes'), ('Operator', '+'), ('Identifier', 'no'), ('Separator', ';'), ('Identifier', 'no'), ('Operator', '='), ('Keyword', 'true'), ('Separator', ';'), ('Separator', '}'), ('Keyword', 'endif'), ('Separator', '}'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'no'), ('Separator', ')'), ('Separator', ';'), ('Keyword', 'print'), ('Separator', '('), ('Identifier', 'yes'), ('Operator', '+'), ('Integer', 'true'), ('Separator', ')'), ('Separator', ';'), ('Separator', '$')]
 
 def syntax_analyzer(lexerList, i):
     flag = True
@@ -99,26 +101,35 @@ def syntax_analyzer(lexerList, i):
             elif lexeme == "$":
                 break
 
+    # TODO: Type matching doesn't seem to be working properly for test case #3
     def check_type_match_after_declaration():
         nonlocal i
-        for index in range(i+1, len(lexerList)):
-            token, lexeme = lexerList[index]
+        for index in range(i, len(lexerList)):
+            token = lexerList[index][0]
             if token == "Operator":
-                if index + 1 < len(lexerList):
-                    prev_lexeme = lexerList[index - 1][1]
-                    next_lexeme = lexerList[index + 1][1]
-                    if next_lexeme in symbol_table:
-                        prev_type = symbol_table[prev_lexeme]['type']
-                        declared_type = symbol_table[next_lexeme]['type']
-                        if declared_type != prev_type:
-                            print5(f"Error matching {prev_lexeme} with type {prev_type} and {next_lexeme} with type {declared_type}")
-                            break
-                        if declared_type == symbol_table[prev_lexeme]['type']:
-                            break
-                    if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
-                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
-                    if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
-                        print5(f"Error type matching with {prev_lexeme} and {next_lexeme}")
+                #print("We got an operator here", lexerList[index][1])
+                prev_lexeme = lexerList[index - 1][1]
+                next_lexeme = lexerList[index + 1][1]
+                # Check if lexeme on the left side of the operator matches type with lexeme on right side of the operator
+                if next_lexeme in symbol_table:
+                    prev_type = symbol_table[prev_lexeme]['type']
+                    declared_type = symbol_table[next_lexeme]['type']
+                    if declared_type == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
+                        print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{next_lexeme}' with '{lexerList[index][1]}'")
+                    if declared_type != prev_type:
+                        print5(f"Error matching '{prev_lexeme}' with type '{prev_type}' and '{next_lexeme}' with type '{declared_type}'")
+                        continue
+                    else:
+                        continue
+                if symbol_table[prev_lexeme]['type'] == "integer" and not next_lexeme.isdigit():
+                    print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
+                if symbol_table[prev_lexeme]['type'] == "boolean" and not next_lexeme in ("true", "false"):
+                    print5(f"Error: type matching with '{prev_lexeme}' and '{next_lexeme}'")
+                if symbol_table[prev_lexeme]['type'] == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
+                    print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{prev_lexeme}' with '{lexerList[index][1]}'")
+
+
+
                   
     def optFunctionDefinitions():
         print3("<Opt Function Definitions> ::= <Function Definitions> | <Empty>")
@@ -639,8 +650,8 @@ def syntax_analyzer(lexerList, i):
     print_instr_table(instr_table)
 
     result_str += symbol_table_str + "\n" + instr_table_str
-    return bigStr, result_str
+    return result_str
 
 if __name__ == "__main__":
     i = 0
-    #print(syntax_analyzer(result, i))
+    print(syntax_analyzer(result3, i))

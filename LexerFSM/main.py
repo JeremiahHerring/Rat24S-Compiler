@@ -209,6 +209,7 @@ if __name__ == "__main__":
             content = file.read()
 
         result = lexer(content)
+        print(result)
         output_file_path = f'./output/output{i}.txt'
         
         with open(output_file_path, 'w') as output_file:
