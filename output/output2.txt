@@ -12,6 +12,22 @@ Separator    | ,
 Identifier   | d
 Separator    | ;
 Separator    | $
+Identifier   | a
+Operator     | =
+Integer      | 1
+Separator    | ;
+Identifier   | b
+Operator     | =
+Integer      | 2
+Separator    | ;
+Identifier   | c
+Operator     | =
+Integer      | 3
+Separator    | ;
+Identifier   | d
+Operator     | =
+Integer      | 4
+Separator    | ;
 Keyword      | if
 Separator    | (
 Identifier   | a
@@ -64,6 +80,66 @@ Token: Identifier Lexeme: d
 Token: Separator Lexeme: ;
 <Declaration List'> ::= <Declaration List> | epsilon
 Token: Separator Lexeme: $
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: a
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 1
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: b
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 2
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: c
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 3
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: d
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Integer Lexeme: 4
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
 <Statement List> ::= <Statement> <Statement List'>
 <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 <If> ::= if ( <Condition> ) <Statement> <If'>
@@ -145,12 +221,20 @@ d		5003		integer
 
 Instr Table:
 Address	Operation	Operand
-1		PUSHM		5000
-2		PUSHM		5001
-3		LES
-4		JUMP0		7
-5		PUSHM		5002
-6		POPM		5000
-7		LABEL
-8		PUSHM		5003
-9		POPM		5000
+1		PUSHI		1
+2		POPM		5000
+3		PUSHI		2
+4		POPM		5001
+5		PUSHI		3
+6		POPM		5002
+7		PUSHI		4
+8		POPM		5003
+9		PUSHM		5000
+10		PUSHM		5001
+11		LES
+12		JUMP0		15
+13		PUSHM		5002
+14		POPM		5000
+15		LABEL
+16		PUSHM		5003
+17		POPM		5000

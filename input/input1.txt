@@ -8,8 +8,8 @@ sum = 0;
 i = 1;
 scan (max);
 while (i < max) {
-sum = sum + i;
-i = i + 1;
+    sum = sum + i;
+    i = i + 1;
 }
 endwhile
 print (sum + max);

@@ -4,6 +4,10 @@ $
 $
 integer a, b, c, d; [* declarations *]
 $
+a = 1;
+b = 2;
+c = 3;
+d = 4;
 if (a < b)
 {
     a = c;
