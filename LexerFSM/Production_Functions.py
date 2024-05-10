@@ -617,7 +617,6 @@ def syntax_analyzer(lexerList, i):
             return None
     
     def back_patch(jump_address):
-        # ---------------------------------------------- need to create jumpstack
         addr = pop_jumpstack()
         instr_table[addr]["operand"] = jump_address
 
