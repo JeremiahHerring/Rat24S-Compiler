@@ -95,7 +95,9 @@ def syntax_analyzer(lexerList, i):
     
     def check_identifiers_after_declaration():
     # Check each identifier after the declaration section
+        nonlocal symbol_table
         for token_type, lexeme in lexerList[i+1:]:
+            print(token_type, lexeme)
             if token_type == "Identifier":
                 check(lexeme)
             elif lexeme == "$":
@@ -110,9 +112,14 @@ def syntax_analyzer(lexerList, i):
                 #print("We got an operator here", lexerList[index][1])
                 prev_lexeme = lexerList[index - 1][1]
                 next_lexeme = lexerList[index + 1][1]
+                prev_type = None
                 # Check if lexeme on the left side of the operator matches type with lexeme on right side of the operator
                 if next_lexeme in symbol_table:
-                    prev_type = symbol_table[prev_lexeme]['type']
+                    if prev_lexeme in symbol_table:
+                        prev_type = symbol_table[prev_lexeme]['type']
+                    else:
+                        print5(f"Error: {prev_lexeme} not declared")
+
                     declared_type = symbol_table[next_lexeme]['type']
                     if declared_type == "boolean" and lexerList[index][1] in ("+", "-", "*", "/", "<", ">", "<=", ">="):
                         print5(f"Error: Cannot use arithmetic operations with boolean types; Cannot use '{next_lexeme}' with '{lexerList[index][1]}'")
