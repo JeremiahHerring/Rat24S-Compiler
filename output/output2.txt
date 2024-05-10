@@ -8,6 +8,8 @@ Separator    | ,
 Identifier   | b
 Separator    | ,
 Identifier   | c
+Separator    | ,
+Identifier   | d
 Separator    | ;
 Separator    | $
 Keyword      | if
@@ -16,10 +18,19 @@ Identifier   | a
 Operator     | <
 Identifier   | b
 Separator    | )
+Separator    | {
 Identifier   | a
 Operator     | =
 Identifier   | c
 Separator    | ;
+Separator    | }
+Keyword      | else
+Separator    | {
+Identifier   | a
+Operator     | =
+Identifier   | d
+Separator    | ;
+Separator    | }
 Keyword      | endif
 Separator    | $
 
@@ -45,6 +56,10 @@ Token: Identifier Lexeme: b
 Token: Separator Lexeme: ,
 <IDs> ::= <Identifier> <IDs'>
 Token: Identifier Lexeme: c
+<IDs'> ::= , <IDs> | epsilon
+Token: Separator Lexeme: ,
+<IDs> ::= <Identifier> <IDs'>
+Token: Identifier Lexeme: d
 <IDs'> ::= , <IDs> | epsilon
 Token: Separator Lexeme: ;
 <Declaration List'> ::= <Declaration List> | epsilon
@@ -75,6 +90,10 @@ Token: Identifier Lexeme: b
 <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 Token: Separator Lexeme: )
 <Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Compound> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 <Assign> ::= <Identifier> = <Expression> ;
 Token: Identifier Lexeme: a
 Token: Operator Lexeme: =
@@ -87,7 +106,29 @@ Token: Identifier Lexeme: c
 <Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
 <Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
 Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
 <If'> ::= endif | else <Statement> endif
+Token: Keyword Lexeme: else
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Compound> ::= { <Statement List> }
+Token: Separator Lexeme: {
+<Statement List> ::= <Statement> <Statement List'>
+<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Assign> ::= <Identifier> = <Expression> ;
+Token: Identifier Lexeme: a
+Token: Operator Lexeme: =
+<Expression> ::= <Term> <Expression'>
+<Term> ::= <Factor> <Term'>
+<Factor> ::= - <Primary> | <Primary>
+<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
+Token: Identifier Lexeme: d
+<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
+<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
+<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
+Token: Separator Lexeme: ;
+<Statement List'> ::= <Statement List> | epsilon
+Token: Separator Lexeme: }
 Token: Keyword Lexeme: endif
 <Statement List'> ::= <Statement List> | epsilon
 Token: Separator Lexeme: $
@@ -99,6 +140,7 @@ Identifier	Memory Address	Type
 a		5000		integer
 b		5001		integer
 c		5002		integer
+d		5003		integer
 
 
 Instr Table:
@@ -110,3 +152,5 @@ Address	Operation	Operand
 5		PUSHM		5002
 6		POPM		5000
 7		LABEL
+8		PUSHM		5003
+9		POPM		5000

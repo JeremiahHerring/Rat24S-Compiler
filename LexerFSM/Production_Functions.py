@@ -355,6 +355,7 @@ def syntax_analyzer(lexerList, i):
             lexer()
         else:
             if lexerList[i][1] == "else":
+                generate_instruction("LABEL", "nil")
                 lexer()
                 statement()
                 if lexerList[i][1] == "endif":

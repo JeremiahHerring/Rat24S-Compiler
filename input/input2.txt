@@ -2,7 +2,15 @@
 $
 [* NO function definitions *]
 $
-integer a, b, c; [* declarations *]
+integer a, b, c, d; [* declarations *]
 $
-if (a < b) a = c; endif
+if (a < b)
+{
+    a = c;
+}
+else
+{
+    a = d;
+}
+endif
 $
