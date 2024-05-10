@@ -1,30 +1,24 @@
-[* this is sample test for <compound> *]
+[*This program finds the area and checks if it is less then or greater than the max value*]
 $
 [* NO function definitions *]
 $
-integer i, max, sum, i; boolean yes, no; [* declarations *]
+integer area_x, area_y, max_value; boolean yes, no; [* declarations *]
 $
 {
-    not_declared = 10
-    sum = 0;
-    i = 1;
-    scan (max);
+    not_declared = 10;
+    max_value = 20;
+    scan (area_x, area_y);
     {
-        while (i < max) {
-            sum = sum + i;
-            i = i + 1;
-        } endwhile
+        if (length * max_value < width) {
+            yes = true;
+        } else {
+            no = true;
+        }
     }
 }
-{
-    no = false;
-    scan(yes);
-    if (yes == no) {
-       max = yes + no;
-       no = 10; 
-       yes = yes + 20
-    } endif
-}
-print(no);
-print (yes  * true);
+if (no == true) {
+    print(no);
+    } else {
+        print(yes);
+    }
 $
