@@ -2,23 +2,22 @@
 $
 [* NO function definitions *]
 $
-integer area_x, area_y, max_value; boolean yes, no; [* declarations *]
+integer length, width, max_value; boolean yes, no; [* declarations *]
 $
 {
-    not_declared = 10;
     max_value = 20;
-    scan (area_x, area_y);
+    scan (length, width);
     {
-        if (length * max_value < width) {
+        if (length * width < max_value) {
             yes = true;
         } else {
             no = true;
-        }
+        } endif
     }
 }
 if (no == true) {
     print(no);
     } else {
         print(yes);
-    }
+    } endif
 $

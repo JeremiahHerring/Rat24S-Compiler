@@ -1,240 +1,37 @@
-Token            Lexeme
-------------------------------
-Separator    | $
-Separator    | $
-Keyword      | integer
-Identifier   | i
-Separator    | ,
-Identifier   | max
-Separator    | ,
-Identifier   | sum
-Separator    | ,
-Identifier   | i
-Separator    | ;
-Keyword      | boolean
-Identifier   | yes
-Separator    | ,
-Identifier   | no
-Separator    | ;
-Separator    | $
-Separator    | {
-Identifier   | not_declared
-Operator     | =
-Integer      | 10
-Identifier   | sum
-Operator     | =
-Integer      | 0
-Separator    | ;
-Identifier   | i
-Operator     | =
-Integer      | 1
-Separator    | ;
-Keyword      | scan
-Separator    | (
-Identifier   | max
-Separator    | )
-Separator    | ;
-Separator    | {
-Keyword      | while
-Separator    | (
-Identifier   | i
-Operator     | <
-Identifier   | max
-Separator    | )
-Separator    | {
-Identifier   | sum
-Operator     | =
-Identifier   | sum
-Operator     | +
-Identifier   | i
-Separator    | ;
-Identifier   | i
-Operator     | =
-Identifier   | i
-Operator     | +
-Integer      | 1
-Separator    | ;
-Separator    | }
-Keyword      | endwhile
-Separator    | }
-Separator    | }
-Separator    | {
-Identifier   | no
-Operator     | =
-Keyword      | false
-Separator    | ;
-Keyword      | scan
-Separator    | (
-Identifier   | yes
-Separator    | )
-Separator    | ;
-Keyword      | if
-Separator    | (
-Identifier   | yes
-Operator     | ==
-Identifier   | no
-Separator    | )
-Separator    | {
-Identifier   | max
-Operator     | =
-Identifier   | yes
-Operator     | +
-Identifier   | no
-Separator    | ;
-Identifier   | no
-Operator     | =
-Integer      | 10
-Separator    | ;
-Identifier   | yes
-Operator     | =
-Identifier   | yes
-Operator     | +
-Integer      | 20
-Separator    | }
-Keyword      | endif
-Separator    | }
-Keyword      | print
-Separator    | (
-Identifier   | no
-Separator    | )
-Separator    | ;
-Keyword      | print
-Separator    | (
-Identifier   | yes
-Operator     | *
-Keyword      | true
-Separator    | )
-Separator    | ;
-Separator    | $
-
-Syntax Analysis:
-------------------------------
-<Rat24S> ::= $ <Opt Function Definitions> $ <Opt Declaration List> $ <Statement List> $
-Token: Separator Lexeme: $
-<Opt Function Definitions> ::= <Function Definitions> | <Empty>
-<Empty> ::= epsilon
-Token: Separator Lexeme: $
-<Opt Declaration List> ::= <Declaration List> | <Empty>
-<Declaration List> ::= <Declaration> ; <Declaration List'>
-<Declaration> ::= <Qualifier> <IDs>
-<Qualifier> ::= integer | boolean | real
-Token: Keyword Lexeme: integer
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: i
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: max
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: sum
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: i
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ;
-<Declaration List'> ::= <Declaration List> | epsilon
-<Declaration List> ::= <Declaration> ; <Declaration List'>
-<Declaration> ::= <Qualifier> <IDs>
-<Qualifier> ::= integer | boolean | real
-Token: Keyword Lexeme: boolean
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: yes
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ,
-<IDs> ::= <Identifier> <IDs'>
-Token: Identifier Lexeme: no
-<IDs'> ::= , <IDs> | epsilon
-Token: Separator Lexeme: ;
-<Declaration List'> ::= <Declaration List> | epsilon
-Token: Separator Lexeme: $
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Compound> ::= { <Statement List> }
-Token: Separator Lexeme: {
-<Statement List> ::= <Statement> <Statement List'>
-<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
-<Assign> ::= <Identifier> = <Expression> ;
-Token: Identifier Lexeme: not_declared
-Token: Operator Lexeme: =
-<Expression> ::= <Term> <Expression'>
-<Term> ::= <Factor> <Term'>
-<Factor> ::= - <Primary> | <Primary>
-<Primary> ::= <Identifier> <Primary’> |  <Integer> <Primary’> | <Real> <Primary’> | true <Primary’> | false <Primary’> | ( <Expression> ) <Primary’>
-Token: Integer Lexeme: 10
-<Primary’> ::= ( <IDs> ) <Primary’> | epsilon
-<Term'> ::= * <Factor> <Term'> | / <Factor> <Term'> | epsilon
-<Expression'> ::= + <Term> <Expression'> | - <Term> <Expression'> | epsilon
-Unexpected token 'Identifier' with lexeme 'sum'. Error type: ; expected
-Unexpected token 'Separator' with lexeme '}'. Error type: ; expected
-end of list
-------------------------------
-Identifier 'i' already declared
-Identifier 'not_declared' not declared
-Error matching 'max' with type 'integer' and 'yes' with type 'boolean'
-Error: Cannot use arithmetic operations with boolean types; Cannot use 'no' with '+'
-Error: type matching with 'no' and '10'
-Error: type matching with 'yes' and '20'
-Error: Cannot use arithmetic operations with boolean types; Cannot use 'yes' with '+'
-Error: Cannot use arithmetic operations with boolean types; Cannot use 'yes' with '*'
 
 Symbol Table:
 Identifier	Memory Address	Type
-i		5000		integer
-max		5001		integer
-sum		5002		integer
-yes		5003		boolean
-no		5004		boolean
+length    		5000		integer 
+width     		5001		integer 
+max_value 		5002		integer 
+yes       		5003		boolean 
+no        		5004		boolean 
 
 
 Instr Table:
 Address	Operation	Operand
-1		PUSHI		10
-2		POPM		Error:not_declared not valid
-3		PUSHI		0
-4		POPM		5002
-5		PUSHI		1
-6		POPM		5000
-7		SIN
-8		POPM		5001
-9		LABEL
-10		PUSHM		5000
-11		PUSHM		5001
-12		LES
-13		JUMP0		23
-14		PUSHM		5002
-15		PUSHM		5000
-16		A
-17		POPM		5002
-18		PUSHM		5000
-19		PUSHI		1
-20		A
-21		POPM		5000
-22		JUMP		9
-23		PUSHI		0
-24		POPM		5004
-25		SIN
-26		POPM		5003
-27		PUSHM		5003
-28		PUSHM		5004
-29		EQU
-30		JUMP0		41
-31		PUSHM		5003
-32		PUSHM		5004
-33		A
-34		POPM		5001
-35		PUSHI		10
-36		POPM		5004
-37		PUSHM		5003
-38		PUSHI		20
-39		A
-40		POPM		5003
-41		LABEL
-42		PUSHM		5004
-43		SOUT
-44		PUSHM		5003
-45		PUSHI		1
-46		M
-47		SOUT
+1		PUSHI		20
+2		POPM		5002
+3		SIN
+4		POPM		5000
+5		POPM		5001
+6		PUSHM		5000
+7		PUSHM		5001
+8		M
+9		PUSHM		5002
+10		LES
+11		JUMP0		14
+12		PUSHI		1
+13		POPM		5003
+14		LABEL
+15		PUSHI		1
+16		POPM		5004
+17		PUSHM		5004
+18		PUSHI		1
+19		EQU
+20		JUMP0		23
+21		PUSHM		5004
+22		SOUT
+23		LABEL
+24		PUSHM		5003
+25		SOUT

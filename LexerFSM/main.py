@@ -189,15 +189,15 @@ def lexer(content):
 # given a path to an output file, print all of the token types and lexemes in a nice format
 def write_to_output(tokens_and_lexemes, syntax_result, result_str, output_file_path):
     with open(output_file_path, 'w') as output_file:
-        output_file.write("Token".ljust(17) + "Lexeme\n")
-        output_file.write("-" * 30 + "\n")
-        for token, lexeme in tokens_and_lexemes:
-            output_file.write(f"{token.ljust(12)} | {lexeme}\n")
+        # output_file.write("Token".ljust(17) + "Lexeme\n")
+        # output_file.write("-" * 30 + "\n")
+        # for token, lexeme in tokens_and_lexemes:
+        #     output_file.write(f"{token.ljust(12)} | {lexeme}\n")
 
-        output_file.write("\nSyntax Analysis:\n")
-        output_file.write("-" * 30 + "\n")
-        output_file.write(syntax_result)
-        output_file.write("-" * 30 + "\n")
+        # output_file.write("\nSyntax Analysis:\n")
+        # output_file.write("-" * 30 + "\n")
+        # output_file.write(syntax_result)
+        # output_file.write("-" * 30 + "\n")
         output_file.write(result_str)
 
 

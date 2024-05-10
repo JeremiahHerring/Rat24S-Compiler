@@ -1,6 +1,3 @@
-#TODO Add changes to compound function (idk what's supposed to go here),
-# Test everything make sure it works
-
 i = 0
 flag = True
 current_type = None
@@ -97,19 +94,16 @@ def syntax_analyzer(lexerList, i):
     # Check each identifier after the declaration section
         nonlocal symbol_table
         for token_type, lexeme in lexerList[i+1:]:
-            print(token_type, lexeme)
             if token_type == "Identifier":
                 check(lexeme)
             elif lexeme == "$":
                 break
 
-    # TODO: Type matching doesn't seem to be working properly for test case #3
     def check_type_match_after_declaration():
         nonlocal i
         for index in range(i, len(lexerList)):
             token = lexerList[index][0]
             if token == "Operator":
-                #print("We got an operator here", lexerList[index][1])
                 prev_lexeme = lexerList[index - 1][1]
                 next_lexeme = lexerList[index + 1][1]
                 prev_type = None
@@ -632,7 +626,10 @@ def syntax_analyzer(lexerList, i):
         symbol_table_str = "\nSymbol Table:\n"
         symbol_table_str += "Identifier\tMemory Address\tType\n"
         for identifier, data in symbol_table.items():
-            symbol_table_str += f"{identifier}\t\t{data['memory_address']}\t\t{data['type']}\n"
+            identifier_column = identifier.ljust(10)  
+            memory_address_column = str(data['memory_address']).rjust(-4)  
+            type_column = data['type'].ljust(8)  
+            symbol_table_str += f"{identifier_column}\t\t{memory_address_column}\t\t{type_column}\n"
         return symbol_table_str
 
     def print_instr_table(instr_table):
